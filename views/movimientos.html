@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+</head>
+
+<body>
+    <div id="root">
+        <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;">
+            <ol tabindex="-1"
+                class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
+            </ol>
+        </div>
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+            <header class="bg-white shadow-sm border-b">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-package h-6 w-6 text-white">
+                                    <path
+                                        d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
+                                    </path>
+                                    <path d="M12 22V12"></path>
+                                    <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
+                                    <path d="m7.5 4.27 9 5.15"></path>
+                                </svg></div>
+                            <div>
+                                <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
+                                <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-600">Bienvenido, feli@123.com</div><button
+                                class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" x2="9" y1="12" y2="12"></line>
+                                </svg>Cerrar Sesión</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div dir="ltr" data-orientation="horizontal" class="w-full">
+                    <div role="tablist" aria-orientation="horizontal"
+                        class="h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
+                        tabindex="0" data-orientation="horizontal" style="outline: none;">
+                        <a href="dashboard.html" role="tab" aria-selected="true"
+                            aria-controls="radix-:r0:-content-dashboard" data-state="active"
+                            id="radix-:r0:-trigger-dashboard"
+                            class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-chart-column h-4 w-4">
+                                <path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+                                <path d="M18 17V9"></path>
+                                <path d="M13 17V5"></path>
+                                <path d="M8 17v-3"></path>
+                            </svg>Dashboard
+                        </a>
+                        <a type="button" role="tab" aria-selected="false" href="inventario.html"
+                            aria-controls="radix-:r0:-content-inventory" data-state="inactive"
+                            id="radix-:r0:-trigger-inventory"
+                            class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-package h-4 w-4">
+                                <path
+                                    d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
+                                </path>
+                                <path d="M12 22V12"></path>
+                                <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
+                                <path d="m7.5 4.27 9 5.15"></path>
+                            </svg>Inventario
+                        </a>
+                        <a href="movimientos.html" role="tab" aria-selected="false"
+                            aria-controls="radix-:r0:-content-movements" data-state="inactive"
+                            id="radix-:r0:-trigger-movements"
+                            class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-trending-up h-4 w-4">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>Movimientos
+                        </a>
+                        <a href="reportes.html" role="tab" aria-selected="false"
+                            aria-controls="radix-:r0:-content-reports" data-state="inactive"
+                            id="radix-:r0:-trigger-reports"
+                            class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            tabindex="-1" data-orientation="horizontal" data-radix-collection-item=""><svg
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-triangle-alert h-4 w-4">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3">
+                                </path>
+                                <path d="M12 9v4"></path>
+                                <path d="M12 17h.01"></path>
+                            </svg>Reportes
+                        </a>
+                    </div>
+                    <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                        aria-labelledby="radix-:r0:-trigger-dashboard" id="radix-:r0:-content-dashboard" tabindex="0"
+                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        style="" hidden=""></div>
+                    <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                        aria-labelledby="radix-:r0:-trigger-inventory" id="radix-:r0:-content-inventory" tabindex="0"
+                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        hidden=""></div>
+                    <div data-state="active" data-orientation="horizontal" role="tabpanel"
+                        aria-labelledby="radix-:r0:-trigger-movements" id="radix-:r0:-content-movements" tabindex="0"
+                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                        <div class="space-y-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div>
+                                    <h2 class="text-2xl font-bold text-gray-900">Registro de Movimientos</h2>
+                                    <p class="text-gray-600">Historial de entradas y salidas de inventario</p>
+                                </div><button
+                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 text-primary-foreground h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700"
+                                    type="button" aria-haspopup="dialog" aria-expanded="false"
+                                    aria-controls="radix-:rt:" data-state="closed"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-plus h-4 w-4 mr-2">
+                                        <path d="M5 12h14"></path>
+                                        <path d="M12 5v14"></path>
+                                    </svg>Registrar Movimiento</button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="p-6 pt-6">
+                                        <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="lucide lucide-trending-up h-5 w-5 text-green-600">
+                                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                                <polyline points="16 7 22 7 22 13"></polyline>
+                                            </svg>
+                                            <div>
+                                                <p class="text-2xl font-bold text-green-600">0</p>
+                                                <p class="text-sm text-gray-600">Total Entradas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="p-6 pt-6">
+                                        <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="lucide lucide-trending-down h-5 w-5 text-red-600">
+                                                <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline>
+                                                <polyline points="16 17 22 17 22 11"></polyline>
+                                            </svg>
+                                            <div>
+                                                <p class="text-2xl font-bold text-red-600">0</p>
+                                                <p class="text-sm text-gray-600">Total Salidas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="p-6 pt-6">
+                                        <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="lucide lucide-file-text h-5 w-5 text-blue-600">
+                                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z">
+                                                </path>
+                                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                                <path d="M10 9H8"></path>
+                                                <path d="M16 13H8"></path>
+                                                <path d="M16 17H8"></path>
+                                            </svg>
+                                            <div>
+                                                <p class="text-2xl font-bold text-blue-600">0</p>
+                                                <p class="text-sm text-gray-600">Movimientos Totales</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                <div class="p-6 pt-6">
+                                    <div class="flex flex-col sm:flex-row gap-4">
+                                        <div class="relative flex-1"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-gray-400">
+                                                <circle cx="11" cy="11" r="8"></circle>
+                                                <path d="m21 21-4.3-4.3"></path>
+                                            </svg><input
+                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
+                                                placeholder="Buscar movimientos..." value=""></div><button type="button"
+                                            role="combobox" aria-controls="radix-:r10:" aria-expanded="false"
+                                            aria-autocomplete="none" dir="ltr" data-state="closed"
+                                            class="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 w-full sm:w-48"><span
+                                                style="pointer-events: none;">Todos los movimientos</span><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-chevron-down h-4 w-4 opacity-50"
+                                                aria-hidden="true">
+                                                <path d="m6 9 6 6 6-6"></path>
+                                            </svg></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4"></div>
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                <div class="p-6 py-8 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-file-text h-12 w-12 text-gray-400 mx-auto mb-4">
+                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                                        <path d="M10 9H8"></path>
+                                        <path d="M16 13H8"></path>
+                                        <path d="M16 17H8"></path>
+                                    </svg>
+                                    <p class="text-gray-500">No se encontraron movimientos con los filtros aplicados</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
+                        aria-labelledby="radix-:r0:-trigger-reports" hidden="" id="radix-:r0:-content-reports"
+                        tabindex="0"
+                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
