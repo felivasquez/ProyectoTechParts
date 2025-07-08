@@ -1,4 +1,4 @@
-import supabase from './client.js';
+import supabase from '../client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appMessageElement = document.getElementById('app-message');
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.user) {
                 const username = data.user.user_metadata?.username || data.user.email;
                 showMessage(`¡Bienvenido, ${username}!`, 'success');
-                window.location.href = '../index.html';
+                window.location.href = '/index.html';
                 loginForm.reset();
             } else {
                 showMessage('No se pudo iniciar sesión.', 'error');
@@ -57,3 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// logica para cerrar sesión
+const logoutButton = document.getElementById('logout-button');
+
+if (logoutButton) {
+    logoutButton.addEventListener('click', async () => {
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            console.error('Error al cerrar sesión:', error.message);
+            alert('Hubo un error al cerrar sesión.');
+        } else {
+            window.location.href = '/session/login.html';
+        }
+    });
+}
+

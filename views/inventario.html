@@ -36,8 +36,8 @@
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <div class="text-sm text-gray-600">Bienvenido, feli@123.com</div>
-                            <button
+                            <div id="user-email" class="text-sm text-gray-600">Bienvenido, @ .com</div>
+                            <button id="logout-button" type="button"
                                 class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -305,10 +305,21 @@
             </div>
         </div>
     </div>
+    <script src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/productos.js"></script>
+    <script type="module" src="../assets/js/dialog.js"></script>
+    <script src="../assets/js/login.js"></script>
+    <script>
+    import { checkSession, logout } from '../assets/js/session.js';
 
-    <script type="module" src="./assets/js/productos.js"></script>
-    <script type="module" src="./assets/js/dialog.js"></script>
-    <script src="./assets/js/main.js"></script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = await checkSession();
+        document.getElementById('user-email').textContent = user.email;
+
+        // Cerrar sesión
+        document.getElementById('logout-button')?.addEventListener('click', logout);
+    });
+    </script>
 </body>
 
 </html>
