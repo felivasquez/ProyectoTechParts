@@ -1,4 +1,3 @@
-// router.js (o en tu main.js si es simple)
 const validRoutes = ['dashboard.html', 'inventario.html', 'movimientos.html', 'reportes.html'];
 
 const currentPath = window.location.pathname.split('/').pop();

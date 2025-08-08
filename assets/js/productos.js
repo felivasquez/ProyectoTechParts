@@ -24,7 +24,6 @@ async function fetchProducts() {
     });
 }
 
-
 /*render product card */
 function renderProductCard(product) {
     const card = document.createElement('div');
@@ -116,6 +115,7 @@ function renderProductCard(product) {
             alert('Producto eliminado exitosamente.');
         }
     });
+    window.fetchProducts = fetchProducts;
 
     return card;
 }

@@ -32,31 +32,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const location = document.getElementById('location').value.trim();
         const description = document.getElementById('description').value.trim();
 
-        const { error } = await supabase.from('products').insert([{
-            name,
-            category,
-            brand,
-            model,
-            stock,
-            min_stock,
-            price,
-            location,
-            description
-        }]);
+        const { error } = await supabase
+            .from('products')
+            .insert([{
+                name,
+                category,
+                brand,
+                model,
+                stock,
+                min_stock,
+                price,
+                location,
+                description
+            }]);
 
         if (error) {
             alert('Error al agregar el producto: ' + error.message);
             return;
+        } else {
+            alert('Producto agregado con éxito');
+            // Limpiar el formulario y cerrar el modal
+            form.reset();
+            modal.classList.add('hidden');
+            modal.setAttribute('data-state', 'closed');
+            // Actualizar productos (asegúrate que fetchProducts esté en window)
+            if (typeof fetchProducts === 'function') {
+                fetchProducts();
+            } else if (window.fetchProducts) {
+                window.fetchProducts();
+            }
         }
 
-        alert('Producto agregado con éxito');
-        // Limpiar el formulario
-        form.reset();
-        modal.classList.add('hidden');
-        modal.setAttribute('data-state', 'closed');
-
-        if (typeof fetchProducts === 'function') {
-            fetchProducts();
-        }
     });
 });
