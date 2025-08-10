@@ -1,6 +1,7 @@
 {
   "name": "proyectotechparts",
   "version": "1.0.0",
+  "type": "module",
   "description": "proyectotechparts",
   "main": "index.html",
   "scripts": {
@@ -11,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
+    "express": "^5.1.0",
     "pg": "^8.16.0",
     "postgres": "^3.4.7"
   }
