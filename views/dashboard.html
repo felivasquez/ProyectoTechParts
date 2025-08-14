@@ -86,7 +86,7 @@
                     </a>
                     <a href="movimientos.html" role="tab" aria-selected="false"
                         aria-controls="radix-:r0:-content-movements" data-state="inactive" id="radix-:r0:-trigger-movements"
-                        class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                        class="bg-orange-100 justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
                         tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
                         <svg
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -115,8 +115,8 @@
                     style="animation-duration: 0s;">
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div
-                                class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                            <!-- Total Componentes -->
+                            <div class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                                 <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
                                     <h3 class="tracking-tight text-sm font-medium">Total Componentes</h3><svg
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -131,10 +131,11 @@
                                     </svg>
                                 </div>
                                 <div class="p-6 pt-0">
-                                    <div class="text-2xl font-bold">1247</div>
-                                    <p class="text-xs text-blue-100">+12% respecto al mes anterior</p>
+                                    <div class="text-2xl font-bold"><span id="total-componentes"></span></div>
+                                    <p class="text-xs text-blue-100"><span id="total-componentes-cambio"></span>% respecto al mes anterior</p>
                                 </div>
                             </div>
+                            <!-- Valor Total -->
                             <div
                                 class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-green-500 to-green-600 text-white">
                                 <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
@@ -147,12 +148,13 @@
                                     </svg>
                                 </div>
                                 <div class="p-6 pt-0">
-                                    <div class="text-2xl font-bold">$85.600</div>
+                                    <div class="text-2xl font-bold"><span id="valor-total"></span></div>
                                     <p class="text-xs text-green-100">Inventario valorizado</p>
                                 </div>
                             </div>
+                            <!-- Stock Bajo -->
                             <div
-                                class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                                class="bg-yellow-300 rounded-lg border bg-card shadow-sm text-white">
                                 <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
                                     <h3 class="tracking-tight text-sm font-medium">Stock Bajo</h3><svg
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -165,10 +167,11 @@
                                     </svg>
                                 </div>
                                 <div class="p-6 pt-0">
-                                    <div class="text-2xl font-bold">23</div>
+                                    <div class="text-2xl font-bold"><span id="stock-bajo"></span></div>
                                     <p class="text-xs text-orange-100">Requieren reabastecimiento</p>
                                 </div>
                             </div>
+                            <!-- movimientos hoy -->
                             <div
                                 class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-purple-500 to-purple-600 text-white">
                                 <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
@@ -181,12 +184,14 @@
                                     </svg>
                                 </div>
                                 <div class="p-6 pt-0">
-                                    <div class="text-2xl font-bold">47</div>
+                                    <div class="text-2xl font-bold"><span id="movimientos-hoy"></span></div>
                                     <p class="text-xs text-purple-100">Entradas y salidas</p>
                                 </div>
                             </div>
                         </div>
+
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Distribución por Categorías -->
                             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Distribución por
@@ -194,8 +199,7 @@
                                     <p class="text-sm text-muted-foreground">Componentes organizados por tipo</p>
                                 </div>
                                 <div class="p-6 pt-0 space-y-4">
-                                    <div
-                                        class="flex items-center justify-between p-4 rounded-lg border hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center justify-between p-4 rounded-lg border hover:bg-gray-50 transition-colors">
                                         <div class="flex items-center space-x-3">
                                             <div class="p-2 rounded-lg bg-blue-500"><svg xmlns="http://www.w3.org/2000/svg"
                                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -213,12 +217,12 @@
                                                     <path d="M9 20v2"></path>
                                                 </svg></div>
                                             <div>
-                                                <p class="font-medium">Procesadores</p>
-                                                <p class="text-sm text-gray-500">156 unidades</p>
+                                                <p class="font-medium"></p>
+                                                <p class="text-sm text-gray-500"></p>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-semibold">$28.500</p>
+                                            <p class="font-semibold"></p>
                                             <p class="text-xs text-gray-500">valor total</p>
                                         </div>
                                     </div>
@@ -237,11 +241,11 @@
                                                 </svg></div>
                                             <div>
                                                 <p class="font-medium">Placas Madre</p>
-                                                <p class="text-sm text-gray-500">89 unidades</p>
+                                                <p class="text-sm text-gray-500"></p>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-semibold">$22.400</p>
+                                            <p class="font-semibold"></p>
                                             <p class="text-xs text-gray-500">valor total</p>
                                         </div>
                                     </div>
@@ -267,18 +271,18 @@
                                                 </svg></div>
                                             <div>
                                                 <p class="font-medium">Memoria RAM</p>
-                                                <p class="text-sm text-gray-500">234 unidades</p>
+                                                <p class="text-sm text-gray-500"></p>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-semibold">$18.700</p>
+                                            <p class="font-semibold"></p>
                                             <p class="text-xs text-gray-500">valor total</p>
                                         </div>
                                     </div>
                                     <div
                                         class="flex items-center justify-between p-4 rounded-lg border hover:bg-gray-50 transition-colors">
                                         <div class="flex items-center space-x-3">
-                                            <div class="p-2 rounded-lg bg-orange-500"><svg
+                                            <div class="p-2 rounded-lg bg-yellow-300"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round"
@@ -292,16 +296,17 @@
                                                 </svg></div>
                                             <div>
                                                 <p class="font-medium">Almacenamiento</p>
-                                                <p class="text-sm text-gray-500">178 unidades</p>
+                                                <p class="text-sm text-gray-500"></p>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-semibold">$16.000</p>
+                                            <p class="font-semibold"></p>
                                             <p class="text-xs text-gray-500">valor total</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- alerta de stock -->
                             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock</h3>
@@ -379,21 +384,9 @@
                         </div>
                     </div>
                 </div>
-                <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                    aria-labelledby="radix-:r0:-trigger-inventory" hidden="" id="radix-:r0:-content-inventory" tabindex="0"
-                    class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                </div>
-                <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                    aria-labelledby="radix-:r0:-trigger-movements" hidden="" id="radix-:r0:-content-movements" tabindex="0"
-                    class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                </div>
-                <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                    aria-labelledby="radix-:r0:-trigger-reports" hidden="" id="radix-:r0:-content-reports" tabindex="0"
-                    class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                </div>
             </div>
         </div>
     </div>  
-    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/views/dashboard.js" type="module"></script>
 </body>
 </html>
