@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
 </head>
 <style>
     section {
@@ -23,11 +24,81 @@
 </style>
 <body>
     <section>
-            <canvas id="canvas3d"></canvas>
     </section>
-    <section>
-        hola
-    </section>
+
+            <!-- modal agregar nuevo movimiento -->
+        <div role="dialog" class="fixed left-1/2 top-1/2 z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg"
+            tabindex="-1">
+            <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                <h2 class="text-lg font-semibold leading-none tracking-tight">Registrar Movimiento</h2>
+                <p class="text-sm text-muted-foreground">Registra una entrada o salida de inventario</p>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium leading-none" for="product_id">Componente</label>
+                    <select id="product_id" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                        <option value="1330f9c8-13d2-4b41-9696-ca7a3b595d29">Intel Core i7-13700K - Intel</option>
+                        <option value="c3cab5d8-d104-419b-a55a-8a34b039a922">Ryzen 5 5600x - Amd</option>
+                        <option value="de77be77-fbe5-4fd0-b587-cdb64f316521">MSI B550 - MSI</option>
+                        <option value="37a19087-e55a-4656-be00-f39ebc10dca4">8gb Ram ddr4 - Corsair</option>
+                        <option value="7762a7be-6a3a-417a-bd65-c4bc4009c17c">Rx 580 - Amd</option>
+                        <option value="c205d5f3-19db-42b4-855b-fae323b7f429">Rx 6600 xt - Amd</option>
+                        <option value="5b80542e-611f-406a-b49a-27b657f914bf">RTX 5070 - Nvidia</option>
+                        <option value="6bf162e1-12c3-4131-843e-07fdb1933a9f">Corsair Vengeance 32GB DDR5 - Corsair
+                        </option>
+                        <option value="39acac33-0f8f-4b66-8ad6-4e363c7cd8d5">ASUS ROG STRIX - Asus</option>
+                        <option value="cd5b7089-78b4-4e0c-a8e9-4b03d640f678">Kingston 16gb - Kingston</option>
+                        <option value="ba0acead-72e4-451c-be7f-54ffae3c4665">Ryzen 5500xt - amd</option>
+                        <option value="e056c152-2731-491a-a9fc-972ffb7b603b">SSD 960gb - Patriot Burst</option>
+                        <option value="f25d57a7-cbeb-4cff-ac31-c5abb1bb3ce4">RTX 3090 24gb - EVGA</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-medium leading-none" for="type">Tipo</label>
+                        <select id="type" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                            <option value="entrada" selected>Entrada</option>
+                            <option value="salida">Salida</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium leading-none" for="quantity">Cantidad</label>
+                        <input type="number" id="quantity" required value="0" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base" />
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium leading-none" for="reason">Motivo</label>
+                    <select id="reason" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                        <option value="Compra a proveedor">Compra a proveedor</option>
+                        <option value="Venta a cliente">Venta a cliente</option>
+                        <option value="Transferencia entre sucursales">Transferencia entre sucursales</option>
+                        <option value="Devolución de cliente">Devolución de cliente</option>
+                        <option value="Devolución a proveedor">Devolución a proveedor</option>
+                        <option value="Ajuste de inventario">Ajuste de inventario</option>
+                        <option value="Producto defectuoso">Producto defectuoso</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-sm font-medium leading-none" for="supplier">Proveedor (opcional)</label>
+                    <input id="supplier" placeholder="Nombre del proveedor" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base" />
+                </div>
+                <div>
+                    <label class="text-sm font-medium leading-none" for="notes">Notas (opcional)</label>
+                    <textarea id="notes" placeholder="Información adicional..." class="flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium border bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Cancelar</button>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Registrar</button>
+                </div>
+            </form>
+            <button type="button" class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4 w-4">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+                <span class="sr-only">Close </span>
+            </button>
+        </div>
 
 
 
