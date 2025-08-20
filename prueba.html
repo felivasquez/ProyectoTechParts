@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
 </head>
 <style>
     section {
@@ -21,19 +23,180 @@
         height: 100%;
     }
 </style>
+
 <body>
     <section>
-            <canvas id="canvas3d"></canvas>
-    </section>
-    <section>
-        hola
     </section>
 
+    <!-- modal agregar nuevo movimiento 
+    <div role="dialog"
+        class="fixed left-1/2 top-1/2 z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg"
+        tabindex="-1">
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+            <h2 class="text-lg font-semibold leading-none tracking-tight">Registrar Movimiento</h2>
+            <p class="text-sm text-muted-foreground">Registra una entrada o salida de inventario</p>
+        </div>
+        <form class="space-y-4">
+            <div>
+                <label class="text-sm font-medium leading-none" for="product_id">Componente</label>
+                <select id="product_id" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                    <option value="1330f9c8-13d2-4b41-9696-ca7a3b595d29">Intel Core i7-13700K - Intel</option>
+                    <option value="c3cab5d8-d104-419b-a55a-8a34b039a922">Ryzen 5 5600x - Amd</option>
+                    <option value="de77be77-fbe5-4fd0-b587-cdb64f316521">MSI B550 - MSI</option>
+                    <option value="37a19087-e55a-4656-be00-f39ebc10dca4">8gb Ram ddr4 - Corsair</option>
+                    <option value="7762a7be-6a3a-417a-bd65-c4bc4009c17c">Rx 580 - Amd</option>
+                    <option value="c205d5f3-19db-42b4-855b-fae323b7f429">Rx 6600 xt - Amd</option>
+                    <option value="5b80542e-611f-406a-b49a-27b657f914bf">RTX 5070 - Nvidia</option>
+                    <option value="6bf162e1-12c3-4131-843e-07fdb1933a9f">Corsair Vengeance 32GB DDR5 - Corsair
+                    </option>
+                    <option value="39acac33-0f8f-4b66-8ad6-4e363c7cd8d5">ASUS ROG STRIX - Asus</option>
+                    <option value="cd5b7089-78b4-4e0c-a8e9-4b03d640f678">Kingston 16gb - Kingston</option>
+                    <option value="ba0acead-72e4-451c-be7f-54ffae3c4665">Ryzen 5500xt - amd</option>
+                    <option value="e056c152-2731-491a-a9fc-972ffb7b603b">SSD 960gb - Patriot Burst</option>
+                    <option value="f25d57a7-cbeb-4cff-ac31-c5abb1bb3ce4">RTX 3090 24gb - EVGA</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium leading-none" for="type">Tipo</label>
+                    <select id="type" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                        <option value="entrada" selected>Entrada</option>
+                        <option value="salida">Salida</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-sm font-medium leading-none" for="quantity">Cantidad</label>
+                    <input type="number" id="quantity" required value="0"
+                        class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base" />
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium leading-none" for="reason">Motivo</label>
+                <select id="reason" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                    <option value="Compra a proveedor">Compra a proveedor</option>
+                    <option value="Venta a cliente">Venta a cliente</option>
+                    <option value="Transferencia entre sucursales">Transferencia entre sucursales</option>
+                    <option value="Devolución de cliente">Devolución de cliente</option>
+                    <option value="Devolución a proveedor">Devolución a proveedor</option>
+                    <option value="Ajuste de inventario">Ajuste de inventario</option>
+                    <option value="Producto defectuoso">Producto defectuoso</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-sm font-medium leading-none" for="supplier">Proveedor (opcional)</label>
+                <input id="supplier" placeholder="Nombre del proveedor"
+                    class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-base" />
+            </div>
+            <div>
+                <label class="text-sm font-medium leading-none" for="notes">Notas (opcional)</label>
+                <textarea id="notes" placeholder="Información adicional..."
+                    class="flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm"></textarea>
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button"
+                    class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium border bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Cancelar</button>
+                <button type="submit"
+                    class="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Registrar</button>
+            </div>
+        </form>
+        <button type="button"
+            class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-x h-4 w-4">
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+            </svg>
+            <span class="sr-only">Close </span>
+        </button>
+    </div>
+
+     card movimientos 
+    <div class="p-6 pt-6">
+        <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+                <div class="p-2 rounded-full bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-trending-up h-5 w-5 text-green-600">
+                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                        <polyline points="16 7 22 7 22 13"></polyline>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <h3 class="font-semibold text-lg">Intel Core i7-13700K</h3>
+                        <div
+                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
+                            Entrada
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-600"><span class="font-medium">Cantidad:</span> 7 unidades</p>
+                            <p class="text-gray-600"><span class="font-medium">Motivo:</span> Compra a proveedor</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600"><span class="font-medium">Fecha:</span> 14/08/2025, 02:25</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-2xl font-bold text-green-600">+7</p>
+            </div>
+        </div>
+    </div> -->
 
 
-    
+    <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
+    <button command="show-modal" commandfor="dialog">hola</button>
+    <el-dialog>
+        <dialog id="dialog" aria-labelledby="dialog-title"
+            class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+            <el-dialog-backdrop
+                class="fixed inset-0 bg-gray-900/50 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+            <div tabindex="0"
+                class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                <el-dialog-panel
+                    class="relative transform overflow-hidden rounded-lg bg-gray-800 text-left shadow-xl outline -outline-offset-1 outline-white/10 transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+                    <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-500/10 sm:mx-0 sm:size-10">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    data-slot="icon" aria-hidden="true" class="size-6 text-red-400">
+                                    <path
+                                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 id="dialog-title" class="text-base font-semibold text-white">Deactivate account</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-400">Are you sure you want to deactivate your account?
+                                        All of your data will be permanently removed. This action cannot be undone.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700/25 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button type="button" command="close" commandfor="dialog"
+                            class="inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white hover:bg-red-400 sm:ml-3 sm:w-auto">Deactivate</button>
+                        <button type="button" command="close" commandfor="dialog"
+                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 sm:mt-0 sm:w-auto">Cancel</button>
+                    </div>
+                </el-dialog-panel>
+            </div>
+        </dialog>
+    </el-dialog>
+
+
     <script type="module" src="prueba.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
 </body>
+
 </html>
