@@ -10,48 +10,43 @@
 
 <body>
     <div id="root">
-        <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;">
-            <ol tabindex="-1"
-                class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
-            </ol>
-        </div>
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
             <header class="bg-white shadow-sm border-b">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between items-center h-16">
-                            <div class="flex items-center space-x-3">
-                                <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-package h-6 w-6 text-white">
-                                        <path
-                                            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
-                                        </path>
-                                        <path d="M12 22V12"></path>
-                                        <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
-                                        <path d="m7.5 4.27 9 5.15"></path>
-                                    </svg></div>
-                                <div>
-                                    <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
-                                    <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <div class="text-sm text-gray-600" id="username">Bienvenido, </div>
-                                <a href="/views/session/login.html" id="logout-button" type="button"
-                                    class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4">
-                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                        <polyline points="16 17 21 12 16 7"></polyline>
-                                        <line x1="21" x2="9" y1="12" y2="12"></line>
-                                    </svg>
-                                    Cerrar Sesión
-                                </a>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-package h-6 w-6 text-white">
+                                    <path
+                                        d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
+                                    </path>
+                                    <path d="M12 22V12"></path>
+                                    <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
+                                    <path d="m7.5 4.27 9 5.15"></path>
+                                </svg></div>
+                            <div>
+                                <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
+                                <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
                             </div>
                         </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-600" id="username">Bienvenido, </div>
+                            <a href="/views/session/login.html" id="logout-button" type="button"
+                                class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" x2="9" y1="12" y2="12"></line>
+                                </svg>
+                                Cerrar Sesión
+                            </a>
+                        </div>
                     </div>
+                </div>
             </header>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
@@ -115,14 +110,6 @@
                             </svg>Reportes
                         </a>
                     </div>
-                    <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                        aria-labelledby="radix-:r0:-trigger-dashboard" id="radix-:r0:-content-dashboard" tabindex="0"
-                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        style="" hidden=""></div>
-                    <div data-state="inactive" data-orientation="horizontal" role="tabpanel"
-                        aria-labelledby="radix-:r0:-trigger-inventory" id="radix-:r0:-content-inventory" tabindex="0"
-                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        hidden=""></div>
                     <div data-state="active" data-orientation="horizontal" role="tabpanel"
                         aria-labelledby="radix-:r0:-trigger-movements" id="radix-:r0:-content-movements" tabindex="0"
                         class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -227,31 +214,110 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="space-y-4"></div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
-                                <div class="p-6 py-8 text-center"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-file-text h-12 w-12 text-gray-400 mx-auto mb-4">
-                                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
-                                        <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                                        <path d="M10 9H8"></path>
-                                        <path d="M16 13H8"></path>
-                                        <path d="M16 17H8"></path>
-                                    </svg>
-                                    <p class="text-gray-500">No se encontraron movimientos con los filtros aplicados</p>
+                            
+                            <!-- aca van los siguientes cards de movimientos -->
+                            <div class="space-y-4">
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="p-6 pt-6">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex items-start space-x-4">
+                                                <div class="p-2 rounded-full bg-gray-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-trending-up h-5 w-5 text-green-600">
+                                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                                        <polyline points="16 7 22 7 22 13"></polyline>
+                                                    </svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <div class="flex items-center space-x-2 mb-2">
+                                                        <h3 class="font-semibold text-lg">Intel Core i7-13700K</h3>
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
+                                                            Entrada
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                                        <div>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Cantidad:</span> 7 unidades</p>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Motivo:</span> Compra a
+                                                                proveedor
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Fecha:</span>
+                                                                14/08/2025, 02:25</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-2xl font-bold text-green-600">+7</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="p-6 pt-6">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex items-start space-x-4">
+                                                <div class="p-2 rounded-full bg-gray-100">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-trending-up h-5 w-5 text-green-600">
+                                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                                        <polyline points="16 7 22 7 22 13"></polyline>
+                                                    </svg>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <div class="flex items-center space-x-2 mb-2">
+                                                        <h3 class="font-semibold text-lg">Intel Core i7-13700K</h3>
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
+                                                            Entrada
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                                        <div>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Cantidad:</span> 7 unidades</p>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Motivo:</span> Compra a
+                                                                proveedor
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-gray-600"><span
+                                                                    class="font-medium">Fecha:</span>
+                                                                14/08/2025, 02:25</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-2xl font-bold text-green-600">+7</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                    <div
+                        class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- modal agregar nuevo movimiento -->
-        <div id="movimiento-modal" role="dialog" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden" style="background-color: rgba(0,0,0,0.4)" tabindex="-1">
+        <div id="movimiento-modal" role="dialog" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden"
+            style="background-color: rgba(0,0,0,0.4)" tabindex="-1">
             <div class="w-full max-w-2xl rounded-lg border bg-white p-6 shadow-lg relative">
                 <div class="flex flex-col space-y-1.5 text-center sm:text-left">
                     <h2 class="text-lg font-semibold leading-none tracking-tight">Registrar Movimiento</h2>
@@ -260,7 +326,8 @@
                 <form id="movimiento-form" class="space-y-4">
                     <div>
                         <label class="text-sm font-medium leading-none" for="product_id">Componente</label>
-                        <select id="product_id" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                        <select id="product_id"
+                            class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
                             <option value="1330f9c8-13d2-4b41-9696-ca7a3b595d29">Intel Core i7-13700K - Intel</option>
                             <option value="c3cab5d8-d104-419b-a55a-8a34b039a922">Ryzen 5 5600x - Amd</option>
                             <option value="de77be77-fbe5-4fd0-b587-cdb64f316521">MSI B550 - MSI</option>
@@ -280,7 +347,8 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="text-sm font-medium leading-none" for="type">Tipo</label>
-                            <select id="type" class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                            <select id="type"
+                                class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
                                 <option value="entrada" selected>Entrada</option>
                                 <option value="salida">Salida</option>
                             </select>
