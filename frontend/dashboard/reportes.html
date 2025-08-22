@@ -17,40 +17,41 @@
         </div>
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
             <header class="bg-white shadow-sm border-b">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between items-center h-16">
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-package h-6 w-6 text-white">
-                                    <path
-                                        d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
-                                    </path>
-                                    <path d="M12 22V12"></path>
-                                    <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
-                                    <path d="m7.5 4.27 9 5.15"></path>
-                                </svg></div>
-                            <div>
-                                <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
-                                <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex justify-between items-center h-16">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-2 rounded-lg"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-package h-6 w-6 text-white">
+                                        <path
+                                            d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
+                                        </path>
+                                        <path d="M12 22V12"></path>
+                                        <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
+                                        <path d="m7.5 4.27 9 5.15"></path>
+                                    </svg></div>
+                                <div>
+                                    <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
+                                    <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="text-sm text-gray-600" id="username">Bienvenido, </div>
+                                <a href="/views/session/login.html" id="logout-button" type="button"
+                                    class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" x2="9" y1="12" y2="12"></line>
+                                    </svg>
+                                    Cerrar Sesión
+                                </a>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-4">
-                            <div class="text-sm text-gray-600">Bienvenido, feli@123.com</div>
-                            <button id="logout-button" type="button"
-                                class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-log-out h-4 w-4">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                    <polyline points="16 17 21 12 16 7"></polyline>
-                                    <line x1="21" x2="9" y1="12" y2="12"></line>
-                                </svg>Cerrar Sesión
-                            </button>
-                        </div>
                     </div>
-                </div>
             </header>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">

@@ -1,4 +1,4 @@
-import supabase from '../client.js';
+import supabase from '/backend/config/client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Traer todos los productos
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Stock bajo (productos donde stock < min_stock)
     const stockBajo = productos.filter(prod => prod.stock !== null && prod.min_stock !== null && prod.stock < prod.min_stock).length;
 
-    // Movimientos hoy (simulado, reemplaza si tienes tabla de movimientos)
+    // Movimientos hoy 
     const movimientosHoy = 0;
 
     // Agrupar por categoría
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             min: prod.min_stock
         }));
 
-    // Mostrar en tarjetas (ajusta los selectores según tu HTML)
+    // Mostrar en tarjetas 
     document.getElementById('total-componentes').textContent = totalComponentes;
     document.getElementById('valor-total').textContent = `$${valorTotal.toLocaleString()}`;
     document.getElementById('stock-bajo').textContent = stockBajo;
