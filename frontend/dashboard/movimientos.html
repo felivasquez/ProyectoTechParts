@@ -143,7 +143,7 @@
                                                 <polyline points="16 7 22 7 22 13"></polyline>
                                             </svg>
                                             <div>
-                                                <p class="text-2xl font-bold text-green-600">0</p>
+                                                <p class="text-2xl font-bold text-green-600" id="entrada">0</p>
                                                 <p class="text-sm text-gray-600">Total Entradas</p>
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@
                                                 <polyline points="16 17 22 17 22 11"></polyline>
                                             </svg>
                                             <div>
-                                                <p class="text-2xl font-bold text-red-600">0</p>
+                                                <p class="text-2xl font-bold text-red-600" id="salida">0</p>
                                                 <p class="text-sm text-gray-600">Total Salidas</p>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                class="lucide lucide-file-text h-5 w-5 text-blue-600">
+                                                class="lucide lucide-file-text h-5 w-5 text-blue-600" >
                                                 <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z">
                                                 </path>
                                                 <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
@@ -181,7 +181,7 @@
                                                 <path d="M16 17H8"></path>
                                             </svg>
                                             <div>
-                                                <p class="text-2xl font-bold text-blue-600">0</p>
+                                                <p class="text-2xl font-bold text-blue-600"id="total">0</p>
                                                 <p class="text-sm text-gray-600">Movimientos Totales</p>
                                             </div>
                                         </div>
@@ -216,51 +216,7 @@
                             </div>
                             
                             <!-- aca van los siguientes cards de movimientos -->
-                            <div class="space-y-4" id="conteiner-movements">
-                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
-                                    <div class="p-6 pt-6">
-                                        <div class="flex items-start justify-between">
-                                            <div class="flex items-start space-x-4">
-                                                <div class="p-2 rounded-full bg-gray-100">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="lucide lucide-trending-up h-5 w-5 text-green-600">
-                                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                                                        <polyline points="16 7 22 7 22 13"></polyline>
-                                                    </svg>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <div class="flex items-center space-x-2 mb-2">
-                                                        <h3 class="font-semibold text-lg">Intel Core i7-13700K</h3>
-                                                        <div
-                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
-                                                            Entrada
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                                        <div>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Cantidad:</span> 7 unidades</p>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Motivo:</span> Compra a
-                                                                proveedor
-                                                            </p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Fecha:</span>
-                                                                14/08/2025, 02:25</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="text-2xl font-bold text-green-600">+7</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="space-y-4" id="conteiner-movements">                                
                             </div>
                         </div>
                     </div>

@@ -28,16 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Manejar el envío del formulario
     form.addEventListener('submit', async (e) => {
+        e.preventDefault();
     let error;
-    const componentes = document.getElementById('producto-id')?.value?.trim();
-    const type = document.getElementById('tipo')?.value?.trim();
-    const quantity = parseInt(document.getElementById('cantidad')?.value?.trim(),);                   
+    const componentes = document.getElementById('product_id')?.value?.trim();
+    const type = document.getElementById('type')?.value?.trim();
+    const quantity = parseInt(document.getElementById('quantity')?.value?.trim());
     const reason = document.getElementById('reason')?.value?.trim();
     const supplier = document.getElementById('supplier').value.trim();
-    const notas = document.getElementById('notes').value.trim(); 
-
-    ({error} = await supabase.from('movimientos').insert([{
-        type,quantity,reason,supplier,notas,componentes
+    const notes = document.getElementById('notes').value.trim(); 
+    console.log({ type, quantity, reason, supplier, notes, componentes});
+    ({error} = await supabase.from('movements').insert([{
+        type,quantity,reason,supplier,notes,componentes
     }]));
     if(error){
         alert('Error al registrar el movimiento: ' + error.message);
@@ -58,7 +59,7 @@ fetchmovements();
 async function fetchmovements() {
     // Traer los movimientos desde Supabase
     const { data, error } = await supabase
-        .from('movimientos')
+        .from('movements')
         .select('*')
 
     if (error) {
@@ -66,9 +67,29 @@ async function fetchmovements() {
         return;
     }
     console.log('movimientos:',data);
+
+    // Calcular totales; Entradas,Salidas y Movimientos:
+    let totalEntradas = 0;
+    let totalSalidas = 0;   
+    let totalMovimientos = data.length;
+
+    data.forEach(movimientos => {
+        if (movimientos.type === 'entrada') {
+            totalEntradas += movimientos.quantity;
+        } else if (movimientos.type === 'salida'){
+            totalSalidas += movimientos.quantity;
+        }
+    });
+    console.log({totalEntradas,totalSalidas,totalMovimientos});
+    // Actualizar el DOM con los totales
+    document.getElementById('entrada').textContent = totalEntradas;
+    document.getElementById('salida').textContent = totalSalidas;
+    document.getElementById('total').textContent = totalMovimientos;
+
+    // Renderizar los movimientos en el contenedor
     const container = document.getElementById('conteiner-movements');
-    container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos movimientos
-    data.array.forEach(movimientos => {
+    container.innerHTML = '';
+    data.forEach(movimientos => {
         const cardmovement = createMovementCard(movimientos);
         container.appendChild(cardmovement);        
     });
@@ -93,35 +114,34 @@ function createMovementCard(movimientos) {
                                                 </div>
                                                 <div class="flex-1">
                                                     <div class="flex items-center space-x-2 mb-2">
-                                                        <h3 class="font-semibold text-lg">Intel Core i7-13700K</h3>
+                                                        <h3 class="font-semibold text-lg">${movimientos.componentes}</h3>
                                                         <div
                                                             class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
-                                                            Entrada
+                                                            ${movimientos.type}
                                                         </div>
                                                     </div>
                                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                                         <div>
                                                             <p class="text-gray-600"><span
-                                                                    class="font-medium">Cantidad:</span> 7 unidades</p>
+                                                                    class="font-medium">Cantidad:</span> ${movimientos.quantity}</p>
                                                             <p class="text-gray-600"><span
-                                                                    class="font-medium">Motivo:</span> Compra a
-                                                                proveedor
+                                                                    class="font-medium">Motivo:</span> ${movimientos.reason}</p>
                                                             </p>
                                                         </div>
                                                         <div>
                                                             <p class="text-gray-600"><span
-                                                                    class="font-medium">Fecha:</span>
-                                                                14/08/2025, 02:25</p>
+                                                                    class="font-medium">Fecha: </span>
+                                                                ${new Date(movimientos.created_at).toLocaleString()}</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="text-right">
-                                                <p class="text-2xl font-bold text-green-600">+7</p>
+                                                <p class="text-2xl font-bold text-green-600">${movimientos.quantity}</p>
                                             </div>
                                         </div>
                                     </div>
-    
-    
-    `;      
+    `;
+    return card;                                        
+
 }
