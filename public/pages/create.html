@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Producto</title>
+</head>
+<body>
+  <h1>Crear Producto</h1>
+  <form id="createForm">
+    <input type="text" name="name" placeholder="Nombre" required><br>
+    <input type="text" name="category" placeholder="Categoría" required><br>
+    <input type="text" name="brand" placeholder="Marca" required><br>
+    <input type="number" name="stock" placeholder="Stock" required><br>
+    <input type="number" name="price" placeholder="Precio" required><br>
+    <button type="submit">Crear</button>
+  </form>
+
+  <script>
+    document.getElementById("createForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch("http://localhost:3000/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        console.log("Producto creado:", result);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+  </script>
+</body>
+</html>

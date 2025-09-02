@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Producto</title>
+</head>
+<body>
+  <h1>Editar Producto</h1>
+  <input type="text" id="productId" placeholder="ID del producto">
+  <button id="btnCargar">Cargar Producto</button>
+
+  <form id="editForm" style="display:none;">
+    <input type="text" name="name" placeholder="Nombre"><br>
+    <input type="text" name="category" placeholder="Categoría"><br>
+    <input type="text" name="brand" placeholder="Marca"><br>
+    <input type="number" name="stock" placeholder="Stock"><br>
+    <input type="number" name="price" placeholder="Precio"><br>
+    <button type="submit">Guardar cambios</button>
+  </form>
+
+  <script>
+    let currentId = null;
+
+    document.getElementById("btnCargar").addEventListener("click", async () => {
+      const id = document.getElementById("productId").value;
+      currentId = id;
+      try {
+        const res = await fetch(`http://localhost:3000/products/${id}`);
+        const product = await res.json();
+
+        const form = document.getElementById("editForm");
+        form.style.display = "block";
+        Object.keys(product).forEach(key => {
+          if (form.elements[key]) form.elements[key].value = product[key];
+        });
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch(`http://localhost:3000/products/${currentId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const updated = await res.json();
+        console.log("Producto actualizado:", updated);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+  </script>
+</body>
+</html>

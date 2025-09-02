@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ver Producto</title>
+</head>
+<body>
+  <h1>Ver Producto</h1>
+  <input type="text" id="productId" placeholder="ID del producto">
+  <button id="btnBuscar">Buscar</button>
+  <button id="btnEliminar">Eliminar</button>
+
+  <script>
+    let currentId = null;
+
+    document.getElementById("btnBuscar").addEventListener("click", async () => {
+      const id = document.getElementById("productId").value;
+      currentId = id;
+      try {
+        const res = await fetch(`http://localhost:3000/products/${id}`);
+        const data = await res.json();
+        console.log("Producto:", data);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+
+    document.getElementById("btnEliminar").addEventListener("click", async () => {
+      if (!currentId) return alert("Primero busca un producto");
+      try {
+        await fetch(`http://localhost:3000/products/${currentId}`, { method: "DELETE" });
+        console.log("Producto eliminado");
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    });
+  </script>
+</body>
+</html>
