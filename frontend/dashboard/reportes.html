@@ -123,7 +123,9 @@
                                     <h2 class="text-2xl font-bold text-gray-900">Reportes y Análisis</h2>
                                     <p class="text-gray-600">Métricas y estadísticas del inventario</p>
                                 </div>
-                                <div class="flex gap-3"><button type="button" role="combobox"
+                                <div class="flex gap-3">
+                                    <div class="relative inline-block text-left">
+                                    <button type="button" role="combobox" id="menuButton"
                                         aria-controls="radix-:r14:" aria-expanded="false" aria-autocomplete="none"
                                         dir="ltr" data-state="closed"
                                         class="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 w-40"><svg
@@ -135,14 +137,23 @@
                                             <path d="M16 2v4"></path>
                                             <rect width="18" height="18" x="3" y="4" rx="2"></rect>
                                             <path d="M3 10h18"></path>
-                                        </svg><span style="pointer-events: none;">Este mes</span><svg
+                                        </svg><span id="menutext" style="pointer-events: none;">Este mes</span><svg
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
                                             class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
                                             <path d="m6 9 6 6 6-6"></path>
-                                        </svg></button><button
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"><svg
+                                        </svg>
+                                    </button>
+                                        <div id="menuDropdown"class="hidden absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                            <div class="py-1">
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-value="esteMes">Este mes</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-value="porA">este año</a>
+                                            </div>
+                                        </div>
+                                        <input type="month" id="MesAgarrado" class="hidden mt-2 border rounded p-1">     
+                                        </div>                              
+                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"><svg
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -150,7 +161,9 @@
                                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                             <polyline points="7 10 12 15 17 10"></polyline>
                                             <line x1="12" x2="12" y1="15" y2="3"></line>
-                                        </svg>Exportar</button></div>
+                                        </svg>Exportar
+                                    </button>
+                                </div>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
