@@ -32,28 +32,34 @@ const {data,error} = await supabase
 if(error){
 throw new Error('Error al obtener los movimientos: ' + error.message);
 }
-const labels = [  "Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-const entradas = new Array(12).fill(null);
-const salidas = new Array(12).fill(null);
-
+const NombreMeses = [  "Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+const entradasMap = new Map(); 
+const salidasMap = new Map();
 data.forEach(movimiento => {
   const fecha = new Date(movimiento.created_at);
-  const mes = fecha.getMonth(); // 0 = Enero
+  const mes = NombreMeses[fecha.getMonth()]; 
 
   if (movimiento.type === "entrada") {
-    if (entradas[mes] === null) entradas[mes] = [];
-    entradas[mes].push(movimiento.quantity);
+    if(!entradasMap.has(mes)){
+      entradasMap.set(mes, []);
+    }
+    entradasMap.get(mes).push(movimiento.quantity);
   } else if (movimiento.type === "salida") {
-    if (salidas[mes] === null) salidas[mes] = [];
-    salidas[mes].push(movimiento.quantity);
-  }
-});
+    if(!salidasMap.has(mes)){
+      salidasMap.set(mes, []);
+    }
+    salidasMap.get(mes).push(movimiento.quantity);
+}})
+// Promediar las cantidades por mes
+const salidas = [];
+const entradas = [];
+const labels = NombreMeses;
 
-// "aplanamos" para que se dibujen varios puntos por mes
-const entradasPlano = entradas.map(arr => (arr ? arr.reduce((a,b)=>a+b,0) : null));
-const salidasPlano  = salidas.map(arr => (arr ? arr.reduce((a,b)=>a+b,0) : null));
-
-
+labels.forEach(mes => { 
+salidas.push(salidasMap.has(mes) ? salidasMap.get(mes).reduce((a, b) => a + b, 0) : null);
+entradas.push(entradasMap.has(mes) ? entradasMap.get(mes).reduce((a, b) => a + b, 0) : null); 
+})
+console.log(salidasMap.get('Ene'));
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -61,7 +67,7 @@ const salidasPlano  = salidas.map(arr => (arr ? arr.reduce((a,b)=>a+b,0) : null)
       datasets: [
         {
           label: 'Entradas',
-          data: entradasPlano,
+          data: entradas,
           borderColor: '#10B981',
           backgroundColor: '#10B98120',
           tension: 0.4,
@@ -69,7 +75,7 @@ const salidasPlano  = salidas.map(arr => (arr ? arr.reduce((a,b)=>a+b,0) : null)
         },
         {
           label: 'Salidas',
-          data: salidasPlano,
+          data: salidas,
           borderColor: '#EF4444',
           backgroundColor: '#EF444420',
           tension: 0.4,
