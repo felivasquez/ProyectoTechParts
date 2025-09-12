@@ -19,6 +19,7 @@
     "gsap": "^3.13.0",
     "pg": "^8.16.0",
     "postgres": "^3.4.7",
+    "recharts": "^3.1.2",
     "spline": "^0.0.0"
   },
   "devDependencies": {

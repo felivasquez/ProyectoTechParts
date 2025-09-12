@@ -236,7 +236,8 @@ function renderProductCard(product) {
             }, { once: true }); // Solo una vez para evitar múltiples listeners
         }
     });
-    
+
+    // Editar producto
     const editBtn = card.querySelector('#edit-product-btn');
     editBtn.addEventListener('click', () => {
         window.openEditProductModal(product);
