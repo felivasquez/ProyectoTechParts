@@ -7,6 +7,8 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <!-- Importar ApexCharts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
 <body>
@@ -269,19 +271,20 @@
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                
+                                <!-- div 1--><div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="flex flex-col space-y-1.5 p-6">
-                                        <h3 class="text-2xl font-semibold leading-none tracking-tight">Distribución por
-                                            Categoría</h3>
+                                        <h3 class="text-2xl font-semibold leading-none tracking-tight">Distribución por Categoría</h3>
                                         <p class="text-sm text-muted-foreground">Composición actual del inventario</p>
                                     </div>
+                                    
                                     <div class="p-6 pt-0">
                                         <div class="h-80">
                                             <div class="recharts-responsive-container"
                                                 style="width: 100%; height: 100%; min-width: 0px;">
                                                 <div class="recharts-wrapper"
                                                     style="position: relative; cursor: default; width: 418px; height: 320px;">
-                                                    <svg cx="50%" cy="50%" class="recharts-surface" width="418"
+                                                        <div cx="50%" cy="50%" class="recharts-surface" width="418"
                                                         height="320" viewBox="0 0 418 320"
                                                         style="width: 100%; height: 100%;">
                                                         <title></title>
@@ -291,106 +294,10 @@
                                                                 <rect x="5" y="5" height="310" width="408"></rect>
                                                             </clipPath>
                                                         </defs>
-                                                        <g class="recharts-layer recharts-pie" tabindex="0">
-                                                            <g class="recharts-layer">
-                                                                <g class="recharts-layer recharts-pie-sector"
-                                                                    tabindex="-1">
-                                                                    <path cx="209" cy="160" name="Procesadores"
-                                                                        stroke="#fff" fill="#3B82F6" color="#3B82F6"
-                                                                        tabindex="-1" class="recharts-sector" d="M 289,160
-    A 80,80,0,
-    0,0,
-    226.22101523491253,81.87550554225064
-  L 209,160 Z" role="img"></path>
-                                                                </g>
-                                                                <g class="recharts-layer recharts-pie-sector"
-                                                                    tabindex="-1">
-                                                                    <path cx="209" cy="160" name="Placas Madre"
-                                                                        stroke="#fff" fill="#10B981" color="#10B981"
-                                                                        tabindex="-1" class="recharts-sector" d="M 226.22101523491253,81.87550554225064
-    A 80,80,0,
-    0,0,
-    166.8160037350467,92.02566323149297
-  L 209,160 Z" role="img"></path>
-                                                                </g>
-                                                                <g class="recharts-layer recharts-pie-sector"
-                                                                    tabindex="-1">
-                                                                    <path cx="209" cy="160" name="Memoria RAM"
-                                                                        stroke="#fff" fill="#8B5CF6" color="#8B5CF6"
-                                                                        tabindex="-1" class="recharts-sector" d="M 166.8160037350467,92.02566323149297
-    A 80,80,0,
-    0,0,
-    166.8160037350467,227.97433676850704
-  L 209,160 Z" role="img"></path>
-                                                                </g>
-                                                                <g class="recharts-layer recharts-pie-sector"
-                                                                    tabindex="-1">
-                                                                    <path cx="209" cy="160" name="Almacenamiento"
-                                                                        stroke="#fff" fill="#F59E0B" color="#F59E0B"
-                                                                        tabindex="-1" class="recharts-sector" d="M 166.8160037350467,227.97433676850704
-    A 80,80,0,
-    0,0,
-    275.8531514651838,203.9392323461982
-  L 209,160 Z" role="img"></path>
-                                                                </g>
-                                                                <g class="recharts-layer recharts-pie-sector"
-                                                                    tabindex="-1">
-                                                                    <path cx="209" cy="160" name="Tarjetas Gráficas"
-                                                                        stroke="#fff" fill="#EF4444" color="#EF4444"
-                                                                        tabindex="-1" class="recharts-sector" d="M 275.8531514651838,203.9392323461982
-    A 80,80,0,
-    0,0,
-    289,160.00000000000003
-  L 209,160 Z" role="img"></path>
-                                                                </g>
-                                                            </g>
-                                                            <g class="recharts-layer recharts-pie-labels">
-                                                                <g class="recharts-layer"><text cx="209" cy="160"
-                                                                        stroke="none" name="Procesadores"
-                                                                        color="#3B82F6" alignment-baseline="middle"
-                                                                        x="286.9507116848976" y="97.36066293599552"
-                                                                        class="recharts-text recharts-pie-label-text"
-                                                                        text-anchor="start" fill="#3B82F6">
-                                                                        <tspan x="286.9507116848976" dy="0em">
-                                                                            Procesadores 22%</tspan>
-                                                                    </text></g>
-                                                                <g class="recharts-layer"><text cx="209" cy="160"
-                                                                        stroke="none" name="Placas Madre"
-                                                                        color="#10B981" alignment-baseline="middle"
-                                                                        x="192.15771547397068" y="61.428516030525984"
-                                                                        class="recharts-text recharts-pie-label-text"
-                                                                        text-anchor="end" fill="#10B981">
-                                                                        <tspan x="192.15771547397068" dy="0em">Placas
-                                                                            Madre 12%</tspan>
-                                                                    </text></g>
-                                                                <g class="recharts-layer"><text cx="209" cy="160"
-                                                                        stroke="none" name="Memoria RAM" color="#8B5CF6"
-                                                                        alignment-baseline="middle" x="109" y="160"
-                                                                        class="recharts-text recharts-pie-label-text"
-                                                                        text-anchor="end" fill="#8B5CF6">
-                                                                        <tspan x="109" dy="0em">Memoria RAM 32%</tspan>
-                                                                    </text></g>
-                                                                <g class="recharts-layer"><text cx="209" cy="160"
-                                                                        stroke="none" name="Almacenamiento"
-                                                                        color="#F59E0B" alignment-baseline="middle"
-                                                                        x="230.52626904364053" y="257.6556180721867"
-                                                                        class="recharts-text recharts-pie-label-text"
-                                                                        text-anchor="start" fill="#F59E0B">
-                                                                        <tspan x="230.52626904364053" dy="0em">
-                                                                            Almacenamiento 25%</tspan>
-                                                                    </text></g>
-                                                                <g class="recharts-layer"><text cx="209" cy="160"
-                                                                        stroke="none" name="Tarjetas Gráficas"
-                                                                        color="#EF4444" alignment-baseline="middle"
-                                                                        x="304.80355925838035" y="188.66492688680728"
-                                                                        class="recharts-text recharts-pie-label-text"
-                                                                        text-anchor="start" fill="#EF4444">
-                                                                        <tspan x="304.80355925838035" dy="0em">Tarjetas
-                                                                            Gráficas 9%</tspan>
-                                                                    </text></g>
-                                                            </g>
-                                                        </g>
-                                                    </svg>
+                                                        <!-- Donut Chart -->
+                                                        <div class="py-6" id="donut-chart"></div>
+                                                    </div>
+                                                    </div>
                                                     <div tabindex="-1"
                                                         class="recharts-tooltip-wrapper recharts-tooltip-wrapper-right recharts-tooltip-wrapper-bottom"
                                                         style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px; transform: translate(10px, 10px);">
