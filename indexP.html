@@ -1,0 +1,43 @@
+<div class="relative inline-block text-left">
+  <!-- Botón -->
+  <button id="menuButton" type="button" role="combobox"
+    aria-controls="radix-:r14:" aria-expanded="false" aria-autocomplete="none"
+    dir="ltr" data-state="closed"
+    class="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-40">
+
+    <!-- Icono calendario -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"
+      class="lucide lucide-calendar h-4 w-4 mr-2">
+      <path d="M8 2v4"></path>
+      <path d="M16 2v4"></path>
+      <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+      <path d="M3 10h18"></path>
+    </svg>
+
+    <!-- Texto -->
+    <span id="menuText" style="pointer-events: none;">Este mes</span>
+
+    <!-- Icono flecha -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round"
+      class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <!-- Menú desplegable -->
+  <div id="menuDropdown"
+    class="hidden absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+    <div class="py-1">
+      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-value="esteMes">Este mes</a>
+      <a href="#" id="selectMonthOption" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Seleccionar mes</a>
+      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-value="porAnio">Por año</a>
+    </div>
+  </div>
+
+  <!-- Selector de mes oculto -->
+  <input type="month" id="monthPicker" class="hidden mt-2 border rounded p-1">
+</div>
