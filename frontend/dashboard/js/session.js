@@ -1,4 +1,4 @@
-import supabase from '/backend/config/client.js';
+import supabase from './backend/config/client.js';
 
 // Función para redirigir si no hay sesión activa
 export async function checkSession(redirect = true) {
