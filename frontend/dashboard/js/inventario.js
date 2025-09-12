@@ -1,4 +1,4 @@
-import supabase from './client.js';
+import supabase from '/backend/config/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('add-product-form');
