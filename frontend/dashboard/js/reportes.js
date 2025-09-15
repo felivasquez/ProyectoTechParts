@@ -1,4 +1,4 @@
-import supabase from 'backend/config/client.js';
+import supabase from './client.js';
 
 // Menu despegable (variables)
 const btn = document.getElementById('menuButton');

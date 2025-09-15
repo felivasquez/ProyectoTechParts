@@ -1,4 +1,4 @@
-import supabase from '/proyectotechparts/backend/config/client.js';
+import supabase from './client.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Traer todos los productos
