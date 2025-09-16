@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
+
 </head>
 
 <body>
@@ -16,7 +18,7 @@
             </ol>
         </div>
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-            <header class="bg-white shadow-sm border-b">
+            <header class="animacion bg-white shadow-sm border-b">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center h-16">
                         <div class="flex items-center space-x-3">
@@ -56,7 +58,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
                     <div role="tablist" aria-orientation="horizontal"
-                        class="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
+                        class="animacionNav h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
                         tabindex="0" data-orientation="horizontal" style="outline: none;">
                         <a href="dashboard.html" role="tab" aria-selected="true"
                             aria-controls="radix-:r0:-content-dashboard" data-state="active"
@@ -127,16 +129,16 @@
 
                             <!-- Modal para agregar producto -->
                             <div id="add-product-modal" data-state="closed"
-                                class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden"
+                                class=" fixed inset-0 z-50 flex items-center justify-center px-4 hidden"
                                 style="background-color: rgba(0,0,0,0.4)">
                                 <div class="w-full max-w-2xl rounded-lg border bg-white p-6 shadow-lg relative">
                                     <button type="button" id="close-add-modal"
                                         class="absolute right-4 top-4 text-gray-400 hover:text-gray-900 text-xl">✕</button>
 
-                                    <div class="flex flex-col space-y-1.5 text-center sm:text-left mb-4">
-                                        <h2 class="text-lg font-semibold leading-none tracking-tight">Agregar Componente
+                                    <div class="  flex flex-col space-y-1.5 text-center sm:text-left mb-4">
+                                        <h2 class="  text-lg font-semibold leading-none tracking-tight">Agregar Componente
                                         </h2>
-                                        <p class="text-sm text-gray-500">Ingresa los datos del nuevo componente</p>
+                                        <p class=" text-sm text-gray-500">Ingresa los datos del nuevo componente</p>
                                     </div>
 
                                     <form id="add-product-form" class="space-y-4">
@@ -268,12 +270,12 @@
                             </el-dialog>
 
                             <!-- Contenedor principal de inventario -->
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="GestionInv flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-bold text-gray-900">Gestión de Inventario</h2>
                                     <p class="text-gray-600">Administra todos los componentes de hardware</p>
                                 </div>
-                                <button id="open-add-modal" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md
+                                <button id="open-add-modal" class="AgregarProducto inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md
                                     text-sm font-medium ring-offset-background transition-colors
                                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
                                     focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50
@@ -283,14 +285,14 @@
                                     data-state="closed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-plus h-4 w-4 mr-2">
+                                        class=" lucide lucide-plus h-4 w-4 mr-2">
                                         <path d="M5 12h14"></path>
                                         <path d="M12 5v14"></path>
                                     </svg>Agregar Componente
                                 </button>
                             </div>
                             <!-- filtros y búsqueda -->
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="BusquedaComponentes rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="p-6 pt-6">
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <div class="relative flex-1"><svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -300,7 +302,7 @@
                                                 <circle cx="11" cy="11" r="8"></circle>
                                                 <path d="m21 21-4.3-4.3"></path>
                                             </svg><input
-                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
+                                                class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
                                                 placeholder="Buscar componentes..." value=""></div><button type="button"
                                             role="combobox" aria-controls="radix-:rk:" aria-expanded="false"
                                             aria-autocomplete="none" dir="ltr" data-state="closed"
@@ -344,6 +346,7 @@
     </div>
     <script type="module" src="js/inventario.js"></script>
     <script src="session/js/login.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
