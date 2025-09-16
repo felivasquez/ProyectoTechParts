@@ -5,16 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    
+    <script src="https://unpkg.com/scrollreveal"></script>
 </head>
 <body>
-    <div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events: none;">
-        <ol tabindex="-1"
-            class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]">
-        </ol>
-    </div>
     <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <header class="bg-white shadow-sm border-b">
+        <header class="animacion bg-white shadow-sm border-b">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center h-16">
                         <div class="flex items-center space-x-3">
@@ -53,7 +48,7 @@
         </header>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div dir="ltr" data-orientation="horizontal" class="w-full">
-                <div role="tablist" aria-orientation="horizontal" class="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-4 mb-8" tabindex="0" data-orientation="horizontal" style="outline: none;">
+                <div role="tablist" aria-orientation="horizontal" class="animacionNav h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-4 mb-8" tabindex="0" data-orientation="horizontal" style="outline: none;">
                     <a href="dashboard.html" role="tab"
                         aria-selected="true" aria-controls="radix-:r0:-content-dashboard" data-state="active"
                         id="radix-:r0:-trigger-dashboard"
@@ -115,7 +110,7 @@
                     class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     style="animation-duration: 0s;">
                     <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="grid animacionCard md:grid-cols-2 lg:grid-cols-4 gap-6">
                             <!-- Total Componentes -->
                             <div class="rounded-lg border bg-card shadow-sm bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                                 <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
@@ -193,7 +188,7 @@
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Distribución por Categorías -->
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="DistribucionCat rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Distribución por
                                         Categorías</h3>
@@ -308,7 +303,7 @@
                                 </div>
                             </div>
                             <!-- alerta de stock -->
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="AlertasStock rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock</h3>
                                     <p class="text-sm text-muted-foreground">Componentes que requieren reabastecimiento</p>
@@ -389,5 +384,8 @@
         </div>
     </div>  
     <script src="js/dashboard.js" type="module"></script>
+    <script src="js/main.js"></script>
+    
 </body>
 </html>
+
