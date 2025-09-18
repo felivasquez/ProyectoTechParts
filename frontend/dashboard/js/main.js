@@ -7,10 +7,8 @@ ScrollReveal().reveal('.animacion',{
 ScrollReveal().reveal('.animacionNav , .animacionCard',{
     duration: 2000,
 });
-
 ScrollReveal().reveal('.AlertasStock',{
     duration: 3000,
-
 });
 ScrollReveal().reveal('.DistribucionCat',{
     duration: 3000,
@@ -21,14 +19,15 @@ ScrollReveal().reveal('.AgregarProducto',{
 ScrollReveal().reveal('.GestionInv',{
     duration: 3000,
 }); //inventario.html 
-ScrollReveal().reveal('.BusquedaComponentes',{
-    duration: 1200, //movimientos.hmlt
+ ScrollReveal().transform('.FiltroBusquedas',{
+    duration: 135, //movimientos.hmlt
 });
-ScrollReveal().reveal('.ResgistroMov',{
-    duration:  2000,
-}); //movimientos.html
+ScrollReveal().reveal('.bodyMov',{
+  transform: 135, //movimientos.hmlt
+}); 
+
 ScrollReveal().reveal('.HistorialEntySal',{
-    duration: 2300,
+    duration: 300,
 }); 
 ScrollReveal().reveal('.FiltroBusquedaMov',{
     duration: 1200,
