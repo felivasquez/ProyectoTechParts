@@ -30,6 +30,8 @@ document.addEventListener('click', (event) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
 // datos traidos de supabase
 const ctx = document.getElementById('lineChart').getContext('2d');
 const {data,error} = await supabase
@@ -41,43 +43,73 @@ throw new Error('Error al obtener los movimientos: ' + error.message);
 function getChartData(tipo,data) {
   // Nombres abreviados de los meses
 const NombreMeses = [  "Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-const entradasMap = new Map(); 
+const entradasMap = new Map();
 const salidasMap = new Map();
 data.forEach(movimiento => {
   const fecha = new Date(movimiento.created_at);
   const mesIndex = fecha.getMonth();
-  const mes = NombreMeses[mesIndex]; 
+  const mes = NombreMeses[mesIndex];
+  const dia = fecha.getDate();
+  const año = fecha.getFullYear();
+  //traemos la fecha actual
+  const semana = ObtenerSemanaDelDia(año, mesIndex, dia);
 // Agrupar cantidades por mes y tipo
   if (movimiento.type === "entrada") {
     if(!entradasMap.has(mes)){
-      entradasMap.set(mes, []);
+      const semanasArray = TraerSemanasDeMes(año,mesIndex);
+      const semanasMap = new Map();
+      semanasArray.forEach(semana => {
+        semanasMap.set(semana, []);
+      });
+      entradasMap.set(mes, semanasMap);      
     }
-    entradasMap.get(mes).push(movimiento.quantity);
+     entradasMap.get(mes).get(semana).push(movimiento.quantity);
+
   } else if (movimiento.type === "salida") {
     if(!salidasMap.has(mes)){
-      salidasMap.set(mes, []);
+      const semanasArray = TraerSemanasDeMes(año,mesIndex);
+      const semanasMap = new Map();
+      semanasArray.forEach(semana => {
+        semanasMap.set(semana, []);
+      });
+      salidasMap.set(mes, semanasMap);      
     }
-    salidasMap.get(mes).push(movimiento.quantity);
+    salidasMap.get(mes).get(semana).push(movimiento.quantity);
 }});
+console.log(entradasMap);
+console.log(salidasMap);
+
 
 // Promediar las cantidades por mes
 let  salidas = [];
 let  entradas = [];
 let  labels = [];  
-//traemos la fecha actual
+
 const fechaActual = new Date();
-//filtramos la fecha actual para obtener el mes actual
-const mesActual = fechaActual.getMonth();
+const mesActual = fechaActual.getMonth(); 
+const añoActual = fechaActual.getFullYear();
+const diaActual = fechaActual.getDate();
+console.log(TraerSemanasDeMes(añoActual,mesActual,diaActual));
 switch (tipo) {
   //filtro de la lógica si el data-value es EsteMes.
   case "esteMes":{
     //agarramos el mes actual dentro del array de meses
+    const semanaDelDia = ObtenerSemanaDelDia(añoActual,mesActual,diaActual); 
+    const semanasDelMes = TraerSemanasDeMes(añoActual,mesActual);
     const NombreMes = NombreMeses[mesActual];
     //le pasamos al labels el mes actual
-    labels = [NombreMes];
+    console.log(semanasDelMes);
+    labels = semanasDelMes;
     //le pasamos al array de entradas y salidas la suma total de las entradas y salidas del mes actual
-    entradas.push(entradasMap.has(NombreMes) ? entradasMap.get(NombreMes).reduce((a, b) => a + b, 0) : null);
-    salidas.push(salidasMap.has(NombreMes) ? salidasMap.get(NombreMes).reduce((a, b) => a + b, 0) : null);
+    entradas = semanasDelMes.map(semana =>{   
+    const valores = entradasMap.get(NombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    }) 
+    
+    salidas = semanasDelMes.map(semana =>{
+      const valores = salidasMap.get(NombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    })
   }
     break;
   //filtro de la lógica si el data-value es ultMeses.
@@ -85,7 +117,7 @@ switch (tipo) {
     //logíca para últimos meses
     const ultimosMeses = []
     //obtenemos los últimos 3 meses
-    for (let i = 2; i >= 0; i--) {
+    for (let i = 4; i >= 0; i--) {
       const mesIndex = (mesActual - i + 12) % 12;
       ultimosMeses.push([mesIndex]);
     }
@@ -104,10 +136,25 @@ switch (tipo) {
   //le pasamos todos los meses al labels
   labels = NombreMeses;
   //recorremos los labels para obtener las entradas y salidas de cada mes
-  labels.forEach(mes => { 
-salidas.push(salidasMap.has(mes) ? salidasMap.get(mes).reduce((a, b) => a + b, 0) : null);
-entradas.push(entradasMap.has(mes) ? entradasMap.get(mes).reduce((a, b) => a + b, 0) : null); 
-})
+  labels.forEach(mes => {
+    if(entradasMap.has(mes)) {
+      let total = 0;
+      entradasMap.get(mes).forEach(valores => {
+        total += valores.reduce((a, b) => a + b, 0);
+      });
+      entradas.push(total);
+  } else {
+      entradas.push(null);
+  }
+    if(salidasMap.has(mes)) {
+      let total = 0;
+      salidasMap.get(mes).forEach(valores => {
+        total += valores.reduce((a, b) => a + b, 0);
+      });
+      salidas.push(total);
+  } else {
+      salidas.push(null);
+}})
     break;
   //filtro de la lógica si el data-value es perzonalido.
   case"perzonalido":{
@@ -121,8 +168,30 @@ entradas.push(entradasMap.has(mes) ? entradasMap.get(mes).reduce((a, b) => a + b
 return{ labels, entradas, salidas };
 }
 
+function ObtenerSemanaDelDia(año, mes, dia) {
+  const primerDia = new Date(año, mes, 1);
+  const PrimerDiaDe0 = primerDia.getDay(); 
+  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6; 
 
+  const semanaNum = Math.ceil((dia + primerDiaF) / 7);
+  return `Semana ${semanaNum}`;
+}
+function TraerSemanasDeMes(año, mes) {
+  
+  const ultimoDia = new Date(año, mes + 1, 0).getDate(); 
+  const primerDia = new Date(año, mes, 1);
+  const PrimerDiaDe0 = primerDia.getDay(); 
+  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6; 
 
+  const semanasTotales = Math.ceil((ultimoDia + primerDiaF) / 7);
+
+  const semanas = [];
+  for (let i = 1; i <= semanasTotales; i++) {
+    semanas.push(`Semana ${i}`);
+  }
+
+  return semanas;
+}
 function renderChart({labels, entradas, salidas}) {
  if(chartt){
   chartt.destroy();
