@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Movimientos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+   <script src="https://unpkg.com/scrollreveal"></script>
 </head>
 
 <body>
     <div id="root">
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-            <header class="bg-white shadow-sm border-b">
+            <header class="animacion bg-white shadow-sm border-b">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center h-16">
                         <div class="flex items-center space-x-3">
@@ -48,10 +49,10 @@
                     </div>
                 </div>
             </header>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
                     <div role="tablist" aria-orientation="horizontal"
-                        class="h-10 items-center justify-center rounded-md  p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
+                        class="animacionNav h-10 items-center justify-center rounded-md  p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
                         tabindex="0" data-orientation="horizontal" style="outline: none;">
                         <a href="dashboard.html" role="tab" aria-selected="true"
                             aria-controls="radix-:r0:-content-dashboard" data-state="active"
@@ -114,7 +115,7 @@
                         aria-labelledby="radix-:r0:-trigger-movements" id="radix-:r0:-content-movements" tabindex="0"
                         class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         <div class="space-y-6">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="ResgistroMov flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-bold text-gray-900">Registro de Movimientos</h2>
                                     <p class="text-gray-600">Historial de entradas y salidas de inventario</p>
@@ -131,7 +132,7 @@
                                     </svg>Registrar Movimiento
                                 </button>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class=" HistorialEntySal grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="p-6 pt-6">
                                         <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
@@ -166,13 +167,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                <div class=" rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="p-6 pt-6">
                                         <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                class="lucide lucide-file-text h-5 w-5 text-blue-600" >
+                                                class=" lucide lucide-file-text h-5 w-5 text-blue-600" >
                                                 <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z">
                                                 </path>
                                                 <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
@@ -188,26 +189,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="FiltroBusquedaMov rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="p-6 pt-6">
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <div class="relative flex-1"><svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-gray-400">
+                                                class=" lucide lucide-search absolute left-3 top-3 h-4 w-4 text-gray-400">
                                                 <circle cx="11" cy="11" r="8"></circle>
                                                 <path d="m21 21-4.3-4.3"></path>
                                             </svg><input
-                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
+                                                class=" flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10"
                                                 placeholder="Buscar movimientos..." value=""></div><button type="button"
                                             role="combobox" aria-controls="radix-:r10:" aria-expanded="false"
                                             aria-autocomplete="none" dir="ltr" data-state="closed"
-                                            class="flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 w-full sm:w-48"><span
+                                            class=" flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 w-full sm:w-48"><span
                                                 style="pointer-events: none;">Todos los movimientos</span><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-chevron-down h-4 w-4 opacity-50"
+                                                class=" lucide lucide-chevron-down h-4 w-4 opacity-50"
                                                 aria-hidden="true">
                                                 <path d="m6 9 6 6 6-6"></path>
                                             </svg></button>
@@ -315,5 +316,6 @@
     </div>
     <script src="js/main.js"></script>
     <script src="js/movimientos.js" type="module"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-https://felivasquez.github.io/ProyectoTechParts/views/dashboard.html
+[https://felivasquez.github.io/ProyectoTechParts/views/dashboard.html](https://felivasquez.github.io/ProyectoTechParts/frontend/dashboard/reportes.html)
 
 <h1>Briefing - Proyecto Web: Sistema de Gestión de Componentes</h1>
 <h3> 1. Descripción del cliente o empresa</h3>
