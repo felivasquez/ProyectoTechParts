@@ -74,5 +74,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 spans[1].textContent = `Mínimo: ${alerta.min}`;
             }
         }
-    }); 
+    });
+});
+
+async function checkSession() {
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session) {
+        window.location.href = 'session/login.html';
+    } else {
+        // Muestra el nombre de usuario en el dashboard
+        const username = data.session.user.user_metadata?.username || data.session.user.email;
+        document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    }
+}
+checkSession();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                alert('Hubo un error al cerrar sesión.');
+            } else {
+                window.location.href = 'session/login.html';
+            }
+        });
+    }
 });

@@ -60,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (error) {
-            alert('Error al guardar el producto: ' + error.message);
+            showNotification('Error al guardar el producto', 'error');
             return;
         } else {
-            alert(id ? 'Producto editado con éxito' : 'Producto agregado con éxito');
+            showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
             form.reset();
             modal.classList.add('hidden');
             modal.setAttribute('data-state', 'closed');
@@ -114,23 +114,53 @@ document.addEventListener('DOMContentLoaded', () => {
             window.openEditProductModal(product);
         });
     });
+
+    const searchInput = document.querySelector('.BusquedaComponentes input[placeholder="Buscar componentes..."]');
+    const categorySelect = document.getElementById('category-filter');
+    const brandSelect = document.getElementById('brand-filter');
+
+    async function updateProducts() {
+        const search = searchInput ? searchInput.value.trim() : '';
+        const category = categorySelect ? categorySelect.value : '';
+        const brand = brandSelect ? brandSelect.value : '';
+        await fetchProducts(search, category, brand);
+    }
+
+    if (searchInput) searchInput.addEventListener('input', updateProducts);
+    if (categorySelect) categorySelect.addEventListener('change', updateProducts);
+    if (brandSelect) brandSelect.addEventListener('change', updateProducts);
+
+    loadFilters();
     fetchProducts();
 });
 
-async function fetchProducts() {
-    const { data, error } = await supabase
-        .from('products')
-        .select('*');
+// Modifica fetchProducts para aceptar un parámetro de búsqueda
+async function fetchProducts(search = '', category = '', brand = '') {
+    let query = supabase.from('products').select('*');
 
+    let orQuery = [];
+    if (search) {
+        const isNumber = !isNaN(search);
+        orQuery.push(`name.ilike.%${search}%`);
+        orQuery.push(`brand.ilike.%${search}%`);
+        orQuery.push(`model.ilike.%${search}%`);
+        if (isNumber) {
+            orQuery.push(`stock.eq.${search}`);
+            orQuery.push(`price.eq.${search}`);
+        }
+    }
+
+    if (category) query = query.eq('category', category);
+    if (brand) query = query.eq('brand', brand);
+    if (orQuery.length) query = query.or(orQuery.join(','));
+
+    const { data, error } = await query;
     if (error) {
         console.error('Error al traer productos:', error);
         return;
     }
-
-    console.log('Productos:', data);
     const productsContainer = document.getElementById('products-container');
-    productsContainer.innerHTML = ''; // Limpia contenedor antes de agregar nuevos productos
-
+    productsContainer.innerHTML = '';
     data.forEach(product => {
         const productCard = renderProductCard(product);
         productsContainer.appendChild(productCard);
@@ -223,17 +253,16 @@ function renderProductCard(product) {
                     .eq('id', product.id);
 
                 if (error) {
-                    console.error('Error al eliminar producto:', error);
-                    alert('Hubo un error al eliminar el producto.');
+                    showNotification('Error al eliminar el producto', 'error');
                 } else {
-                    // Actualiza la lista automáticamente
+                    showNotification('Producto eliminado con éxito', 'success');
                     if (typeof fetchProducts === 'function') {
                         fetchProducts();
                     } else if (window.fetchProducts) {
                         window.fetchProducts();
                     }
                 }
-            }, { once: true }); // Solo una vez para evitar múltiples listeners
+            }, { once: true });
         }
     });
 
@@ -246,4 +275,93 @@ function renderProductCard(product) {
     window.fetchProducts = fetchProducts;
 
     return card;
+}
+
+async function checkSession() {
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session) {
+        window.location.href = 'session/login.html';
+    } else {
+        // Muestra el nombre de usuario en el dashboard
+        const username = data.session.user.user_metadata?.username || data.session.user.email;
+        document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    }
+}
+checkSession();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                alert('Hubo un error al cerrar sesión.');
+            } else {
+                window.location.href = 'session/login.html';
+            }
+        });
+    }
+});
+
+function showNotification(message, type = 'info') {
+    const toast = document.getElementById('toast-default');
+    if (!toast) return;
+    // Cambia el mensaje
+    toast.querySelector('.text-sm.font-normal').textContent = message;
+    // Cambia el color/icono según tipo
+    const icon = toast.querySelector('svg');
+    if (type === 'error') {
+        toast.style.borderColor = 'red';
+        icon.classList.remove('text-blue-500');
+        icon.classList.add('text-red-500');
+    } else {
+        toast.style.borderColor = 'blue';
+        icon.classList.remove('text-red-500');
+        icon.classList.add('text-blue-500');
+    }
+    toast.style.display = 'flex';
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.style.display = 'none';
+        toast.classList.add('hidden');
+    }, 3000);
+
+    // Botón cerrar
+    const closeBtn = toast.querySelector('[data-dismiss-target]');
+    if (closeBtn) {
+        closeBtn.onclick = () => {
+            toast.style.display = 'none';
+            toast.classList.add('hidden');
+        };
+    }
+}
+
+async function loadFilters() {
+    const { data, error } = await supabase.from('products').select('category,brand');
+    if (error) return;
+
+    const categories = [...new Set(data.map(p => p.category).filter(Boolean))];
+    const brands = [...new Set(data.map(p => p.brand).filter(Boolean))];
+
+    const categorySelect = document.getElementById('category-filter');
+    const brandSelect = document.getElementById('brand-filter');
+
+    // Limpia opciones previas
+    categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
+    brandSelect.innerHTML = '<option value="">Todas las marcas</option>';
+
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat;
+        categorySelect.appendChild(option);
+    });
+
+    brands.forEach(brand => {
+        const option = document.createElement('option');
+        option.value = brand;
+        option.textContent = brand;
+        brandSelect.appendChild(option);
+    });
 }
