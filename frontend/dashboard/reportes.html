@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reportes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -55,6 +57,7 @@
                         </div>
                     </div>
             </header>
+            <nav>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
                     <div role="tablist" aria-orientation="horizontal" class="animacionNav items-center text-muted-foreground grid  grid-cols-4 mb-8" tabindex="0" data-orientation="horizontal" style="outline: none;">
@@ -115,6 +118,8 @@
                             </svg>Reportes
                         </a>
                     </div>
+                    </nav>
+                    <main>
                     <div data-state="active" data-orientation="horizontal" role="tabpanel"
                         aria-labelledby="radix-:r0:-trigger-reports" id="radix-:r0:-content-reports" tabindex="0"
                         class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -158,8 +163,9 @@
                                         <input type="month" id="mesInicio" class="border rounded-lg px-2 py-1 text-sm">
                                         <span>a</span>
                                         <input type="month" id="mesFin" class="border rounded-lg px-2 py-1 text-sm">
-</div>
-                                        </div>                              
+                                        </div>
+                                        </div>        
+                                                            
                                     <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"><svg
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -170,7 +176,7 @@
                                             <line x1="12" x2="12" y1="15" y2="3"></line>
                                         </svg>Exportar
                                     </button>
-                                </div>
+                            </div>
                             </div>
                             <div class="MetriYestadisticas grid grid-cols-1 md:grid-cols-4 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
@@ -835,6 +841,40 @@
             </div>
         </div>
     </div>
+    </main>
+
+<!--script de btn exportar-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+            <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Busca el botón que diga "Exportar"
+                const exportBtn = [...document.querySelectorAll("button")]
+                .find(el => el.textContent.trim().toLowerCase().includes("exportar"));
+
+
+                if (exportBtn) {
+                exportBtn.addEventListener("click", () => {
+                    // Selecciona solo el contenido sin header y nav
+                    const element = document.querySelector("main") || document.body;
+
+                    const opt = {
+                    margin: 0,
+                    filename: "pantalla-completa.pdf",
+                    image: { type: "jpeg", quality: 1 },
+                    html2canvas: { scale: 2 }, 
+                    jsPDF: { 
+                        unit: "px", 
+                        format: [1491.2, 1872.68], // tamaño exacto de tu pantalla
+                        orientation: "portrait"
+                    }
+                    };
+
+                    html2pdf().set(opt).from(element).save();
+                });
+                }
+            });
+            </script>
     <script src="js/main.js"></script>
     <script src="js/reportes.js" type="module"></script>
 </body>
