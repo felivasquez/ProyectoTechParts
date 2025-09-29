@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reportes</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
 </head>
 
 <body>
@@ -17,7 +18,7 @@
             </ol>
         </div>
         <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-            <header class="bg-white shadow-sm border-b">
+            <header class="animacion bg-white shadow-sm border-b">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between items-center h-16">
                             <div class="flex items-center space-x-3">
@@ -56,11 +57,11 @@
             </header>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
-                    <div role="tablist" aria-orientation="horizontal" class="items-center text-muted-foreground grid  grid-cols-4 mb-8" tabindex="0" data-orientation="horizontal" style="outline: none;">
+                    <div role="tablist" aria-orientation="horizontal" class="animacionNav items-center text-muted-foreground grid  grid-cols-4 mb-8" tabindex="0" data-orientation="horizontal" style="outline: none;">
                         <a href="dashboard.html" role="tab" aria-selected="true"
                             aria-controls="radix-:r0:-content-dashboard" data-state="active"
                             id="radix-:r0:-trigger-dashboard"
-                            class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            class=" justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
                             tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -118,7 +119,7 @@
                         aria-labelledby="radix-:r0:-trigger-reports" id="radix-:r0:-content-reports" tabindex="0"
                         class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         <div class="space-y-6">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="ResportesYan flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-bold text-gray-900">Reportes y Análisis</h2>
                                     <p class="text-gray-600">Métricas y estadísticas del inventario</p>
@@ -171,7 +172,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="MetriYestadisticas grid grid-cols-1 md:grid-cols-4 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="p-6 pt-6">
                                         <div class="flex items-center justify-between">
@@ -268,7 +269,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="GraficoCategorias grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="flex flex-col space-y-1.5 p-6">
                                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Distribución por
@@ -419,7 +420,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="GraficoCategorias grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="flex flex-col space-y-1.5 p-6">
                                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Valor por
@@ -667,7 +668,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                                <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="flex flex-col space-y-1.5 p-6">
                                         <h3 class="text-2xl font-semibold leading-none tracking-tight">Productos Más
                                             Activos</h3>
@@ -730,7 +731,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock Bajo
                                     </h3>

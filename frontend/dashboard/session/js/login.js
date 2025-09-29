@@ -1,4 +1,4 @@
-import supabase from '../client.js';
+import supabase from '../../js/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appMessageElement = document.getElementById('app-message');
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.user) {
                 const username = data.user.user_metadata?.username || data.user.email;
                 showMessage(`¡Bienvenido, ${username}!`, 'success');
-                window.location.href = '/index.html';
+                window.location.href = '../dashboard.html'; // Redirige al dashboard
                 loginForm.reset();
             } else {
                 showMessage('No se pudo iniciar sesión.', 'error');
