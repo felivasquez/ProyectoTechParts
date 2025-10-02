@@ -94,6 +94,7 @@ async function fetchmovements() {
         container.appendChild(cardmovement);        
     });
 
+
 }
 
 function createMovementCard(movimientos) {
@@ -146,6 +147,35 @@ function createMovementCard(movimientos) {
 
 }
 
+async function SelectDinamic() {
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+    if (error) {
+        console.error('Error al traer productos:', error);
+    } else {
+        return Option(data);
+     }
+}
+
+
+ function Option(data) {
+    const select = document.getElementById('product_id');
+    data.forEach(occiones => {
+    const option = document.createElement('option');
+    option.value = occiones.id;   
+    option.textContent = occiones.name;
+    option.classList = "";
+    select.appendChild(option);
+
+  });
+  console.log('option agregada');
+};
+
+SelectDinamic();
+
+
 async function checkSession() {
     const { data, error } = await supabase.auth.getSession();
     if (!data.session) {
@@ -172,3 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+

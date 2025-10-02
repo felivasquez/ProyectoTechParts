@@ -17,19 +17,20 @@ ScrollReveal().reveal('.DistribucionCat',{
 });
 ScrollReveal().reveal('.AgregarProducto',{
     duration: 1500,
-});
+});/*
 ScrollReveal().reveal('.GestionInv',{
     duration: 3000,
 }); //inventario.html 
+/*
 ScrollReveal().reveal('.BusquedaComponentes',{
     duration: 1200, //movimientos.hmlt
-});
-ScrollReveal().reveal('.ResgistroMov',{
+});*/
+/*ScrollReveal().reveal('.ResgistroMov',{
     duration:  2000,
 }); //movimientos.html
 ScrollReveal().reveal('.HistorialEntySal',{
     duration: 2300,
-}); 
+}); */
 ScrollReveal().reveal('.FiltroBusquedaMov',{
     duration: 1200,
 }); 
