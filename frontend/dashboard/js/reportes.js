@@ -120,22 +120,31 @@ switch (tipo) {
     //obtenemos los últimos 3 meses
     for (let i = 4; i >= 0; i--) {
       const mesIndex = (mesActual - i + 12) % 12;
-      ultimosMeses.push([mesIndex]);
+      ultimosMeses.push(mesIndex);
     }
     //hacemos un map de los últimos meses para obtener los nombres de los meses
     let labels = []
     console.log(labels);
    const ctxF = { ultimosMeses, NombreMeses,añoActual,entradasMap,salidasMap,labels: [], entradas: [], salidas: []};
+  renderMes(indiceDelMesCambiante, ctxF);
+    renderChart(ctxF);
     //recorremos los labels para obtener las entradas y salidas de cada mes
+    const len = ctxF.ultimosMeses.length;
     document.getElementById('prevMes').addEventListener('click', () => {
-      indiceDelMesCambiante = (indiceDelMesCambiante + 1 )% 5;
+      indiceDelMesCambiante = (indiceDelMesCambiante + 1 )% len;
       renderMes(indiceDelMesCambiante,ctxF);
+      renderChart(ctxF);
+
     })
     document.getElementById('nextMes').addEventListener('click', () => {
-      indiceDelMesCambiante = (indiceDelMesCambiante - 1 + 5) % 5;
+      indiceDelMesCambiante = (indiceDelMesCambiante - 1 + 5) % len;
       renderMes(indiceDelMesCambiante,ctxF);
-      
-    })}
+      renderChart(ctxF);
+
+    })
+    console.log(ctxF.labels);  
+  
+  }
     break;
   //filtro de la lógica si el data-value es porA.
   case"porA":{
@@ -201,25 +210,26 @@ function TraerSemanasDeMes(año, mes) {
 }
 function renderMes(indexMes,ctxF){
   // Nombres abreviados de los meses
-  const { ultimosMeses, NombreMeses,añoActual,entradasMap,salidasMap, labels: [], entradas: [], salidas: []} = ctxF; 
+  const { ultimosMeses, NombreMeses, añoActual, entradasMap, salidasMap } = ctxF;
+
   const mesIndex = ultimosMeses[indexMes];
   const nombreMes = NombreMeses[mesIndex];
   const semanasDelMes = TraerSemanasDeMes(añoActual,mesIndex);
   
-   ctx.labels = semanasDelMes
+   ctxF.labels = semanasDelMes
 
-  ctx.entradas = semanasDelMes.map(semana =>{
+  ctxF.entradas = semanasDelMes.map(semana =>{
     const valores = entradasMap.get(nombreMes)?.get(semana);
     return valores ? valores.reduce((a, b) => a + b, 0) : 0;
   })
   
-  ctx.salidas = semanasDelMes.map(semana =>{
+  ctxF.salidas = semanasDelMes.map(semana =>{
     const valores = salidasMap.get(nombreMes)?.get(semana);
     return valores ? valores.reduce((a, b) => a + b, 0) : 0;
     });
     
-    chartt.update();
     document.getElementById('mesesCambiantes').innerHTML = `${nombreMes}`;  
+   
   }
 
 function renderChart({labels, entradas, salidas}) {
@@ -261,8 +271,7 @@ chartt = new Chart(ctx, {
         y: { ticks: { color: '#374151' } },
       },
     },
-  })}; 
-}); 
+  })};  
 
 async function checkSession() {
     const { data, error } = await supabase.auth.getSession();
