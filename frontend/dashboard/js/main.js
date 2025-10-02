@@ -15,20 +15,20 @@ ScrollReveal().reveal('.DistribucionCat',{
 });
 ScrollReveal().reveal('.AgregarProducto',{
     duration: 1500,
-});
+});/*
 ScrollReveal().reveal('.GestionInv',{
     duration: 3000,
 }); //inventario.html 
- ScrollReveal().transform('.FiltroBusquedas',{
-    duration: 135, //movimientos.hmlt
-});
-ScrollReveal().reveal('.bodyMov',{
-  transform: 135, //movimientos.hmlt
-}); 
-
+/*
+ScrollReveal().reveal('.BusquedaComponentes',{
+    duration: 1200, //movimientos.hmlt
+});*/
+/*ScrollReveal().reveal('.ResgistroMov',{
+    duration:  2000,
+}); //movimientos.html
 ScrollReveal().reveal('.HistorialEntySal',{
-    duration: 300,
-}); 
+    duration: 2300,
+}); */
 ScrollReveal().reveal('.FiltroBusquedaMov',{
     duration: 1200,
 }); 

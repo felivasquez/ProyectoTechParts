@@ -58,6 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     name, category, brand, model, stock, min_stock, price, location, description
                 }]));
         }
+        const {data} = await supabase
+        .from('products')
+        .select("*");
+
+        
+
+
+
 
         if (error) {
             showNotification('Error al guardar el producto', 'error');

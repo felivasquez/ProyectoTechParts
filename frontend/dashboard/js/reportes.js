@@ -123,14 +123,176 @@ data.forEach(movimiento => {
     entradasMap.get(mes).push(movimiento.quantity);
   } else if (movimiento.type === "salida") {
     if(!salidasMap.has(mes)){
-      salidasMap.set(mes, []);
+      const semanasArray = TraerSemanasDeMes(año,mesIndex);
+      const semanasMap = new Map();
+      semanasArray.forEach(semana => {
+        semanasMap.set(semana, []);
+      });
+      salidasMap.set(mes, semanasMap);      
     }
-    salidasMap.get(mes).push(movimiento.quantity);
-}})
+    salidasMap.get(mes).get(semana).push(movimiento.quantity);
+}});
+console.log(entradasMap);
+console.log(salidasMap);
+
+
 // Promediar las cantidades por mes
-const salidas = [];
-const entradas = [];
-const labels = NombreMeses;
+let  salidas = [];
+let  entradas = [];
+let  labels = [];  
+
+const fechaActual = new Date();
+const mesActual = fechaActual.getMonth(); 
+const añoActual = fechaActual.getFullYear();
+const diaActual = fechaActual.getDate();
+console.log(TraerSemanasDeMes(añoActual,mesActual,diaActual));
+switch (tipo) {
+  //filtro de la lógica si el data-value es EsteMes.
+  case "esteMes":{
+    //agarramos el mes actual dentro del array de meses
+    const semanaDelDia = ObtenerSemanaDelDia(añoActual,mesActual,diaActual); 
+    const semanasDelMes = TraerSemanasDeMes(añoActual,mesActual);
+    const NombreMes = NombreMeses[mesActual];
+    //le pasamos al labels el mes actual
+    console.log(semanasDelMes);
+    labels = semanasDelMes;
+    //le pasamos al array de entradas y salidas la suma total de las entradas y salidas del mes actual
+    entradas = semanasDelMes.map(semana =>{   
+    const valores = entradasMap.get(NombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    }) 
+    
+    salidas = semanasDelMes.map(semana =>{
+      const valores = salidasMap.get(NombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    })
+  }
+    break;
+  //filtro de la lógica si el data-value es ultMeses.
+  case "ultMeses":{
+    //logíca para últimos meses
+    let indiceDelMesCambiante = 0;
+    const ultimosMeses = [];
+    //obtenemos los últimos 3 meses
+    for (let i = 4; i >= 0; i--) {
+      const mesIndex = (mesActual - i + 12) % 12;
+      ultimosMeses.push(mesIndex);
+    }
+    //hacemos un map de los últimos meses para obtener los nombres de los meses
+    let labels = []
+    console.log(labels);
+   const ctxF = { ultimosMeses, NombreMeses,añoActual,entradasMap,salidasMap,labels: [], entradas: [], salidas: []};
+  renderMes(indiceDelMesCambiante, ctxF);
+    renderChart(ctxF);
+    //recorremos los labels para obtener las entradas y salidas de cada mes
+    const len = ctxF.ultimosMeses.length;
+    document.getElementById('prevMes').addEventListener('click', () => {
+      indiceDelMesCambiante = (indiceDelMesCambiante + 1 )% len;
+      renderMes(indiceDelMesCambiante,ctxF);
+      renderChart(ctxF);
+
+    })
+    document.getElementById('nextMes').addEventListener('click', () => {
+      indiceDelMesCambiante = (indiceDelMesCambiante - 1 + 5) % len;
+      renderMes(indiceDelMesCambiante,ctxF);
+      renderChart(ctxF);
+
+    })
+    console.log(ctxF.labels);  
+  
+  }
+    break;
+  //filtro de la lógica si el data-value es porA.
+  case"porA":{
+    //logíca para este año
+  //le pasamos todos los meses al labels
+  labels = NombreMeses;
+  //recorremos los labels para obtener las entradas y salidas de cada mes
+  labels.forEach(mes => {
+    if(entradasMap.has(mes)) {
+      let total = 0;
+      entradasMap.get(mes).forEach(valores => {
+        total += valores.reduce((a, b) => a + b, 0);
+      });
+      entradas.push(total);
+  } else {
+      entradas.push(null);
+  }
+    if(salidasMap.has(mes)) {
+      let total = 0;
+      salidasMap.get(mes).forEach(valores => {
+        total += valores.reduce((a, b) => a + b, 0);
+      });
+      salidas.push(total);
+  } else {
+      salidas.push(null);
+}})}
+    break;
+  //filtro de la lógica si el data-value es perzonalido.
+  case"perzonalido":{
+
+     //logíca para personalizado 
+  // falta por hacer y no está del todo concreta :D, pero dejo mínimamente lo básico: 
+   
+    }
+    break; 
+}
+return{ labels, entradas, salidas };
+}
+
+function ObtenerSemanaDelDia(año, mes, dia) {
+  const primerDia = new Date(año, mes, 1);
+  const PrimerDiaDe0 = primerDia.getDay(); 
+  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6; 
+
+  const semanaNum = Math.ceil((dia + primerDiaF) / 7);
+  return `Semana ${semanaNum}`;
+}
+function TraerSemanasDeMes(año, mes) {
+  
+  const ultimoDia = new Date(año, mes + 1, 0).getDate(); 
+  const primerDia = new Date(año, mes, 1);
+  const PrimerDiaDe0 = primerDia.getDay(); 
+  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6; 
+
+  const semanasTotales = Math.ceil((ultimoDia + primerDiaF) / 7);
+
+  const semanas = [];
+  for (let i = 1; i <= semanasTotales; i++) {
+    semanas.push(`Semana ${i}`);
+  }
+
+  return semanas;
+}
+function renderMes(indexMes,ctxF){
+  // Nombres abreviados de los meses
+  const { ultimosMeses, NombreMeses, añoActual, entradasMap, salidasMap } = ctxF;
+
+  const mesIndex = ultimosMeses[indexMes];
+  const nombreMes = NombreMeses[mesIndex];
+  const semanasDelMes = TraerSemanasDeMes(añoActual,mesIndex);
+  
+   ctxF.labels = semanasDelMes
+
+  ctxF.entradas = semanasDelMes.map(semana =>{
+    const valores = entradasMap.get(nombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+  })
+  
+  ctxF.salidas = semanasDelMes.map(semana =>{
+    const valores = salidasMap.get(nombreMes)?.get(semana);
+    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    });
+    
+    document.getElementById('mesesCambiantes').innerHTML = `${nombreMes}`;  
+   
+  }
+
+function renderChart({labels, entradas, salidas}) {
+ if(chartt){
+  chartt.destroy();
+ } 
+
 
 labels.forEach(mes => { 
 salidas.push(salidasMap.has(mes) ? salidasMap.get(mes).reduce((a, b) => a + b, 0) : null);
@@ -170,8 +332,8 @@ console.log(salidasMap.get('Ene'));
         y: { ticks: { color: '#374151' } },
       },
     },
-  }); 
-  //-------------------------------------------------------------
+  })
+};  
 
   //grafico Valor por categoria
 
