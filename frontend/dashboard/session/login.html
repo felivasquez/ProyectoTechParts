@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -19,7 +17,6 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -47,7 +44,6 @@
                 transform: translate(0px, 0px) scale(1);
             }
         }
-
         @keyframes blob-alt {
             0% {
                 transform: translate(0px, 0px) scale(1);
@@ -65,7 +61,6 @@
                 transform: translate(0px, 0px) scale(1);
             }
         }
-
         @keyframes blob-tertiary {
             0% {
                 transform: translate(0px, 0px) scale(1);
@@ -126,8 +121,6 @@
         }
     </style>
 </head>
-
-
 <body
     class="bg-gradient-to-br from-purple-800 via-blue-900 to-indigo-900 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
 
@@ -156,7 +149,6 @@
     <div
         class="absolute top-1/2 right-0 w-56 h-56 bg-teal-300 rounded-full mix-blend-screen filter blur-3xl opacity-80 animate-blob-alt animation-delay-8000 transform translate-x-1/2 -translate-y-1/2">
     </div>
-
     <!-- Contenedor principal del formulario y mensajes -->
     <div id="root" class="relative z-10 w-full max-w-xl space-y-8 flex-grow flex items-center justify-center">
         <div id="messageBox" style="margin-top: 10px; position: absolute; top: 0; width: 100%;">

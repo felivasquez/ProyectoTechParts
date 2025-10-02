@@ -7,10 +7,8 @@ ScrollReveal().reveal('.animacion',{
 ScrollReveal().reveal('.animacionNav , .animacionCard',{
     duration: 2000,
 });
-
 ScrollReveal().reveal('.AlertasStock',{
     duration: 3000,
-
 });
 ScrollReveal().reveal('.DistribucionCat',{
     duration: 3000,

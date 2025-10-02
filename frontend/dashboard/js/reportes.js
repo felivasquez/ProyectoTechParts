@@ -1,10 +1,9 @@
 import supabase from './client.js';
-let chartt; 
+
 // Menu despegable (variables)
 const btn = document.getElementById('menuButton');
 const menuDropdown = document.getElementById('menuDropdown');
 const menutext = document.getElementById('menutext');
-let selectedOption = null;
 // mostrar/ocultar menu
 btn.addEventListener('click', () => {
   menuDropdown.classList.remove('hidden');
@@ -19,20 +18,90 @@ document.addEventListener('click', (event) => {
     option.addEventListener("click", (e) => {
       e.preventDefault();
       menutext.textContent = option.textContent;
-      const value = option.dataset.value;
-       menuDropdown.classList.add("hidden");
-
-       const chartData = getChartData(value,data);
-       renderChart(chartData);
-
+      menuDropdown.classList.add("hidden");
     });
   });
 
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', async () => {
+  // Traer todas las categorías
+  const { data: productos, error } = await supabase
+    .from('products')
+    .select('category');
+
+  if (error) {
+    console.error('Error al traer productos:', error);
+    return;
+  }
+
+  // Contar productos por categoría
+  const conteoCategorias = {};
+  productos.forEach(p => {
+    if (conteoCategorias[p.category]) {
+      conteoCategorias[p.category]++;
+    } else {
+      conteoCategorias[p.category] = 1;
+    }
+  });
+
+  // Obtener labels y series dinámicamente
+  const labels = Object.keys(conteoCategorias);
+  const series = Object.values(conteoCategorias);
+
+  // Configuración del gráfico
+  const chartOptions = {
+    series: series,
+    labels: labels,
+    colors: ["#10b981", "#3b82f6", "#8b5cf6", "#E74694", "#fcd34d", "#f97316"],
+    chart: {
+      height: 320,
+      width: "100%",
+      type: "donut",
+    },
+    stroke: { colors: ["transparent"] },
+    plotOptions: {
+      pie: {
+        donut: {
+          labels: {
+            show: true,
+            name: { show: true, fontFamily: "Inter, sans-serif", offsetY: 20 },
+            total: {
+              showAlways: true,
+              show: true,
+              label: "Total productos",
+              fontFamily: "Inter, sans-serif",
+              formatter: function (w) {
+                const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                return sum;
+              }
+            },
+            value: {
+              show: true,
+              fontFamily: "Inter, sans-serif",
+              offsetY: -20,
+              formatter: (value) => value
+            }
+          },
+          size: "80%"
+        }
+      }
+    },
+    dataLabels: { enabled: false },
+    legend: { position: "bottom", fontFamily: "Inter, sans-serif" }
+  };
+
+  // Renderizar el gráfico
+  if (document.getElementById("donut-chart")) {
+    const chart = new ApexCharts(document.getElementById("donut-chart"), chartOptions);
+    chart.render();
+  }
+});
+
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-// datos traidos de supabase
+// GRÁFICO DE LINEAS
 const ctx = document.getElementById('lineChart').getContext('2d');
 const {data,error} = await supabase
 .from('movements')
@@ -40,31 +109,18 @@ const {data,error} = await supabase
 if(error){
 throw new Error('Error al obtener los movimientos: ' + error.message);
 }
-function getChartData(tipo,data) {
-  // Nombres abreviados de los meses
 const NombreMeses = [  "Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-const entradasMap = new Map();
+const entradasMap = new Map(); 
 const salidasMap = new Map();
 data.forEach(movimiento => {
   const fecha = new Date(movimiento.created_at);
-  const mesIndex = fecha.getMonth();
-  const mes = NombreMeses[mesIndex];
-  const dia = fecha.getDate();
-  const año = fecha.getFullYear();
-  //traemos la fecha actual
-  const semana = ObtenerSemanaDelDia(año, mesIndex, dia);
-// Agrupar cantidades por mes y tipo
+  const mes = NombreMeses[fecha.getMonth()]; 
+
   if (movimiento.type === "entrada") {
     if(!entradasMap.has(mes)){
-      const semanasArray = TraerSemanasDeMes(año,mesIndex);
-      const semanasMap = new Map();
-      semanasArray.forEach(semana => {
-        semanasMap.set(semana, []);
-      });
-      entradasMap.set(mes, semanasMap);      
+      entradasMap.set(mes, []);
     }
-     entradasMap.get(mes).get(semana).push(movimiento.quantity);
-
+    entradasMap.get(mes).push(movimiento.quantity);
   } else if (movimiento.type === "salida") {
     if(!salidasMap.has(mes)){
       const semanasArray = TraerSemanasDeMes(año,mesIndex);
@@ -238,7 +294,12 @@ function renderChart({labels, entradas, salidas}) {
  } 
 
 
-chartt = new Chart(ctx, {
+labels.forEach(mes => { 
+salidas.push(salidasMap.has(mes) ? salidasMap.get(mes).reduce((a, b) => a + b, 0) : null);
+entradas.push(entradasMap.has(mes) ? entradasMap.get(mes).reduce((a, b) => a + b, 0) : null); 
+})
+console.log(salidasMap.get('Ene'));
+  new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
@@ -271,31 +332,107 @@ chartt = new Chart(ctx, {
         y: { ticks: { color: '#374151' } },
       },
     },
-  })};  
+  })
+};  
 
-async function checkSession() {
-    const { data, error } = await supabase.auth.getSession();
-    if (!data.session) {
-        window.location.href = 'session/login.html';
-    } else {
-        // Muestra el nombre de usuario en el dashboard
-        const username = data.session.user.user_metadata?.username || data.session.user.email;
-        document.getElementById('username').textContent = `Bienvenido, ${username}`;
+  //grafico Valor por categoria
+
+  
+const options = {
+  series: [
+    {
+      name: "Income",
+      color: "#31C48D",
+      data: ["1420", "1620", "1820", "1420", "1650", "2120"],
+    },
+    {
+      name: "Expense",
+      data: ["788", "810", "866", "788", "1100", "1200"],
+      color: "#F05252",
     }
+  ],
+  chart: {
+    sparkline: {
+      enabled: false,
+    },
+    type: "bar",
+    width: "100%",
+    height: 400,
+    toolbar: {
+      show: false,
+    }
+  },
+  fill: {
+    opacity: 1,
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      columnWidth: "100%",
+      borderRadiusApplication: "end",
+      borderRadius: 6,
+      dataLabels: {
+        position: "top",
+      },
+    },
+  },
+  legend: {
+    show: true,
+    position: "bottom",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  tooltip: {
+    shared: true,
+    intersect: false,
+    formatter: function (value) {
+      return "$" + value
+    }
+  },
+  xaxis: {
+    labels: {
+      show: true,
+      style: {
+        fontFamily: "Inter, sans-serif",
+        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+      },
+      formatter: function(value) {
+        return "$" + value
+      }
+    },
+    categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    axisTicks: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+  },
+  yaxis: {
+    labels: {
+      show: true,
+      style: {
+        fontFamily: "Inter, sans-serif",
+        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+      }
+    }
+  },
+  grid: {
+    show: true,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: -20
+    },
+  },
+  fill: {
+    opacity: 1,
+  }
 }
-checkSession();
 
-document.addEventListener('DOMContentLoaded', () => {
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                alert('Hubo un error al cerrar sesión.');
-            } else {
-                window.location.href = 'session/login.html';
-            }
-        });
-    }
-});
+if(document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
+  const chart = new ApexCharts(document.getElementById("bar-chart"), options);
+  chart.render();
+}

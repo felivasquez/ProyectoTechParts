@@ -167,7 +167,6 @@ async function fetchProducts(search = '', category = '', brand = '') {
         console.error('Error al traer productos:', error);
         return;
     }
-
     const productsContainer = document.getElementById('products-container');
     productsContainer.innerHTML = '';
     data.forEach(product => {
