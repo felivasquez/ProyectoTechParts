@@ -1,12 +1,10 @@
 import supabase from './client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-   
-
     // Abrir modal
-        const modal = document.getElementById('movimiento-modal');
+    const modal = document.getElementById('movimiento-modal');
     const openBtn = document.getElementById('open-movimiento-modal');
-     const form = document.getElementById('movimiento-form');
+    const form = document.getElementById('movimiento-form');
     if (openBtn) {
         openBtn.addEventListener('click', () => {
             modal.classList.remove('hidden');
@@ -25,62 +23,98 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    
+
     // Manejar el envío del formulario
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-    let error;
-    const componentes = document.getElementById('product_id')?.value?.trim();
-    const type = document.getElementById('type')?.value?.trim();
-    const quantity = parseInt(document.getElementById('quantity')?.value?.trim());
-    const reason = document.getElementById('reason')?.value?.trim();
-    const supplier = document.getElementById('supplier').value.trim();
-    const notes = document.getElementById('notes').value.trim(); 
-    console.log({ type, quantity, reason, supplier, notes, componentes});
-    ({error} = await supabase.from('movements').insert([{
-        type,quantity,reason,supplier,notes,componentes
-    }]));
-    if(error){
-        alert('Error al registrar el movimiento: ' + error.message);
-        return;
-    }
-    else {
-        alert('Movimiento registrado exitosamente');
-        form.reset();
-        modal.classList.add('hidden');
-        modal.setAttribute('data-state', 'closed');
-        // Recargar la página para ver el nuevo movimiento
-        window.location.reload();
-    }
+        let error;
+        const componentes = document.getElementById('product_id')?.value?.trim();
+        const type = document.getElementById('type')?.value?.trim();
+        const quantity = parseInt(document.getElementById('quantity')?.value?.trim());
+        const reason = document.getElementById('reason')?.value?.trim();
+        const supplier = document.getElementById('supplier').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+        const productId = document.getElementById('product_id').value.trim();
 
-});
-fetchmovements();
+        console.log({ type, quantity, reason, supplier, notes, componentes });
+
+
+        // 1. Buscar el producto en la tabla products
+        const [name, brand] = componentes.split(' - ');
+        const { data: productData, error: productError } = await supabase
+            .from('products')
+            .select('*')
+            .eq('name', name)
+            .eq('brand', brand)
+            .single();
+
+        if (productError || !productData) {
+            alert('No se encontró el producto en inventario.');
+            return;
+        }
+
+        // 2. Calcular el nuevo stock
+        let newStock = productData.stock;
+        if (type === 'entrada') {
+            newStock += quantity;
+        } else if (type === 'salida') {
+            newStock -= quantity;
+            if (newStock < 0) newStock = 0;
+        }
+
+        // 3. Actualizar el stock en la tabla products
+        const { error: updateError } = await supabase
+            .from('products')
+            .update({ stock: newStock })
+            .eq('id', productData.id);
+
+        if (updateError) {
+            alert('Error al actualizar el stock: ' + updateError.message);
+            return;
+        }
+
+        // 4. Registrar el movimiento
+        ({ error } = await supabase.from('movements').insert([{
+            type, quantity, reason, supplier, notes, componentes
+        }]));
+        if (error) {
+            alert('Error al registrar el movimiento: ' + error.message);
+            return;
+        } else {
+            alert('Movimiento registrado exitosamente');
+            form.reset();
+            modal.classList.add('hidden');
+            modal.setAttribute('data-state', 'closed');
+            window.location.reload();
+        }
+    });
+    fetchmovements();
 });
 async function fetchmovements() {
     // Traer los movimientos desde Supabase
     const { data, error } = await supabase
         .from('movements')
         .select('*')
-
+        .order('created_at', { ascending: false });
     if (error) {
         console.error('Error al traer productos:', error);
         return;
     }
-    console.log('movimientos:',data);
+    console.log('movimientos:', data);
 
     // Calcular totales; Entradas,Salidas y Movimientos:
     let totalEntradas = 0;
-    let totalSalidas = 0;   
+    let totalSalidas = 0;
     let totalMovimientos = data.length;
 
     data.forEach(movimientos => {
         if (movimientos.type === 'entrada') {
             totalEntradas += movimientos.quantity;
-        } else if (movimientos.type === 'salida'){
+        } else if (movimientos.type === 'salida') {
             totalSalidas += movimientos.quantity;
         }
     });
-    console.log({totalEntradas,totalSalidas,totalMovimientos});
+    console.log({ totalEntradas, totalSalidas, totalMovimientos });
     // Actualizar el DOM con los totales
     document.getElementById('entrada').textContent = totalEntradas;
     document.getElementById('salida').textContent = totalSalidas;
@@ -91,7 +125,7 @@ async function fetchmovements() {
     container.innerHTML = '';
     data.forEach(movimientos => {
         const cardmovement = createMovementCard(movimientos);
-        container.appendChild(cardmovement);        
+        container.appendChild(cardmovement);
     });
 
 }
@@ -99,7 +133,7 @@ async function fetchmovements() {
 function createMovementCard(movimientos) {
     // Crear un card para cada movimiento
     const card = document.createElement('div');
-    card.className ="rounded-lg border bg-card text-card-foreground shadow-sm";
+    card.className = "rounded-lg border bg-card text-card-foreground shadow-sm";
     card.innerHTML = `<div class="p-6 pt-6">
                                         <div class="flex items-start justify-between">
                                             <div class="flex items-start space-x-4">
@@ -142,6 +176,33 @@ function createMovementCard(movimientos) {
                                         </div>
                                     </div>
     `;
-    return card;                                        
+    return card;
 
 }
+
+async function checkSession() {
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session) {
+        window.location.href = 'session/login.html';
+    } else {
+        // Muestra el nombre de usuario en el dashboard
+        const username = data.session.user.user_metadata?.username || data.session.user.email;
+        document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    }
+}
+checkSession();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                alert('Hubo un error al cerrar sesión.');
+            } else {
+                window.location.href = 'session/login.html';
+            }
+        });
+    }
+});
