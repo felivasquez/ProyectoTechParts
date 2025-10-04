@@ -1,10 +1,12 @@
 import supabase from './client.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarProductosMap();
+
     // Abrir modal
-    const modal = document.getElementById('movimiento-modal');
+        const modal = document.getElementById('movimiento-modal');
     const openBtn = document.getElementById('open-movimiento-modal');
-    const form = document.getElementById('movimiento-form');
+     const form = document.getElementById('movimiento-form');
     if (openBtn) {
         openBtn.addEventListener('click', () => {
             modal.classList.remove('hidden');
@@ -23,86 +25,101 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-
+    
     // Manejar el envío del formulario
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         let error;
-        const componentes = document.getElementById('product_id')?.value?.trim();
+        const product_id = document.getElementById('product_id')?.value?.trim();
         const type = document.getElementById('type')?.value?.trim();
         const quantity = parseInt(document.getElementById('quantity')?.value?.trim());
         const reason = document.getElementById('reason')?.value?.trim();
         const supplier = document.getElementById('supplier').value.trim();
-        const notes = document.getElementById('notes').value.trim();
-        const productId = document.getElementById('product_id').value.trim();
+        const notes = document.getElementById('notes').value.trim(); 
+        console.log({ type, quantity, reason, supplier, notes, product_id });
 
-        console.log({ type, quantity, reason, supplier, notes, componentes });
-
-
-        // 1. Buscar el producto en la tabla products
-        const [name, brand] = componentes.split(' - ');
-        const { data: productData, error: productError } = await supabase
-            .from('products')
-            .select('*')
-            .eq('name', name)
-            .eq('brand', brand)
-            .single();
-
-        if (productError || !productData) {
-            alert('No se encontró el producto en inventario.');
+        // 1. Registrar el movimiento
+        ({error} = await supabase.from('movements').insert([{
+            type, quantity, reason, supplier, notes, product_id
+        }]));
+        if(error){
+            alert('Error al registrar el movimiento: ' + error.message);
             return;
         }
 
-        // 2. Calcular el nuevo stock
-        let newStock = productData.stock;
-        if (type === 'entrada') {
-            newStock += quantity;
-        } else if (type === 'salida') {
-            newStock -= quantity;
-            if (newStock < 0) newStock = 0;
+        // 2. Obtener el producto actual
+        const { data: producto, error: prodError } = await supabase
+            .from('products')
+            .select('stock')
+            .eq('id', product_id)
+            .single();
+
+        if (prodError || !producto) {
+            alert('No se pudo actualizar el stock del producto.');
+            return;
         }
 
-        // 3. Actualizar el stock en la tabla products
+        // 3. Calcular el nuevo stock
+        let nuevoStock = producto.stock;
+        if (type === 'entrada') {
+            nuevoStock += quantity;
+        } else if (type === 'salida') {
+            nuevoStock -= quantity;
+            if (nuevoStock < 0) nuevoStock = 0;
+        }
+
+        // 4. Actualizar el stock en la tabla products
         const { error: updateError } = await supabase
             .from('products')
-            .update({ stock: newStock })
-            .eq('id', productData.id);
+            .update({ stock: nuevoStock })
+            .eq('id', product_id);
 
         if (updateError) {
             alert('Error al actualizar el stock: ' + updateError.message);
             return;
         }
 
-        // 4. Registrar el movimiento
-        ({ error } = await supabase.from('movements').insert([{
-            type, quantity, reason, supplier, notes, componentes
-        }]));
-        if (error) {
-            alert('Error al registrar el movimiento: ' + error.message);
-            return;
-        } else {
-            alert('Movimiento registrado exitosamente');
-            form.reset();
-            modal.classList.add('hidden');
-            modal.setAttribute('data-state', 'closed');
-            window.location.reload();
-        }
-    });
-    fetchmovements();
+        alert('Movimiento registrado exitosamente');
+        form.reset();
+        modal.classList.add('hidden');
+        modal.setAttribute('data-state', 'closed');
+        window.location.reload();
 });
-async function fetchmovements() {
+fetchmovements();
+});
+async function fetchmovements(filtro = '') {
     // Traer los movimientos desde Supabase
-    const { data, error } = await supabase
+    let query = supabase
         .from('movements')
         .select('*')
         .order('created_at', { ascending: false });
+
+    // Si hay filtro, buscar por nombre de producto o motivo
+    if (filtro) {
+        // Traer productos para buscar por nombre
+        const { data: productos, error: prodError } = await supabase.from('products').select('id, name');
+        if (prodError) {
+            console.error('Error al buscar productos:', prodError);
+            return;
+        }
+        // Buscar los IDs de productos que coincidan con el filtro
+        const idsFiltrados = productos
+            .filter(p => p.name.toLowerCase().includes(filtro.toLowerCase()))
+            .map(p => p.id);
+
+        // Buscar movimientos que coincidan por motivo o por producto_id filtrado
+        query = query.or(
+            `reason.ilike.%${filtro}%,product_id.in.(${idsFiltrados.join(',')})`
+        );
+    }
+
+    const { data, error } = await query;
     if (error) {
-        console.error('Error al traer productos:', error);
+        console.error('Error al traer movimientos:', error);
         return;
     }
-    console.log('movimientos:', data);
 
-    // Calcular totales; Entradas,Salidas y Movimientos:
+    // Calcular totales
     let totalEntradas = 0;
     let totalSalidas = 0;
     let totalMovimientos = data.length;
@@ -114,8 +131,7 @@ async function fetchmovements() {
             totalSalidas += movimientos.quantity;
         }
     });
-    console.log({ totalEntradas, totalSalidas, totalMovimientos });
-    // Actualizar el DOM con los totales
+
     document.getElementById('entrada').textContent = totalEntradas;
     document.getElementById('salida').textContent = totalSalidas;
     document.getElementById('total').textContent = totalMovimientos;
@@ -127,57 +143,54 @@ async function fetchmovements() {
         const cardmovement = createMovementCard(movimientos);
         container.appendChild(cardmovement);
     });
-
-
 }
+
+// --- Agrega el evento al input de búsqueda ---
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('input[placeholder="Buscar movimientos..."]');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const value = e.target.value.trim();
+            fetchmovements(value);
+        });
+    }
+});
 
 function createMovementCard(movimientos) {
     // Crear un card para cada movimiento
     const card = document.createElement('div');
-    card.className = "rounded-lg border bg-card text-card-foreground shadow-sm";
+    card.className ="rounded-lg border bg-card text-card-foreground shadow-sm";
     card.innerHTML = `<div class="p-6 pt-6">
-                                        <div class="flex items-start justify-between">
-                                            <div class="flex items-start space-x-4">
-                                                <div class="p-2 rounded-full bg-gray-100">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="lucide lucide-trending-up h-5 w-5 text-green-600">
-                                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                                                        <polyline points="16 7 22 7 22 13"></polyline>
-                                                    </svg>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <div class="flex items-center space-x-2 mb-2">
-                                                        <h3 class="font-semibold text-lg">${movimientos.componentes}</h3>
-                                                        <div
-                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
-                                                            ${movimientos.type}
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                                        <div>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Cantidad:</span> ${movimientos.quantity}</p>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Motivo:</span> ${movimientos.reason}</p>
-                                                            </p>
-                                                        </div>
-                                                        <div>
-                                                            <p class="text-gray-600"><span
-                                                                    class="font-medium">Fecha: </span>
-                                                                ${new Date(movimientos.created_at).toLocaleString()}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="text-2xl font-bold text-green-600">${movimientos.quantity}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-    `;
-    return card;
+        <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+                <div class="p-2 rounded-full bg-gray-100">
+                    <!-- icono aquí -->
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <h3 class="font-semibold text-lg">${productosMap[movimientos.product_id] || 'Producto desconocido'}</h3>
+                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-100 text-green-800">
+                            ${movimientos.type}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="text-gray-600"><span class="font-medium">Cantidad:</span> ${movimientos.quantity}</p>
+                            <p class="text-gray-600"><span class="font-medium">Motivo:</span> ${movimientos.reason}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600"><span class="font-medium">Fecha: </span>
+                                ${new Date(movimientos.created_at).toLocaleString()}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-2xl font-bold text-green-600">${movimientos.quantity}</p>
+            </div>
+        </div>
+    </div>`;
+    return card;                                        
 
 }
 
@@ -220,7 +233,7 @@ async function checkSession() {
         document.getElementById('username').textContent = `Bienvenido, ${username}`;
     }
 }
-checkSession();
+checkSession(); 
 
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logout-button');
@@ -237,6 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+let productosMap = {};
 
-
-
+async function cargarProductosMap() {
+    const { data, error } = await supabase.from('products').select('id, name');
+    if (error) return;
+    productosMap = {};
+    data.forEach(p => productosMap[p.id] = p.name);
+}
