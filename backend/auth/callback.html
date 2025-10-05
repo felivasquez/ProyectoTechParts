@@ -1,0 +1,28 @@
+<!-- frontend/auth/callback.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Confirmando cuenta...</title>
+</head>
+<body>
+  <p>Confirmando tu cuenta, por favor espera...</p>
+
+  <script type="module">
+    import supabase from '/frontend/dashboard/js/client.js'
+
+    // Procesar la URL para obtener el token y guardar la sesión
+    const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+
+    if (error) {
+      console.error('Error al confirmar la cuenta:', error);
+      alert('Hubo un problema al confirmar tu cuenta.');
+    } else {
+      console.log('Sesión creada:', data.session);
+      // Guardar sesión automáticamente
+      alert('Cuenta confirmada con éxito ✅');
+      window.location.href = '/frontend/tienda/home.html';
+    }
+  </script>
+</body>
+</html>
