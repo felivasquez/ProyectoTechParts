@@ -28,7 +28,7 @@ async function fetchProducts() {
 function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow';
-
+    
     card.innerHTML = `
                       <div
                         class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10">
