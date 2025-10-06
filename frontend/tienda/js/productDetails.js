@@ -49,7 +49,7 @@ function renderProductDetails(product) {
 
     // --- 3. Actualizar Imagen ---
     // Asegúrate de que product.imagen_url apunte a la ruta de tu imagen
-    const imgElement = document.querySelector('img.w-full.aspect-square.object-cover');
+    const imgElement = document.getElementById('imagen-producto');
     if (imgElement) {
         imgElement.src = product.image_url;
         imgElement.alt = product.name;
