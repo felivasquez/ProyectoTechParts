@@ -1,4 +1,4 @@
-import supabase from '../../dashboard/js/client';
+import supabase from '../../dashboard/js/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
