@@ -238,7 +238,6 @@ switch (tipo) {
     break; 
 }
 return{ labels, entradas, salidas };
-}
 
 function ObtenerSemanaDelDia(año, mes, dia) {
   const primerDia = new Date(año, mes, 1);
