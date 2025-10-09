@@ -22,7 +22,7 @@ function renderCard() {
 function card(data) {
     const card = document.createElement('div');
     card.className = 'flex items-center justify-between p-3 rounded-lg border'
-    card.innerHTML = + `
+    card.innerHTML =`
                                            
                                                 <div>
                                                     <p class="font-medium text-sm">${data.products?.name|| 'Sin nombre'}</p>
