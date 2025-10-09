@@ -1,7 +1,10 @@
 import supabase from "./client.js";
 
-const {data,error} = await supabase
-.from('movements')
+
+
+async function renderCard() {
+        const {data,error} = await supabase
+        .from('movements')
 .select('*,products: products (name, category)')
 .order('quantity',{ascending:false}) 
 .eq('type','entrada')
@@ -10,8 +13,6 @@ const {data,error} = await supabase
 if (error){
     console.error("Error al obtener los datos:", error);
 }
-
-function renderCard() {
     const container = document.getElementById('contenedor');
     container.innerHTML = '';
     data.forEach(item => {
@@ -36,4 +37,52 @@ function card(data) {
     return card;
 ;
 }
+ async function renderTabla(){
+    const {data,error} = await supabase
+    .from('products')
+    .select('*');
+    
+    if(error){
+        console.error("Error al obtener los datos:", error);
+    }
+    const tbody = document.getElementById('cuerpoT');
+    tbody.innerHTML = '';  
+    const filtros = data.filter(item => item.stock < item.min_stock)
+    filtros.forEach(item => {
+        let estados = null;        
+        let estadoColor = null;
+       if ( item.stock <= item.min_stock /2){
+        estados = 'Crítico'; 
+       }    
+       else{
+        estados = 'Bajo';
+       }
+        estadoColor = 
+        estados === 'Crítico' 
+        ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent'
+        : 'bg-yellow-200 text-yellow-900 border-transparent';   
+       const fila = document.createElement('tr');
+       fila.className = 'border-b';
+       fila.innerHTML = `
+      <td class="py-3 font-medium">${item.name}</td>
+
+      <td class="py-3">
+        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+          ${item.category}
+        </div>
+      </td>
+
+      <td class="py-3 text-center">${item.stock}</td>
+      <td class="py-3 text-center">${item.min_stock}</td>
+
+      <td class="py-3 text-center">
+        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${estadoColor}">
+          ${estados}
+        </div>
+      </td>
+    `;
+    tbody.appendChild(fila);
+    })
+} 
+renderTabla();
 renderCard();
