@@ -695,167 +695,45 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
-                                <div class="flex flex-col space-y-1.5 p-6">
-                                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Productos Más
-                                        Activos</h3>
-                                    <p class="text-sm text-muted-foreground">Mayor número de movimientos en el
-                                        período</p>
-                                </div>
-                                <div class="p-6 pt-0">
-                                    <div class="space-y-4">
-                                        <div class="flex items-center justify-between p-3 rounded-lg border">
-                                            <div>
-                                                <p class="font-medium text-sm">AMD Ryzen 7 7700X</p>
-                                                <p class="text-xs text-gray-500">Procesadores</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold">45</p>
-                                                <p class="text-xs text-gray-500">movimientos</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 rounded-lg border">
-                                            <div>
-                                                <p class="font-medium text-sm">Kingston Fury DDR4 16GB</p>
-                                                <p class="text-xs text-gray-500">Memoria RAM</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold">38</p>
-                                                <p class="text-xs text-gray-500">movimientos</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 rounded-lg border">
-                                            <div>
-                                                <p class="font-medium text-sm">WD Black SN850X 1TB</p>
-                                                <p class="text-xs text-gray-500">Almacenamiento</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold">32</p>
-                                                <p class="text-xs text-gray-500">movimientos</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 rounded-lg border">
-                                            <div>
-                                                <p class="font-medium text-sm">MSI B550M Pro-VDH WiFi</p>
-                                                <p class="text-xs text-gray-500">Placas Madre</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold">28</p>
-                                                <p class="text-xs text-gray-500">movimientos</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 rounded-lg border">
-                                            <div>
-                                                <p class="font-medium text-sm">NVIDIA RTX 4060 Ti</p>
-                                                <p class="text-xs text-gray-500">Tarjetas Gráficas</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="font-semibold">25</p>
-                                                <p class="text-xs text-gray-500">movimientos</p>
-                                            </div>
+                            <!--tabla-->
+                                <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
+                                    <div class="flex flex-col space-y-1.5 p-6">
+                                        <h3 class="text-2xl font-semibold leading-none tracking-tight">Productos Más
+                                            Activos</h3>
+                                        <p class="text-sm text-muted-foreground">Mayor número de movimientos en el
+                                            período</p>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="space-y-4" id="contenedor">
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
-                            <div class="flex flex-col space-y-1.5 p-6">
-                                <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock Bajo
-                                </h3>
-                                <p class="text-sm text-muted-foreground">Productos que requieren atención inmediata
-                                </p>
-                            </div>
-                            <div class="p-6 pt-0">
-                                <div class="overflow-x-auto">
-                                    <table class="w-full">
-                                        <thead class="border-b">
-                                            <tr class="text-left">
-                                                <th class="pb-3 font-medium">Producto</th>
-                                                <th class="pb-3 font-medium">Categoría</th>
-                                                <th class="pb-3 font-medium">Stock Actual</th>
-                                                <th class="pb-3 font-medium">Stock Mínimo</th>
-                                                <th class="pb-3 font-medium">Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y">
-                                            <tr>
-                                                <td class="py-3 font-medium">Intel Core i7-13700K</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
-                                                        Procesadores</div>
-                                                </td>
-                                                <td class="py-3">3</td>
-                                                <td class="py-3">10</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">
-                                                        Crítico</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3 font-medium">ASUS ROG STRIX B650E</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
-                                                        Placas Madre</div>
-                                                </td>
-                                                <td class="py-3">2</td>
-                                                <td class="py-3">8</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">
-                                                        Crítico</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3 font-medium">Corsair Vengeance 32GB DDR5</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
-                                                        Memoria RAM</div>
-                                                </td>
-                                                <td class="py-3">5</td>
-                                                <td class="py-3">15</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Bajo</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3 font-medium">MSI RTX 4080 Gaming X</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
-                                                        Tarjetas Gráficas</div>
-                                                </td>
-                                                <td class="py-3">4</td>
-                                                <td class="py-3">12</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Bajo</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3 font-medium">Samsung 980 PRO 1TB</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground">
-                                                        Almacenamiento</div>
-                                                </td>
-                                                <td class="py-3">6</td>
-                                                <td class="py-3">20</td>
-                                                <td class="py-3">
-                                                    <div
-                                                        class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
-                                                        Bajo</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
+                                <div class="flex flex-col space-y-1.5 p-6">
+                                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock Bajo
+                                    </h3>
+                                    <p class="text-sm text-muted-foreground">Productos que requieren atención inmediata
+                                    </p>
+                                </div>
+                                <div class="p-6 pt-0">
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full">
+                                            <thead class="border-b">
+                                                <tr class="text-left">
+                                                    <th class="pb-3 font-medium">Producto</th>
+                                                    <th class="pb-3 font-medium">Categoría</th>
+                                                    <th class="pb-3 font-medium">Stock Actual</th>
+                                                    <th class="pb-3 font-medium">Stock Mínimo</th>
+                                                    <th class="pb-3 font-medium">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y" id="cuerpoT">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -867,6 +745,7 @@
     </div>
     <script src="js/main.js"></script>
     <script src="js/reportes.js" type="module"></script>
+    <script src="js/reportesTablas.js" type="module"></script>
 </body>
 
 </html>

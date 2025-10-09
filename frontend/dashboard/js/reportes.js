@@ -204,10 +204,9 @@ function getChartData(tipo, data) {
       // falta por hacer y no está del todo concreta :D, pero dejo mínimamente lo básico: 
 
     }
-      break;
-  }
-  return { labels, entradas, salidas };
+    break; 
 }
+return{ labels, entradas, salidas };
 
 function ObtenerSemanaDelDia(año, mes, dia) {
   const primerDia = new Date(año, mes, 1);
