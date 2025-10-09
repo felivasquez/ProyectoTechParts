@@ -204,171 +204,171 @@ function getChartData(tipo, data) {
       // falta por hacer y no está del todo concreta :D, pero dejo mínimamente lo básico: 
 
     }
-    break; 
-}
-return{ labels, entradas, salidas };
-
-function ObtenerSemanaDelDia(año, mes, dia) {
-  const primerDia = new Date(año, mes, 1);
-  const PrimerDiaDe0 = primerDia.getDay();
-  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6;
-
-  const semanaNum = Math.ceil((dia + primerDiaF) / 7);
-  return `Semana ${semanaNum}`;
-}
-function TraerSemanasDeMes(año, mes) {
-
-  const ultimoDia = new Date(año, mes + 1, 0).getDate();
-  const primerDia = new Date(año, mes, 1);
-  const PrimerDiaDe0 = primerDia.getDay();
-  const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6;
-
-  const semanasTotales = Math.ceil((ultimoDia + primerDiaF) / 7);
-
-  const semanas = [];
-  for (let i = 1; i <= semanasTotales; i++) {
-    semanas.push(`Semana ${i}`);
+      break;
   }
+  return { labels, entradas, salidas };
 
-  return semanas;
-}
-function renderMes(indexMes, ctxF) {
-  // Nombres abreviados de los meses
-  const { ultimosMeses, NombreMeses, añoActual, entradasMap, salidasMap } = ctxF;
+  function ObtenerSemanaDelDia(año, mes, dia) {
+    const primerDia = new Date(año, mes, 1);
+    const PrimerDiaDe0 = primerDia.getDay();
+    const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6;
 
-  const mesIndex = ultimosMeses[indexMes];
-  const nombreMes = NombreMeses[mesIndex];
-  const semanasDelMes = TraerSemanasDeMes(añoActual, mesIndex);
-
-  ctxF.labels = semanasDelMes
-
-  ctxF.entradas = semanasDelMes.map(semana => {
-    const valores = entradasMap.get(nombreMes)?.get(semana);
-    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
-  })
-
-  ctxF.salidas = semanasDelMes.map(semana => {
-    const valores = salidasMap.get(nombreMes)?.get(semana);
-    return valores ? valores.reduce((a, b) => a + b, 0) : 0;
-  });
-
-  document.getElementById('mesesCambiantes').innerHTML = `${nombreMes}`;
-
-}
-
-function renderChart({ labels, entradas, salidas }) {
-  if (chartt) {
-    chartt.destroy();
+    const semanaNum = Math.ceil((dia + primerDiaF) / 7);
+    return `Semana ${semanaNum}`;
   }
+  function TraerSemanasDeMes(año, mes) {
 
+    const ultimoDia = new Date(año, mes + 1, 0).getDate();
+    const primerDia = new Date(año, mes, 1);
+    const PrimerDiaDe0 = primerDia.getDay();
+    const primerDiaF = PrimerDiaDe0 ? PrimerDiaDe0 - 1 : 6;
 
-  chartt = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Entradas',
-          data: entradas,
-          borderColor: '#10B981',
-          backgroundColor: '#10B98120',
-          tension: 0.4,
-          spanGaps: true,
-        },
-        {
-          label: 'Salidas',
-          data: salidas,
-          borderColor: '#EF4444',
-          backgroundColor: '#EF444420',
-          tension: 0.4,
-          spanGaps: true,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { color: '#374151' } },
-      },
-      scales: {
-        x: { ticks: { color: '#374151' } },
-        y: { ticks: { color: '#374151' } },
-      },
-    },
-  })
-};
+    const semanasTotales = Math.ceil((ultimoDia + primerDiaF) / 7);
 
-async function checkSession() {
-  const { data, error } = await supabase.auth.getSession();
-  if (!data.session) {
-    window.location.href = 'session/login.html';
-  } else {
-    // Muestra el nombre de usuario en el dashboard
-    const username = data.session.user.user_metadata?.username || data.session.user.email;
-    document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    const semanas = [];
+    for (let i = 1; i <= semanasTotales; i++) {
+      semanas.push(`Semana ${i}`);
+    }
+
+    return semanas;
   }
-}
-checkSession();
+  function renderMes(indexMes, ctxF) {
+    // Nombres abreviados de los meses
+    const { ultimosMeses, NombreMeses, añoActual, entradasMap, salidasMap } = ctxF;
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderProductosMasActivos();
-  const logoutButton = document.getElementById('logout-button');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        alert('Hubo un error al cerrar sesión.');
-      } else {
-        window.location.href = 'session/login.html';
-      }
+    const mesIndex = ultimosMeses[indexMes];
+    const nombreMes = NombreMeses[mesIndex];
+    const semanasDelMes = TraerSemanasDeMes(añoActual, mesIndex);
+
+    ctxF.labels = semanasDelMes
+
+    ctxF.entradas = semanasDelMes.map(semana => {
+      const valores = entradasMap.get(nombreMes)?.get(semana);
+      return valores ? valores.reduce((a, b) => a + b, 0) : 0;
+    })
+
+    ctxF.salidas = semanasDelMes.map(semana => {
+      const valores = salidasMap.get(nombreMes)?.get(semana);
+      return valores ? valores.reduce((a, b) => a + b, 0) : 0;
     });
-  }
-});
 
-async function renderProductosMasActivos() {
-  // 1. Traer todos los movimientos
-  const { data: movimientos, error: errorMov } = await supabase
-    .from('movements')
-    .select('componentes');
-  if (errorMov) {
-    console.error('Error al obtener movimientos:', errorMov);
-    return;
+    document.getElementById('mesesCambiantes').innerHTML = `${nombreMes}`;
+
   }
 
-  // 2. Contar movimientos por producto
-  const conteo = {};
-  movimientos.forEach(mov => {
-    conteo[mov.product_id] = (conteo[mov.product_id] || 0) + 1;
+  function renderChart({ labels, entradas, salidas }) {
+    if (chartt) {
+      chartt.destroy();
+    }
+
+
+    chartt = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Entradas',
+            data: entradas,
+            borderColor: '#10B981',
+            backgroundColor: '#10B98120',
+            tension: 0.4,
+            spanGaps: true,
+          },
+          {
+            label: 'Salidas',
+            data: salidas,
+            borderColor: '#EF4444',
+            backgroundColor: '#EF444420',
+            tension: 0.4,
+            spanGaps: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#374151' } },
+        },
+        scales: {
+          x: { ticks: { color: '#374151' } },
+          y: { ticks: { color: '#374151' } },
+        },
+      },
+    })
+  };
+
+  async function checkSession() {
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session) {
+      window.location.href = 'session/login.html';
+    } else {
+      // Muestra el nombre de usuario en el dashboard
+      const username = data.session.user.user_metadata?.username || data.session.user.email;
+      document.getElementById('username').textContent = `Bienvenido, ${username}`;
+    }
+  }
+  checkSession();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderProductosMasActivos();
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          alert('Hubo un error al cerrar sesión.');
+        } else {
+          window.location.href = 'session/login.html';
+        }
+      });
+    }
   });
 
-  // 3. Ordenar por cantidad de movimientos (descendente)
-  const productosOrdenados = Object.entries(conteo)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5); // Top 5
+  async function renderProductosMasActivos() {
+    // 1. Traer todos los movimientos
+    const { data: movimientos, error: errorMov } = await supabase
+      .from('movements')
+      .select('componentes');
+    if (errorMov) {
+      console.error('Error al obtener movimientos:', errorMov);
+      return;
+    }
 
-  // 4. Traer info de productos
-  const ids = productosOrdenados.map(([id]) => id);
-  if (ids.length === 0) return;
+    // 2. Contar movimientos por producto
+    const conteo = {};
+    movimientos.forEach(mov => {
+      conteo[mov.product_id] = (conteo[mov.product_id] || 0) + 1;
+    });
 
-  const { data: productos, error: errorProd } = await supabase
-    .from('products')
-    .select('id, name, category')
-    .in('id', ids);
+    // 3. Ordenar por cantidad de movimientos (descendente)
+    const productosOrdenados = Object.entries(conteo)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5); // Top 5
 
-  if (errorProd) {
-    console.error('Error al obtener productos:', errorProd);
-    return;
-  }
+    // 4. Traer info de productos
+    const ids = productosOrdenados.map(([id]) => id);
+    if (ids.length === 0) return;
 
-  // 5. Renderizar en el HTML
-  const contenedor = document.getElementsByClassName('.GraficoCategorias');
-  if (!contenedor) return;
+    const { data: productos, error: errorProd } = await supabase
+      .from('products')
+      .select('id, name, category')
+      .in('id', ids);
 
-  contenedor.innerHTML = productosOrdenados.map(([id, cantidad]) => {
-    const prod = productos.find(p => p.id === id);
-    if (!prod) return '';
-    return `
+    if (errorProd) {
+      console.error('Error al obtener productos:', errorProd);
+      return;
+    }
+
+    // 5. Renderizar en el HTML
+    const contenedor = document.getElementsByClassName('.GraficoCategorias');
+    if (!contenedor) return;
+
+    contenedor.innerHTML = productosOrdenados.map(([id, cantidad]) => {
+      const prod = productos.find(p => p.id === id);
+      if (!prod) return '';
+      return `
       <div class="flex items-center justify-between p-3 rounded-lg border">
         <div>
           <p class="font-medium text-sm">${prod.name}</p>
@@ -380,5 +380,6 @@ async function renderProductosMasActivos() {
         </div>
       </div>
     `;
-  }).join('');
+    }).join('');
+  }
 }
