@@ -47,7 +47,7 @@ function card(data) {
     }
     const tbody = document.getElementById('cuerpoT');
     tbody.innerHTML = '';  
-    const filtros = data.filter(item => item.stock < item.min_stock)
+    const filtros = data.filter(item => item.stock < item.min_stock && item.stock > 0)
     filtros.forEach(item => {
         let estados = null;        
         let estadoColor = null;
