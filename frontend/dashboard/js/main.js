@@ -42,8 +42,9 @@ ScrollReveal().reveal('.MetriYestadisticas',{
 ScrollReveal().reveal('.GraficoCategorias',{
     duration: 1200,
 }); 
-
-
+ScrollReveal().reveal('.animacion',{
+    duration: 1200,
+}); 
 
 
 

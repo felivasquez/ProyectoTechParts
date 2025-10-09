@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Verificando cuenta...</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module">
+
+    import supabase from '/frontend/dashboard/js/client.js'
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+      // 1. Escuchar los eventos de autenticación
+      supabase.auth.onAuthStateChange((event, session) => {
+        // Si la URL contiene el token de confirmación, Supabase intentará
+        // procesarlo aquí automáticamente.
+
+        if (event === 'SIGNED_IN') {
+          // ✅ Éxito: El usuario está logueado después de la verificación
+          console.log('Verificación exitosa. Usuario logueado.');
+          window.location.href = './index.html';
+
+        } else if (event === 'INITIAL_SESSION' && session === null) {
+          // Si el evento es 'INITIAL_SESSION' y no hay sesión, 
+          // y estamos en una URL con token, significa que hubo un error
+          // o el token ya expiró/fue usado.
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('token_hash') && urlParams.get('type') === 'email') {
+            console.error('Error de verificación: Token inválido o expirado.');
+            alert('Hubo un problema al confirmar tu cuenta. El enlace puede ser inválido o haber expirado.');
+            // Puedes redirigir a una página de error o al login
+            }
+        }
+      });
+
+      // Opcional: Mostrar un mensaje si no hay tokens o códigos
+      const urlParams = new URLSearchParams(window.location.search);
+      if (!urlParams.has('token_hash') && !urlParams.has('code')) {
+        // No hay parámetros de autenticación, redirigir a donde sea apropiado
+        // window.location.href = './login.html';
+      }
+
+    });
+  </script>
+</head>
+
+<body>
+  <p>Verificando tu cuenta...</p>
+</body>
+
+</html>
