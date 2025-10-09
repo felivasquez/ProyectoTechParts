@@ -48,7 +48,7 @@ function renderProductCard(product) {
                             <div class="mb-2">
                             <span
                                 class="inline-flex items-center rounded-md bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300">${product.category
-                            || 'Sin categoría'}</span>
+        || 'Sin categoría'}</span>
                             </div>
                             <h3 class="font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">
                             ${product.name}
@@ -119,21 +119,71 @@ function renderProductCard(product) {
     return card;
 }
 
-// Cart dropdown functionality
 let cartButton = document.getElementById('myCartDropdownButton1');
 let cartModal = document.getElementById('myCartDropdown1');
+let userButton = document.getElementById('userDropdownButton1');
+let userModal = document.getElementById('userDropdown1');
 
+
+// Cart dropdown functionality
 cartButton.addEventListener('click', function () {
     cartModal.classList.toggle('hidden');
     userModal.classList.add('hidden');
 });
 
 // User dropdown functionality
-let userButton = document.getElementById('userDropdownButton1');
-let userModal = document.getElementById('userDropdown1');
-
 userButton.addEventListener('click', function () {
     userModal.classList.toggle('hidden');
     cartModal.classList.add('hidden');
 });
 
+// logica para dirigir al login si no está autenticado
+const loginButton = document.getElementById('btnUser');
+
+loginButton.addEventListener('click', async () => {
+    const user = supabase.auth.getUser();   
+    if (!(await user).data.user) {
+        window.location.href = './auth/login.html';
+    }
+});
+
+// logica para si esta logueado mostrar el user modal
+const userDropdown1 = document.getElementById('contUserSec');
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = await supabase.auth.getUser(); 
+    if (user.data.user) {
+        userDropdown1.classList.remove('hidden');
+        loginButton.classList.add('hidden');
+        console.log(user.data.user);
+    }
+    else {
+        userDropdown1.classList.add('hidden');
+        loginButton.classList.remove('hidden');
+        console.log('No hay usuario logueado');
+    }
+});
+
+// logica para cerrar sesión
+const logoutButton = document.getElementById('logout-button');
+
+logoutButton.addEventListener('click', async () => {    
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error('Error al cerrar sesión:', error.message);
+        alert('Hubo un error al cerrar sesión.');
+    }else {
+        window.location.href = './home.html';
+    }
+    console.log('Sesión cerrada');
+});
+
+// Cerrar los dropdowns si se hace clic fuera de ellos
+document.addEventListener('click', function (event) {
+    if (!cartButton.contains(event.target) && !cartModal.contains(event.target)) {
+        cartModal.classList.add('hidden');
+    }
+    if (!userButton.contains(event.target) && !userModal.contains(event.target)) {
+        userModal.classList.add('hidden');
+    }
+});

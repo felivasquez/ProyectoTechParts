@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio - TechParts</title>
-    <link rel="shortcut icon" href="../../icono.svg" />
+    <link rel="shortcut icon" href="/icono.svg" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -29,7 +29,7 @@
                     <span
                         class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
                 </div>
-                <div class="hidden md:flex items-center gap-6">
+                <div class="hidden lg:flex items-center gap-6">
                     <a href="#"
                         class="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-sky-400 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -87,32 +87,8 @@
                             placeholder="Buscar productos...">
                     </div>
                 </div>
-                <!-- Cart -->
-                <!-- <div class="flex items-center gap-2">
-                    <button
-                        class="relative h-10 w-10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-800 rounded-md transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-shopping-cart h-5 w-5">
-                            <circle cx="8" cy="21" r="1"></circle>
-                            <circle cx="19" cy="21" r="1"></circle>
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12">
-                            </path>
-                        </svg>
-                    </button>
-                    <button
-                        class="md:hidden h-10 w-10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-gray-800 rounded-md transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-menu h-5 w-5">
-                            <line x1="4" x2="20" y1="12" y2="12"></line>
-                            <line x1="4" x2="20" y1="6" y2="6"></line>
-                            <line x1="4" x2="20" y1="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div> -->
                 <div class="flex items-center lg:space-x-2">
-                    <button id="myCartDropdownButton1" data-dropdown-toggle="myCartDropdown1" type="button"
+                    <button id="myCartDropdownButton1" type="button"
                         class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
                         <span class="sr-only">
                             Cart
@@ -129,20 +105,34 @@
                                 d="m19 9-7 7-7-7" />
                         </svg>
                     </button>
-                    <button id="userDropdownButton1" data-dropdown-toggle="userDropdown1" type="button"
-                        class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                        <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-width="2"
-                                d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                        Account
-                        <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 9-7 7-7-7" />
-                        </svg>
-                    </button>
+                    <div class="hidden" id="contUserSec">
+                        <button id="userDropdownButton1" type="button"
+                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="2"
+                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            Account
+                            <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 9-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="btnUser">
+                        <button type="button"
+                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="2"
+                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            Iniciar Sesión
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="w-full max-w-screen flex justify-end">
@@ -178,7 +168,9 @@
                     </div>
                     <a href="checkout.html"
                         class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        role="button"> Proceed to Checkout </a>
+                        role="button">
+                        Proceed to Checkout
+                    </a>
                 </div>
                 <div id="userDropdown1"
                     class="hidden fixed z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
@@ -204,13 +196,13 @@
                     </ul>
 
                     <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-                        <a href="#" title=""
+                        <button id="logout-button"
                             class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                            Sign Out </a>
+                            Sign Out
+                        </button>
                     </div>
                 </div>
             </div>
-
         </nav>
         <section class="relative min-h-[80vh] flex items-center overflow-hidden bg-gray-900">
             <div class="absolute inset-0 z-0">
@@ -569,9 +561,8 @@
             </div>
         </footer>
     </div>
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/carrito.js"></script>
 </body>
-
-<script type="module" src="js/main.js"></script>
-<script type="module" src="js/carrito.js"></script>
 
 </html>
