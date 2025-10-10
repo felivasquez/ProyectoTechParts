@@ -100,8 +100,11 @@ function renderProductCard(product) {
                             <span class="text-sm text-gray-400 line-through">$${product.price * 1.30}</span>
                             </div>
                         </a>
-                        <button
-                            class="w-full group inline-flex items-center justify-center gap-2 h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md">
+                        <button id="add-to-cartBtn"
+                            class=" w-full group inline-flex items-center justify-center gap-2 h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md"
+                              data-id="${product.id}"
+                            data-name="${product.name}"
+                            data-price="${product.price}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-shopping-cart h-4 w-4 group-hover:scale-110 transition-transform">
@@ -141,7 +144,7 @@ userButton.addEventListener('click', function () {
 const loginButton = document.getElementById('btnUser');
 
 loginButton.addEventListener('click', async () => {
-    const user = supabase.auth.getUser();   
+    const user = supabase.auth.getUser();
     if (!(await user).data.user) {
         window.location.href = './auth/login.html';
     }
@@ -151,7 +154,7 @@ loginButton.addEventListener('click', async () => {
 const userDropdown1 = document.getElementById('contUserSec');
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const user = await supabase.auth.getUser(); 
+    const user = await supabase.auth.getUser();
     if (user.data.user) {
         userDropdown1.classList.remove('hidden');
         loginButton.classList.add('hidden');
@@ -167,12 +170,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 // logica para cerrar sesión
 const logoutButton = document.getElementById('logout-button');
 
-logoutButton.addEventListener('click', async () => {    
+logoutButton.addEventListener('click', async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Error al cerrar sesión:', error.message);
         alert('Hubo un error al cerrar sesión.');
-    }else {
+    } else {
         window.location.href = './home.html';
     }
     console.log('Sesión cerrada');
