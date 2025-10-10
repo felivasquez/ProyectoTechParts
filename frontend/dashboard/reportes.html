@@ -459,7 +459,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="GraficoCategorias grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="GraficoCategorias grid grid-cols-1 lg:grid-cols-2 gap-6" data-sr-id="5"
+                            style="visibility: visible; opacity: 1; transition: all, opacity 1.2s cubic-bezier(0.5, 0, 0, 1);">
                             <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Valor por
@@ -695,22 +696,81 @@
                                         </div>
                                     </div>
                                 </div>
-                            <!--tabla-->
-                                <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
-                                    <div class="flex flex-col space-y-1.5 p-6">
-                                        <h3 class="text-2xl font-semibold leading-none tracking-tight">Productos Más
-                                            Activos</h3>
-                                        <p class="text-sm text-muted-foreground">Mayor número de movimientos en el
-                                            período</p>
-                                    </div>
-                                    <div class="p-6 pt-0">
-                                        <div class="space-y-4" id="contenedor">
+                                <!--tabla-->
 
+                            </div>
+                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm"
+                                data-sr-id="6"
+                                style="visibility: visible; opacity: 1; transition: all, opacity 1.2s cubic-bezier(0.5, 0, 0, 1);">
+                                <div class="flex flex-col space-y-1.5 p-6">
+                                    <h3 class="text-2xl font-semibold leading-none tracking-tight">Productos Más
+                                        Activos</h3>
+                                    <p class="text-sm text-muted-foreground">Mayor número de movimientos en el
+                                        período</p>
+                                </div>
+                                <div class="p-6 pt-0">
+                                    <div class="space-y-4" id="contenedor">
+                                        <div class="flex items-center justify-between p-3 rounded-lg border">
+
+                                            <div>
+                                                <p class="font-medium text-sm">Disco Duro Externo Tiri</p>
+                                                <p class="text-xs text-gray-500">Almacenamiento</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold">550</p>
+                                                <p class="text-xs text-gray-500">movimientos</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 rounded-lg border">
+
+                                            <div>
+                                                <p class="font-medium text-sm">SSD 500gb</p>
+                                                <p class="text-xs text-gray-500">Almacenamiento</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold">90</p>
+                                                <p class="text-xs text-gray-500">movimientos</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 rounded-lg border">
+
+                                            <div>
+                                                <p class="font-medium text-sm">HDD Western Digital 1TB</p>
+                                                <p class="text-xs text-gray-500">Almacenamiento</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold">52</p>
+                                                <p class="text-xs text-gray-500">movimientos</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 rounded-lg border">
+
+                                            <div>
+                                                <p class="font-medium text-sm">Sin nombre</p>
+                                                <p class="text-xs text-gray-500">Sin categoria</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold">50</p>
+                                                <p class="text-xs text-gray-500">movimientos</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 rounded-lg border">
+
+                                            <div>
+                                                <p class="font-medium text-sm">Memoria Externa 8tb</p>
+                                                <p class="text-xs text-gray-500">Almacenamiento</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="font-semibold">24</p>
+                                                <p class="text-xs text-gray-500">movimientos</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="GraficoCategorias rounded-lg border bg-card text-card-foreground shadow-sm col-span-2"
+                                data-sr-id="7"
+                                style="visibility: visible; opacity: 1; transition: all, opacity 1.2s cubic-bezier(0.5, 0, 0, 1);">
                                 <div class="flex flex-col space-y-1.5 p-6">
                                     <h3 class="text-2xl font-semibold leading-none tracking-tight">Alertas de Stock Bajo
                                     </h3>
@@ -730,7 +790,86 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y" id="cuerpoT">
-                                                
+                                                <tr class="border-b">
+                                                    <td class="py-3 font-medium">Intel Core i7-13700K</td>
+
+                                                    <td class="py-3">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                                                            Procesadores
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="py-3 text-center">1</td>
+                                                    <td class="py-3 text-center">10</td>
+
+                                                    <td class="py-3 text-center">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent">
+                                                            Crítico
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-b">
+                                                    <td class="py-3 font-medium">SSD WD 480GB GREEN</td>
+
+                                                    <td class="py-3">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                                                            Almacenamiento
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="py-3 text-center">25</td>
+                                                    <td class="py-3 text-center">30</td>
+
+                                                    <td class="py-3 text-center">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-yellow-200 text-yellow-900 border-transparent">
+                                                            Bajo
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-b">
+                                                    <td class="py-3 font-medium">Corsair Vengeance 32GB DDR5</td>
+
+                                                    <td class="py-3">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                                                            Memoria RAM
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="py-3 text-center">4</td>
+                                                    <td class="py-3 text-center">15</td>
+
+                                                    <td class="py-3 text-center">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent">
+                                                            Crítico
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-b">
+                                                    <td class="py-3 font-medium">HDD 1tb externo WD</td>
+
+                                                    <td class="py-3">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
+                                                            Almacenamiento
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="py-3 text-center">5</td>
+                                                    <td class="py-3 text-center">50</td>
+
+                                                    <td class="py-3 text-center">
+                                                        <div
+                                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent">
+                                                            Crítico
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
