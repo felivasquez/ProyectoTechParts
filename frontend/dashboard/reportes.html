@@ -165,8 +165,7 @@
                                                 data-value="ultMeses">últimos meses</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                 data-value="porA">este año</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                data-value="perzonalido">personalizado</a>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -187,8 +186,8 @@
                                 <div class="p-6 pt-6">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm font-medium text-gray-600">Valor Total</p>
-                                            <p class="text-2xl font-bold">$100,800</p>
+                                            <p class="text-sm font-medium text-gray-600">Valor Total Mes</p>
+                                            <p class="text-2xl font-bold" id="valorT"></p>
                                         </div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -202,9 +201,8 @@
                                         </svg>
                                     </div>
                                     <div class="mt-2">
-                                        <div
-                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 text-xs">
-                                            +8.2% vs mes anterior</div>
+                                        <div id="porcentajeV" class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 text-xs">
+                                        +8.2% vs mes anterior</div>
                                     </div>
                                 </div>
                             </div>
@@ -212,8 +210,8 @@
                                 <div class="p-6 pt-6">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm font-medium text-gray-600">Rotación</p>
-                                            <p class="text-2xl font-bold">2.3x</p>
+                                            <p class="text-sm font-medium text-gray-600">sin Stock</p>
+                                            <p class="text-2xl font-bold" id="sinStock"></p>
                                         </div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -224,7 +222,7 @@
                                     </div>
                                     <div class="mt-2">
                                         <div
-                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 text-xs bg-green-100 text-green-800">
+                                            id="buenaR" class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 text-xs bg-green-100 text-green-800">
                                             Buena rotación</div>
                                     </div>
                                 </div>
@@ -234,7 +232,7 @@
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <p class="text-sm font-medium text-gray-600">Alertas</p>
-                                            <p class="text-2xl font-bold">23</p>
+                                            <p class="text-2xl font-bold" id="alertas">23</p>
                                         </div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -248,7 +246,7 @@
                                     </div>
                                     <div class="mt-2">
                                         <div
-                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-secondary/80 text-xs bg-orange-100 text-orange-800">
+                                            id="div-stock" class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-secondary/80 text-xs bg-orange-100 text-orange-800">
                                             Stock bajo</div>
                                     </div>
                                 </div>
@@ -257,8 +255,8 @@
                                 <div class="p-6 pt-6">
                                     <div class="flex items-center justify-between">
                                         <div>
-                                            <p class="text-sm font-medium text-gray-600">Eficiencia</p>
-                                            <p class="text-2xl font-bold">94%</p>
+                                            <p id="ganancias" class="text-sm font-medium text-gray-600">ganancias</p>
+                                            <p class="text-2xl font-bold" ></p>
                                         </div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -273,8 +271,8 @@
                                     </div>
                                     <div class="mt-2">
                                         <div
-                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 text-xs bg-purple-100 text-purple-800">
-                                            Excelente</div>
+                                           id="gananciasP" class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 text-xs bg-purple-100 text-purple-800">
+                                            +8.2%</div>
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +448,7 @@
                                             </span>
                                         </button>
                                     </div>
-                                    <p class="text-sm text-muted-foreground text-center">Entradas vs Salidas por mes</p>
+                                    <p class="text-sm text-muted-foreground text-center" id="TextTendencias">Entradas vs Salidas por mes</p>
                                 </div>
                                 <div class="p-6 pt-0">
                                     <div class="h-80">

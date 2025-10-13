@@ -52,13 +52,13 @@ function card(data) {
         let estados = null;        
         let estadoColor = null;
        if ( item.stock <= item.min_stock /2){
-        estados = 'Crítico'; 
+        estados = 'critico'; 
        }    
        else{
         estados = 'Bajo';
        }
         estadoColor = 
-        estados === 'Crítico' 
+        estados === 'critico' 
         ? 'bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent'
         : 'bg-yellow-200 text-yellow-900 border-transparent';   
        const fila = document.createElement('tr');

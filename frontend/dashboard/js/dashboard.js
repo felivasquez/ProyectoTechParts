@@ -9,8 +9,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (error) {
         console.error('Error al traer productos:', error);
         return;
+    }    
+    const {data: dataM,error: errorM} = await supabase
+    .from('movements')
+    .select('*');    
+    if (errorM) {
+        console.error('Error al traer la fecha del movimiento:', errorM);
+        return;
     }
-
     // Total de componentes
     const totalComponentes = productos.length;
 
@@ -21,8 +27,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const stockBajo = productos.filter(prod => prod.stock !== null && prod.min_stock !== null && prod.stock < prod.min_stock).length;
 
     // Movimientos hoy 
-    const movimientosHoy = 0;
-
+    const hoy = new Date().toISOString().split('T')[0];
+    let movimientosHoy = 0;
+    dataM.forEach(fecha => {
+        if (fecha.created_at.split('T')[0] === hoy) { 
+            movimientosHoy++
+        };
+});
     // Agrupar por categoría
     const categoriasMap = {};
     productos.forEach(prod => {
@@ -103,3 +114,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+async function cardRenderAlert() {
+    const {data,error} = await supabase
+    .from('products')
+    .select('*');
+    if (error){
+        console.error("Error al obtener los datos:", error);
+    }
+   const productosCriticos = data.filter(p => p.stock < p.min_stock).slice(0, 3);
+
+  const contenedor = document.getElementById('alertas-stock');
+  contenedor.innerHTML = ''; // limpiar antes
+
+  productosCriticos.forEach(producto => {
+    const card = cardAlertas(producto);
+    contenedor.appendChild(card);
+  });
+}
+
+function cardAlertas(data) {
+ const card = document.createElement('div');
+ card.className = 'space-y-2 p-4 rounded-lg border bg-red-50'
+ card.innerHTML =
+ `
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <p class="font-medium text-sm">'${data.name}'</p>
+                                                <p class="text-xs text-gray-500">${data.category}</p>
+                                            </div>
+                                            <div
+                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 text-xs">
+                                                Crítico
+                                                </div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <div class="flex justify-between text-xs"><span>Stock actual:
+                                                    ${data.stock}</span><span>Mínimo: ${data.min_stock}</span></div>
+                                            <div aria-valuemax="100" aria-valuemin="0" role="progressbar"
+                                                data-state="indeterminate" data-max="100"
+                                                class="relative w-full overflow-hidden rounded-full bg-secondary h-2">
+                                                <div data-state="indeterminate" data-max="100"
+                                                    class="h-full w-full flex-1 bg-primary transition-all"
+                                                    style="transform: translateX(-66.6667%);"></div>
+                                            </div>
+                                        </div>
+                                   `
+return card;
+}
+cardRenderAlert();
