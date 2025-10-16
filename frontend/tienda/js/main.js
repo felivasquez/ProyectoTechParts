@@ -100,11 +100,10 @@ function renderProductCard(product) {
                             <span class="text-sm text-gray-400 line-through">$${product.price * 1.30}</span>
                             </div>
                         </a>
-                        <button id="add-to-cartBtn"
-                            class=" w-full group inline-flex items-center justify-center gap-2 h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md"
-                              data-id="${product.id}"
-                            data-name="${product.name}"
-                            data-price="${product.price}">
+                                                <button class="add-to-cartBtn w-full group inline-flex items-center justify-center gap-2 h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md"
+                                                            data-id="${product.id}"
+                                                        data-name="${product.name}"
+                                                        data-price="${product.price}" data-action="add-to-cart">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-shopping-cart h-4 w-4 group-hover:scale-110 transition-transform">
