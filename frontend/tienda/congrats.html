@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Gracias por tu compra!</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="success" style="display:none">
+            <h1>¡Gracias por tu compra!</h1>
+            <p>El pago se realizó correctamente.</p>
+        </div>
+        <div id="error" style="display:none">
+            <h1>Hubo un problema con tu pago</h1>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script>
+        const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
+
+        // Verificar el resultado del pago
+        const clientSecret = new URLSearchParams(window.location.search).get(
+            'payment_intent_client_secret'
+        );
+
+        if (clientSecret) {
+            stripe.retrievePaymentIntent(clientSecret)
+                .then(({ paymentIntent }) => {
+                    const status = paymentIntent?.status;
+
+                    if (status === 'succeeded') {
+                        const el = document.getElementById('success');
+                        if (el) el.style.display = 'block';
+                        localStorage.removeItem('techparts_cart');
+                        return;
+                    }
+
+                    if (status === 'processing') {
+                        const el = document.getElementById('processing') || document.getElementById('success');
+                        if (el) {
+                            el.style.display = 'block';
+                            const title = el.querySelector('h1');
+                            if (title) title.textContent = 'Procesando tu pago...';
+                        }
+                        return;
+                    }
+
+                    // default / error
+                    const errEl = document.getElementById('error');
+                    if (errEl) errEl.style.display = 'block';
+                    const msg = document.getElementById('error-message');
+                    if (msg) msg.textContent = 'Algo salió mal.';
+                })
+                .catch(err => {
+                    console.error('Error al recuperar PaymentIntent:', err);
+                    const errEl = document.getElementById('error');
+                    if (errEl) errEl.style.display = 'block';
+                    const msg = document.getElementById('error-message');
+                    if (msg) msg.textContent = 'Error de conexión o respuesta inesperada.';
+                });
+        }
+    </script>
+</body>
+
+</html>

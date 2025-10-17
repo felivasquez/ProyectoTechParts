@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - TechParts</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="payment-form">
+            <div id="payment-element"></div>
+            <button id="submit">Pagar</button>
+            <div id="error-message"></div>
+        </form>
+    </div>
+
+    <script type="module">
+        const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
+        let elements;
+
+        async function initialize() {
+            const response = await fetch("http://localhost:4242/create-payment-intent", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    amount: getCartTotal(),
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const { clientSecret } = await response.json();
+
+            elements = stripe.elements({ clientSecret });
+            const paymentElement = elements.create("payment");
+            paymentElement.mount("#payment-element");
+        }
+
+        document.querySelector("#payment-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const {error} = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                return_url: `${window.location.href = "./congrats.html"}`,
+                }
+            });
+
+            if (error) {
+                const messageDiv = document.querySelector("#error-message");
+                messageDiv.textContent = error.message;
+            }
+        });
+
+        function getCartTotal() {
+            const cart = JSON.parse(localStorage.getItem('techparts_cart') || '[]');
+            return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        }
+
+        initialize().catch(console.error);
+    </script>
+</body>
+</html>
