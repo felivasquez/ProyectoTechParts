@@ -1,66 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - TechParts</title>
+    <title>Stripe Styled Payment Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-    <div class="container">
-        <form id="payment-form">
-            <div id="payment-element"></div>
-            <button id="submit">Pagar</button>
-            <div id="error-message"></div>
-        </form>
-    </div>
-
-    <script type="module">
-        const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
-        let elements;
-
-        async function initialize() {
-            const response = await fetch("http://localhost:4242/create-payment-intent", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    amount: getCartTotal(),
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const { clientSecret } = await response.json();
-
-            elements = stripe.elements({ clientSecret });
-            const paymentElement = elements.create("payment");
-            paymentElement.mount("#payment-element");
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
         }
 
-        document.querySelector("#payment-form").addEventListener("submit", async (e) => {
+        /* Estilo del formulario de Stripe Elements (Payment Element) */
+        #payment-element {
+            /* Usamos la misma base de estilo que tenías para StripeElement */
+            background-color: #0F172A;
+            padding: 10px 12px;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 14px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-[#0F172A] text-white flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-8 bg-[#1E293B] p-8 rounded-xl shadow-xl">
+        <div class="lg:col-span-2">
+            <h2 class="text-lg font-semibold mb-4">Payment</h2>
+
+            <div id="saved-cards-container" class="space-y-3">
+            </div>
+
+            <div class="my-6 flex items-center">
+                <div class="flex-grow border-t border-gray-600"></div>
+                <span class="mx-4 text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-600"></div>
+            </div>
+
+            <form id="payment-form" class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm mb-1">Full name (as displayed on card)*</label>
+                    <input id="cardholder-name" type="text" placeholder="Bonnie Green"
+                        class="w-full bg-[#0F172A] border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Card Details*</label>
+                    <div id="payment-element"></div>
+                    <label class="flex items-center mt-2 text-sm text-gray-400">
+                        <input type="checkbox" id="save-card-checkbox" checked class="accent-blue-600 mr-2">
+                        Save card for future purchases
+                    </label>
+                </div>
+                <div>
+                    <button type="submit" id="pay-btn" disabled
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium mt-2 disabled:bg-gray-500">Pay
+                        now</button>
+                </div>
+                <div id="error-message" class="text-red-400 text-sm mt-2"></div>
+            </form>
+
+            <p class="text-xs text-gray-500 mt-4">Payment processed by <span class="underline">Stripe</span> for <span
+                    class="underline">Your Company</span></p>
+        </div>
+
+        <div class="space-y-6">
+            <div class="bg-[#334155] p-4 rounded-lg">
+                <div class="flex justify-between text-sm mb-2">
+                    <span>Original price</span>
+                    <span>$8,592.00</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2 text-green-400">
+                    <span>Savings</span>
+                    <span>- $298.00</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span>Store Pickup</span>
+                    <span>$99</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span>Tax</span>
+                    <span>$798</span>
+                </div>
+                <div class="border-t border-gray-600 my-2"></div>
+                <div class="flex justify-between font-semibold">
+                    <span>Total</span>
+                    <span id="cart-total-display">$7,191.00</span>
+                </div>
+            </div>
+
+            <div class="bg-[#334155] p-4 rounded-lg text-sm">
+                <div class="flex items-start space-x-2">
+                    <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">🚚</div>
+                    <div>
+                        <p class="font-medium">Free shipping</p>
+                        <p class="text-gray-400">You have 3 months to try free shipping and exclusive Genius offers.</p>
+                        <a href="#" class="text-blue-400 mt-1 inline-block">Try PRO 3 months free →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#334155] p-4 rounded-lg text-sm">
+                <div class="flex items-start space-x-2">
+                    <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">💰</div>
+                    <div>
+                        <p class="font-medium">+10% Extra</p>
+                        <p class="text-gray-400">You get 10% extra when purchasing this product, for orders of at least
+                            $100!</p>
+                        <a href="#" class="text-blue-400 mt-1 inline-block">Save the promo code in your account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ⚡ Reemplazá con tu clave pública de Stripe
+        const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
+        let elements; // Variable para almacenar los elementos de Stripe
+
+        const form = document.getElementById('payment-form');
+        const errorMessage = document.getElementById('error-message');
+        const payBtn = document.getElementById('pay-btn');
+        const cardholderNameInput = document.getElementById('cardholder-name');
+        const saveCardCheckbox = document.getElementById('save-card-checkbox');
+        const savedCardsContainer = document.getElementById('saved-cards-container');
+
+        // Código de país obligatorio al ocultar campos de dirección.
+        const DEFAULT_COUNTRY_CODE = 'AR'; 
+        // 🔑 SOLUCIÓN: Código postal por defecto. Usa el valor de tu mercado o añade un campo.
+        const DEFAULT_POSTAL_CODE = 'C1000AAB'; 
+
+        // Función para calcular el total (¡DEBE devolver el total en centavos!)
+        function getCartTotal() {
+            return 719100;
+        }
+
+        // Función para simular el guardado y renderizado de la tarjeta
+        function renderSavedCard(brand, last4, exp_month, exp_year) {
+            savedCardsContainer.innerHTML = '';
+
+            const cardHtml = `
+                <label class="block bg-[#334155] p-4 rounded-lg border border-transparent hover:border-blue-500 cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <input type="radio" name="payment-method" checked class="accent-blue-600">
+                            <div>
+                                <p class="font-medium">${brand} ending in ${last4}</p>
+                                <p class="text-sm text-gray-400">Expiry ${exp_month}/${exp_year}</p>
+                            </div>
+                        </div>
+                        <span class="text-xl font-semibold">${brand.toUpperCase()}</span>
+                    </div>
+                    <div class="mt-2 text-sm text-blue-400 space-x-4">
+                        <button type="button">Delete</button>
+                        <button type="button">Edit</button>
+                    </div>
+                </label>
+            `;
+            savedCardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+        }
+
+        /**
+         * 1. Crea o recrea el Payment Intent y monta el Payment Element.
+         * Envía la opción 'save_card' al backend.
+         */
+        async function createPaymentIntent() {
+            payBtn.disabled = true;
+            payBtn.textContent = 'Processing...';
+            errorMessage.textContent = '';
+
+            try {
+                const saveCard = saveCardCheckbox.checked;
+
+                const response = await fetch("http://localhost:4242/create-payment-intent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        amount: getCartTotal(),
+                        save_card: saveCard, 
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const { clientSecret } = await response.json();
+
+                if (!elements) {
+                    elements = stripe.elements({
+                        clientSecret,
+                        appearance: { theme: 'night' }
+                    });
+                    
+                    const paymentElement = elements.create("payment", {
+                        fields: {
+                            billingDetails: {
+                                address: 'never' 
+                            }
+                        }
+                    });
+                    paymentElement.mount("#payment-element");
+                } else {
+                    elements.update({ clientSecret });
+                }
+
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay now';
+
+            } catch (e) {
+                errorMessage.textContent = 'Error al iniciar el pago: ' + e.message;
+                payBtn.disabled = true;
+            }
+        }
+
+        /**
+         * 2. Confirma el pago al hacer submit.
+         * Incluye Country y Postal Code, ya que se ocultó la UI completa.
+         */
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const {error} = await stripe.confirmPayment({
+            payBtn.disabled = true;
+            payBtn.textContent = 'Confirming...';
+            errorMessage.textContent = '';
+
+            const cardHolderName = cardholderNameInput.value;
+
+            const { paymentIntent, error } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
-                return_url: `${window.location.href = "./congrats.html"}`,
-                }
+                    return_url: `${window.location.origin}/congrats.html`,
+                    payment_method_data: {
+                        billing_details: {
+                            name: cardHolderName || 'Customer Name',
+                            // 🔑 SOLUCIÓN: Proveer los datos de dirección ocultos.
+                            address: {
+                                country: DEFAULT_COUNTRY_CODE, 
+                                postal_code: DEFAULT_POSTAL_CODE,
+                            },
+                        },
+                    },
+                },
+                redirect: 'if_required', 
             });
 
             if (error) {
-                const messageDiv = document.querySelector("#error-message");
-                messageDiv.textContent = error.message;
+                errorMessage.textContent = error.message;
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay now';
+                return;
+            }
+
+            if (paymentIntent.status === 'succeeded') {
+                const saveCard = saveCardCheckbox.checked;
+
+                if (saveCard) {
+                    if (paymentIntent.latest_charge && paymentIntent.latest_charge.payment_method_details && paymentIntent.latest_charge.payment_method_details.card) {
+                        const card = paymentIntent.latest_charge.payment_method_details.card;
+                        renderSavedCard(card.brand, card.last4, card.exp_month, card.exp_year);
+                    }
+                }
+
+                window.location.href = `./congrats.html?payment_intent=${paymentIntent.id}`;
+
+            } else {
+                errorMessage.textContent = `Payment status: ${paymentIntent.status}. Please check the server logs.`;
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay now';
             }
         });
 
-        function getCartTotal() {
-            const cart = JSON.parse(localStorage.getItem('techparts_cart') || '[]');
-            return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        }
+        // 3. Listener para recrear el Payment Intent si el usuario cambia la opción "Save card"
+        saveCardCheckbox.addEventListener('change', createPaymentIntent);
 
-        initialize().catch(console.error);
+        // Simular que ya hay una tarjeta guardada
+        renderSavedCard('Visa', '7858', '10', '24');
+
+        // Iniciar el proceso
+        createPaymentIntent();
     </script>
 </body>
+
 </html>
