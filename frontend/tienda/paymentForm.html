@@ -29,9 +29,10 @@
 </head>
 
 <body class="bg-[#0F172A] text-white flex items-center justify-center min-h-screen p-4">
-
     <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-8 bg-[#1E293B] p-8 rounded-xl shadow-xl">
         <div class="lg:col-span-2">
+            <a href="./checkout.html" class="text-sm font-semibold mb-4">Volver al Menu</a>
+
             <h2 class="text-lg font-semibold mb-4">Payment</h2>
 
             <div id="saved-cards-container" class="space-y-3">
@@ -69,60 +70,58 @@
                     class="underline">Your Company</span></p>
         </div>
 
-        <div class="space-y-6">
-            <div class="bg-[#334155] p-4 rounded-lg">
-                <div class="flex justify-between text-sm mb-2">
-                    <span>Original price</span>
-                    <span>$8,592.00</span>
+        <div class=" bg-[#334155] space-y-4 rounded-lg p-4 shadow-sm sm:p-6">
+            <p class="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
+            <div class="space-y-4">
+                <div class="space-y-2" id="order-summary-list">
+                    <dl class="flex items-center justify-between gap-4">
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
+                        <dd class="text-base font-medium text-gray-900 dark:text-white">$5.019.670</dd>
+                    </dl>
+                    <dl class="flex items-center justify-between gap-4">
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Envío</dt>
+                        <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                    </dl>
+                    <dl class="flex items-center justify-between gap-4">
+                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Impuestos</dt>
+                        <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                    </dl>
                 </div>
-                <div class="flex justify-between text-sm mb-2 text-green-400">
-                    <span>Savings</span>
-                    <span>- $298.00</span>
-                </div>
-                <div class="flex justify-between text-sm mb-2">
-                    <span>Store Pickup</span>
-                    <span>$99</span>
-                </div>
-                <div class="flex justify-between text-sm mb-2">
-                    <span>Tax</span>
-                    <span>$798</span>
-                </div>
-                <div class="border-t border-gray-600 my-2"></div>
-                <div class="flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span id="cart-total-display">$7,191.00</span>
+                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                    <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                    <dd class="text-base font-bold text-gray-900 dark:text-white" id="cart-total">$5.019.670</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="bg-[#334155] p-4 rounded-lg text-sm">
+            <div class="flex items-start space-x-2">
+                <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">🚚</div>
+                <div>
+                    <p class="font-medium">Free shipping</p>
+                    <p class="text-gray-400">You have 3 months to try free shipping and exclusive Genius offers.</p>
+                    <a href="#" class="text-blue-400 mt-1 inline-block">Try PRO 3 months free →</a>
                 </div>
             </div>
+        </div>
 
-            <div class="bg-[#334155] p-4 rounded-lg text-sm">
-                <div class="flex items-start space-x-2">
-                    <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">🚚</div>
-                    <div>
-                        <p class="font-medium">Free shipping</p>
-                        <p class="text-gray-400">You have 3 months to try free shipping and exclusive Genius offers.</p>
-                        <a href="#" class="text-blue-400 mt-1 inline-block">Try PRO 3 months free →</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-[#334155] p-4 rounded-lg text-sm">
-                <div class="flex items-start space-x-2">
-                    <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">💰</div>
-                    <div>
-                        <p class="font-medium">+10% Extra</p>
-                        <p class="text-gray-400">You get 10% extra when purchasing this product, for orders of at least
-                            $100!</p>
-                        <a href="#" class="text-blue-400 mt-1 inline-block">Save the promo code in your account</a>
-                    </div>
+        <div class="bg-[#334155] p-4 rounded-lg text-sm">
+            <div class="flex items-start space-x-2">
+                <div class="w-5 h-5 bg-gray-600 rounded-full flex items-center justify-center">💰</div>
+                <div>
+                    <p class="font-medium">+10% Extra</p>
+                    <p class="text-gray-400">You get 10% extra when purchasing this product, for orders of at least
+                        $100!</p>
+                    <a href="#" class="text-blue-400 mt-1 inline-block">Save the promo code in your account</a>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
     <script>
-        // ⚡ Reemplazá con tu clave pública de Stripe
         const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
-        let elements; // Variable para almacenar los elementos de Stripe
+        let elements;
 
         const form = document.getElementById('payment-form');
         const errorMessage = document.getElementById('error-message');
@@ -131,14 +130,16 @@
         const saveCardCheckbox = document.getElementById('save-card-checkbox');
         const savedCardsContainer = document.getElementById('saved-cards-container');
 
-        // Código de país obligatorio al ocultar campos de dirección.
-        const DEFAULT_COUNTRY_CODE = 'AR'; 
-        // 🔑 SOLUCIÓN: Código postal por defecto. Usa el valor de tu mercado o añade un campo.
-        const DEFAULT_POSTAL_CODE = 'C1000AAB'; 
+        const DEFAULT_COUNTRY_CODE = 'AR';
+        const DEFAULT_POSTAL_CODE = 'C1000AAB';
 
-        // Función para calcular el total (¡DEBE devolver el total en centavos!)
         function getCartTotal() {
-            return 719100;
+            const cart = JSON.parse(localStorage.getItem('techparts_cart')) || [];
+            const total = cart.reduce((acc, item) => {
+                return acc + (item.price * item.quantity);
+            }, 0);
+
+            return total;
         }
 
         // Función para simular el guardado y renderizado de la tarjeta
@@ -165,11 +166,6 @@
             `;
             savedCardsContainer.insertAdjacentHTML('beforeend', cardHtml);
         }
-
-        /**
-         * 1. Crea o recrea el Payment Intent y monta el Payment Element.
-         * Envía la opción 'save_card' al backend.
-         */
         async function createPaymentIntent() {
             payBtn.disabled = true;
             payBtn.textContent = 'Processing...';
@@ -183,7 +179,7 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         amount: getCartTotal(),
-                        save_card: saveCard, 
+                        save_card: saveCard,
                     })
                 });
 
@@ -198,11 +194,11 @@
                         clientSecret,
                         appearance: { theme: 'night' }
                     });
-                    
+
                     const paymentElement = elements.create("payment", {
                         fields: {
                             billingDetails: {
-                                address: 'never' 
+                                address: 'auto'
                             }
                         }
                     });
@@ -219,11 +215,6 @@
                 payBtn.disabled = true;
             }
         }
-
-        /**
-         * 2. Confirma el pago al hacer submit.
-         * Incluye Country y Postal Code, ya que se ocultó la UI completa.
-         */
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             payBtn.disabled = true;
@@ -235,20 +226,23 @@
             const { paymentIntent, error } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
-                    return_url: `${window.location.origin}/congrats.html`,
+                    return_url: 'http://127.0.0.1:5500/frontend/tienda/congrats.html',
                     payment_method_data: {
                         billing_details: {
                             name: cardHolderName || 'Customer Name',
-                            // 🔑 SOLUCIÓN: Proveer los datos de dirección ocultos.
                             address: {
-                                country: DEFAULT_COUNTRY_CODE, 
+                                country: DEFAULT_COUNTRY_CODE,
                                 postal_code: DEFAULT_POSTAL_CODE,
                             },
                         },
                     },
                 },
-                redirect: 'if_required', 
+                redirect: 'if_required',
             });
+
+            if (paymentIntent && paymentIntent.status === 'succeeded') {
+                window.location.href = `congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}`;
+            }
 
             if (error) {
                 errorMessage.textContent = error.message;
@@ -257,7 +251,7 @@
                 return;
             }
 
-            if (paymentIntent.status === 'succeeded') {
+            if (paymentIntent && paymentIntent.status === 'succeeded') {
                 const saveCard = saveCardCheckbox.checked;
 
                 if (saveCard) {
@@ -267,20 +261,56 @@
                     }
                 }
 
-                window.location.href = `./congrats.html?payment_intent=${paymentIntent.id}`;
-
+                window.location.href = `congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}`;
             } else {
                 errorMessage.textContent = `Payment status: ${paymentIntent.status}. Please check the server logs.`;
                 payBtn.disabled = false;
                 payBtn.textContent = 'Pay now';
             }
+
         });
 
         // 3. Listener para recrear el Payment Intent si el usuario cambia la opción "Save card"
         saveCardCheckbox.addEventListener('change', createPaymentIntent);
 
-        // Simular que ya hay una tarjeta guardada
-        renderSavedCard('Visa', '7858', '10', '24');
+        function getCart() {
+            const cart = localStorage.getItem('techparts_cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const orderSummaryList = document.getElementById('order-summary-list');
+            const cartTotal = document.getElementById('cart-total');
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400 py-8">El carrito está vacío.</div>';
+                orderSummaryList.innerHTML = '';
+                cartTotal.textContent = '$0';
+                return;
+            }
+
+            let subtotal = 0;
+            subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            // Resumen
+            orderSummaryList.innerHTML = `
+                <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
+                    <dd class="text-base font-medium text-gray-900 dark:text-white">$${subtotal.toLocaleString()}</dd>
+                </dl>
+                <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Envío</dt>
+                    <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                </dl>
+                <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Impuestos</dt>
+                    <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                </dl>
+            `;
+            cartTotal.textContent = `$${subtotal.toLocaleString()}`;
+        }
+        renderCart();
 
         // Iniciar el proceso
         createPaymentIntent();

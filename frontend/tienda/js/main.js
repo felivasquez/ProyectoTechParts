@@ -157,10 +157,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (user.data.user) {
         userDropdown1.classList.remove('hidden');
         loginButton.classList.add('hidden');
+        cartButton.style.display = 'flex';
         console.log(user.data.user);
     }
     else {
         userDropdown1.classList.add('hidden');
+        cartButton.style.display = 'none';
         loginButton.classList.remove('hidden');
         console.log('No hay usuario logueado');
     }
