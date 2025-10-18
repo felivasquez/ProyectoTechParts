@@ -1,5 +1,4 @@
 import supabase from '../../dashboard/js/client.js';
-import { inject } from "@vercel/analytics"
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
