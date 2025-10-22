@@ -19,6 +19,19 @@ document.addEventListener('click', (event) => {
       e.preventDefault();
       menutext.textContent = option.textContent;
       menuDropdown.classList.add("hidden");
+      // Mostrar/ocultar botones de cambio de mes
+    const prevBtn = document.getElementById('prevMes');
+    const nextBtn = document.getElementById('nextMes');
+    if (value === "ultMeses") {
+      prevBtn.classList.remove("hidden");
+      nextBtn.classList.remove("hidden");
+    } else {
+      prevBtn.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+    }
+
+    const chartData = getChartData(value, data);
+    renderChart(chartData);
     });
   });
 
