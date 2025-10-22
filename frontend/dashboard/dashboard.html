@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="shortcut icon" href="../../icono.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script src="https://unpkg.com/scrollreveal"></script>
 </head>
@@ -50,8 +52,7 @@
         </header>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div dir="ltr" data-orientation="horizontal" class="w-full">
-                <div role="tablist" aria-orientation="horizontal"
-                    class="animacionNav h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
+                <nav class="h-10 items-center justify-center rounded-md  p-1 text-muted-foreground grid w-full grid-cols-5 mb-8"
                     tabindex="0" data-orientation="horizontal" style="outline: none;">
                     <a href="dashboard.html" role="tab" aria-selected="true"
                         aria-controls="radix-:r0:-content-dashboard" data-state="active"
@@ -84,10 +85,9 @@
                         </svg>Inventario
                     </a>
                     <a href="movimientos.html" role="tab" aria-selected="false"
-
                         aria-controls="radix-:r0:-content-movements" data-state="inactive"
                         id="radix-:r0:-trigger-movements"
-                        class="bg-orange-100 justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                        class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
                         tabindex="-1" data-orientation="horizontal" data-radix-collection-item="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -96,6 +96,18 @@
                             <polyline points="16 7 22 7 22 13"></polyline>
                         </svg>Movimientos
                     </a>
+                    <a class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                        href="usuarios.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-users h-4 w-4">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Usuarios
+                    </a>
                     <a href="reportes.html" role="tab" aria-selected="false" aria-controls="radix-:r0:-content-reports"
                         data-state="inactive" id="radix-:r0:-trigger-reports"
                         class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
@@ -103,12 +115,13 @@
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-triangle-alert h-4 w-4">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path>
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3">
+                            </path>
                             <path d="M12 9v4"></path>
                             <path d="M12 17h.01"></path>
                         </svg>Reportes
                     </a>
-                </div>
+                </nav>
                 <div data-state="active" data-orientation="horizontal" role="tabpanel"
                     aria-labelledby="radix-:r0:-trigger-dashboard" id="radix-:r0:-content-dashboard" tabindex="0"
                     class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -122,7 +135,7 @@
                                     <h3 class="tracking-tight text-sm font-medium">Total Componentes</h3><svg
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide lucide-package h-4 w-4">
+                                        stroke-linejo   in="round" class="lucide lucide-package h-4 w-4">
                                         <path
                                             d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z">
                                         </path>
@@ -259,7 +272,6 @@
                                         <div class="flex items-center space-x-3">
                                             <div class="p-2 rounded-lg bg-purple-500"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                     class="lucide lucide-memory-stick h-5 w-5 text-white">
@@ -319,73 +331,8 @@
                                     <p class="text-sm text-muted-foreground">Componentes que requieren reabastecimiento
                                     </p>
                                 </div>
-                                <div class="p-6 pt-0 space-y-4">
-                                    <div class="space-y-2 p-4 rounded-lg border bg-red-50">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <p class="font-medium text-sm">Intel Core i7-13700K</p>
-                                                    <p class="text-xs text-gray-500">Procesadores</p>
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 text-xs">
-                                                    Crítico</div>
-                                            </div>
-                                            <div class="space-y-1">
-                                                <div class="flex justify-between text-xs"><span>Stock actual:
-                                                        3</span><span>Mínimo: 10</span></div>
-                                                <div aria-valuemax="100" aria-valuemin="0" role="progressbar"
-                                                    data-state="indeterminate" data-max="100"
-                                                    class="relative w-full overflow-hidden rounded-full bg-secondary h-2">
-                                                    <div data-state="indeterminate" data-max="100"
-                                                        class="h-full w-full flex-1 bg-primary transition-all"
-                                                        style="transform: translateX(-70%);"></div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <div class="space-y-2 p-4 rounded-lg border bg-red-50">
-                                        <div class="flex justify-between items-start">
-                                            <div>
-                                                <p class="font-medium text-sm">ASUS ROG STRIX B650E</p>
-                                                <p class="text-xs text-gray-500">Placas Madre</p>
-                                            </div>
-                                            <div
-                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 text-xs">
-                                                Crítico</div>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <div class="flex justify-between text-xs"><span>Stock actual:
-                                                    2</span><span>Mínimo: 8</span></div>
-                                            <div aria-valuemax="100" aria-valuemin="0" role="progressbar"
-                                                data-state="indeterminate" data-max="100"
-                                                class="relative w-full overflow-hidden rounded-full bg-secondary h-2">
-                                                <div data-state="indeterminate" data-max="100"
-                                                    class="h-full w-full flex-1 bg-primary transition-all"
-                                                    style="transform: translateX(-75%);"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-2 p-4 rounded-lg border bg-red-50">
-                                        <div class="flex justify-between items-start">
-                                            <div>
-                                                <p class="font-medium text-sm">Corsair Vengeance 32GB DDR5</p>
-                                                <p class="text-xs text-gray-500">Memoria RAM</p>
-                                            </div>
-                                            <div
-                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 text-xs">
-                                                Crítico</div>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <div class="flex justify-between text-xs"><span>Stock actual:
-                                                    5</span><span>Mínimo: 15</span></div>
-                                            <div aria-valuemax="100" aria-valuemin="0" role="progressbar"
-                                                data-state="indeterminate" data-max="100"
-                                                class="relative w-full overflow-hidden rounded-full bg-secondary h-2">
-                                                <div data-state="indeterminate" data-max="100"
-                                                    class="h-full w-full flex-1 bg-primary transition-all"
-                                                    style="transform: translateX(-66.6667%);"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="p-6 pt-0 space-y-4" id="alertas-stock">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -395,6 +342,7 @@
         </div>
     </div>
     <script src="js/dashboard.js" type="module"></script>
-    <script src="js/main.js"></script>jh
+    <script src="js/main.js"></script>
 </body>
+
 </html>

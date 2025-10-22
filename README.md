@@ -52,3 +52,4 @@ Empresa dedicada a la distribución y venta mayorista de componentes de hardware
   <li> PartKeepr (https://partkeepr.org/): Sistema open source de gestión de componentes electrónicos.</li>
   <li> Odoo Inventory (https://www.odoo.com): Módulo de inventario de ERP con funciones avanzadas. </li>
   <li> Inventree (https://inventree.readthedocs.io): Sistema de gestión de inventario para proyectos de electrónica. </li>
+

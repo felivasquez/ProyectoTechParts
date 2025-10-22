@@ -41,13 +41,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const location = document.getElementById('location').value.trim();
         const description = document.getElementById('description').value.trim();
 
+        // manejar imagen con Signed URL
+        const fileInput = document.getElementById('product-image');
+        let imageUrl = null;
+
+        if (fileInput?.files?.length) {
+            const file = fileInput.files[0];
+            const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const filePath = `products/${Date.now()}-${safeName}`;
+
+            // Subir al bucket privado
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('imagenes')
+                .upload(filePath, file);
+
+            if (uploadError) {
+                showNotification('Error al subir la imagen: ' + uploadError.message, 'error');
+                return;
+            }
+
+            // Generar Signed URL por 1 año (31,536,000 segundos)
+            const { data: signedData, error: signedError } = await supabase.storage
+                .from('imagenes')
+                .createSignedUrl(filePath, 31536000);
+
+            if (signedError) {
+                showNotification('Error al generar enlace de imagen: ' + signedError.message, 'error');
+                return;
+            }
+
+            imageUrl = signedData.signedUrl; // este link se guarda en la tabla
+        }
+
         let error;
+
         if (id) {
             // Editar producto
             ({ error } = await supabase
                 .from('products')
                 .update({
-                    name, category, brand, model, stock, min_stock, price, location, description
+                    name, category, brand, model, stock, min_stock, price, location, description,
+                    ...(imageUrl && { image_url: imageUrl }) // actualizar imagen solo si subieron una
                 })
                 .eq('id', id));
         } else {
@@ -55,28 +89,28 @@ document.addEventListener('DOMContentLoaded', () => {
             ({ error } = await supabase
                 .from('products')
                 .insert([{
-                    name, category, brand, model, stock, min_stock, price, location, description
+                    name, category, brand, model, stock, min_stock, price, location, description,
+                    image_url: imageUrl
                 }]));
         }
 
         if (error) {
-            showNotification('Error al guardar el producto', 'error');
+            showNotification('Error al guardar el producto: ' + error.message, 'error');
             return;
-        } else {
-            showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
-            form.reset();
-            modal.classList.add('hidden');
-            modal.setAttribute('data-state', 'closed');
-            if (typeof fetchProducts === 'function') {
-                fetchProducts();
-            } else if (window.fetchProducts) {
-                window.fetchProducts();
-            }
         }
+
+        showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
+        form.reset();
+        modal.classList.add('hidden');
+        modal.setAttribute('data-state', 'closed');
+        if (typeof fetchProducts === 'function') fetchProducts();
+        else if (window.fetchProducts) window.fetchProducts();
     });
 
+
+
     // Escucha el evento personalizado para editar
-    window.openEditProductModal = function(product) {
+    window.openEditProductModal = function (product) {
         const modal = document.getElementById('add-product-modal');
         const form = document.getElementById('add-product-form');
         document.getElementById('product-id').value = product.id;

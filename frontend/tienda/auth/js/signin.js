@@ -1,4 +1,4 @@
-import supabase from '../../js/client.js';
+import supabase from './../../../../backend/config/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('signupForm');
@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
         const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-        if (!email || !password || !confirmPassword) {
+        if (!fullName || !email || !password || !confirmPassword) {
             showMessage('Por favor, completa todos los campos.', 'error');
             return;
         }
@@ -34,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: {
+                        full_name: fullName
+                    }
+                }
             });
 
             if (error) {
@@ -41,7 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            showMessage('Usuario registrado exitosamente. Revisa tu correo para confirmar tu cuenta.', 'success');
+            showMessage('✅ Usuario registrado exitosamente. Revisa tu correo para confirmar tu cuenta.', 'success');
+
+            setTimeout(() => {
+                window.location.href = './login.html';
+            }, 5000);
+
             form.reset();
         } catch (err) {
             console.error(err);

@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movimientos</title>
+    <link rel="shortcut icon" href="/icono.svg" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-   <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
 </head>
 
 <body>
@@ -26,14 +27,15 @@
                                     <path d="M12 22V12"></path>
                                     <path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path>
                                     <path d="m7.5 4.27 9 5.15"></path>
-                                </svg></div>
+                                </svg>
+                            </div>
                             <div>
                                 <h1 class="text-xl font-bold text-gray-900">TechParts S.A.</h1>
                                 <p class="text-sm text-gray-500">Sistema de Gestión de Componentes</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <div class="text-sm text-gray-600" id="username">Bienvenido, </div>
+                            <div class="text-sm text-gray-600" id="username"></div>
                             <a href="/views/session/login.html" id="logout-button" type="button"
                                 class="justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 flex items-center gap-2"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -51,8 +53,7 @@
             </header>
             <div class=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div dir="ltr" data-orientation="horizontal" class="w-full">
-                    <div role="tablist" aria-orientation="horizontal"
-                        class="animacionNav h-10 items-center justify-center rounded-md  p-1 text-muted-foreground grid w-full grid-cols-4 mb-8"
+                    <nav class="h-10 items-center justify-center rounded-md  p-1 text-muted-foreground grid w-full grid-cols-5 mb-8"
                         tabindex="0" data-orientation="horizontal" style="outline: none;">
                         <a href="dashboard.html" role="tab" aria-selected="true"
                             aria-controls="radix-:r0:-content-dashboard" data-state="active"
@@ -96,6 +97,18 @@
                                 <polyline points="16 7 22 7 22 13"></polyline>
                             </svg>Movimientos
                         </a>
+                        <a class="justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm flex items-center gap-2"
+                            href="usuarios.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-users h-4 w-4">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Usuarios
+                        </a>
                         <a href="reportes.html" role="tab" aria-selected="false"
                             aria-controls="radix-:r0:-content-reports" data-state="inactive"
                             id="radix-:r0:-trigger-reports"
@@ -110,12 +123,12 @@
                                 <path d="M12 17h.01"></path>
                             </svg>Reportes
                         </a>
-                    </div>
+                    </nav>
                     <div data-state="active" data-orientation="horizontal" role="tabpanel"
                         aria-labelledby="radix-:r0:-trigger-movements" id="radix-:r0:-content-movements" tabindex="0"
                         class="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         <div class="space-y-6">
-                            <div class="ResgistroMov flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div>
                                     <h2 class="text-2xl font-bold text-gray-900">Registro de Movimientos</h2>
                                     <p class="text-gray-600">Historial de entradas y salidas de inventario</p>
@@ -132,7 +145,7 @@
                                     </svg>Registrar Movimiento
                                 </button>
                             </div>
-                            <div class=" HistorialEntySal grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                     <div class="p-6 pt-6">
                                         <div class="flex items-center space-x-2"><svg xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +186,7 @@
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round"
-                                                class=" lucide lucide-file-text h-5 w-5 text-blue-600" >
+                                                class=" lucide lucide-file-text h-5 w-5 text-blue-600">
                                                 <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z">
                                                 </path>
                                                 <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
@@ -182,14 +195,14 @@
                                                 <path d="M16 17H8"></path>
                                             </svg>
                                             <div>
-                                                <p class="text-2xl font-bold text-blue-600"id="total">0</p>
+                                                <p class="text-2xl font-bold text-blue-600" id="total">0</p>
                                                 <p class="text-sm text-gray-600">Movimientos Totales</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="FiltroBusquedaMov rounded-lg border bg-card text-card-foreground shadow-sm">
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
                                 <div class="p-6 pt-6">
                                     <div class="flex flex-col sm:flex-row gap-4">
                                         <div class="relative flex-1"><svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -215,9 +228,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- aca van los siguientes cards de movimientos -->
-                            <div class="space-y-4" id="conteiner-movements">                                
+                            <div class="space-y-4" id="conteiner-movements">
                             </div>
                         </div>
                     </div>
@@ -241,20 +254,8 @@
                         <label class="text-sm font-medium leading-none" for="product_id">Componente</label>
                         <select id="product_id"
                             class="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm">
-                            <option value="Intel Core i7-13700K - Intel">Intel Core i7-13700K - Intel</option>
-                            <option value="Ryzen 5 5600x - Amd">Ryzen 5 5600x - Amd</option>
-                            <option value="MSI B550 - MSI">MSI B550 - MSI</option>
-                            <option value="8gb Ram ddr4 - Corsair">8gb Ram ddr4 - Corsair</option>
-                            <option value="Rx 580 - Amd">Rx 580 - Amd</option>
-                            <option value="Rx 6600 xt - Amd">Rx 6600 xt - Amd</option>
-                            <option value="RTX 5070 - Nvidia">RTX 5070 - Nvidia</option>
-                            <option value="Corsair Vengeance 32GB DDR5 - Corsair">Corsair Vengeance 32GB DDR5 - Corsair
-                            </option>
-                            <option value="ASUS ROG STRIX - Asus">ASUS ROG STRIX - Asus</option>
-                            <option value="Kingston 16gb - Kingston">Kingston 16gb - Kingston</option>
-                            <option value="Ryzen 5500xt - amd">Ryzen 5500xt - amd</option>
-                            <option value="SSD 960gb - Patriot Burst">SSD 960gb - Patriot Burst</option>
-                            <option value="RTX 3090 24gb - EVGA">RTX 3090 24gb - EVGA</option>
+
+                            <option value=""></option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -316,6 +317,6 @@
     </div>
     <script src="js/main.js"></script>
     <script src="js/movimientos.js" type="module"></script>
-    <script src="js/main.js"></script>
 </body>
+
 </html>

@@ -1,88 +1,276 @@
+import supabase from '../../dashboard/js/client.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+     traerProductos();
+});
 
-        // --- ELEMENTOS DEL DOM ---
-        const allProductCards = document.querySelectorAll('.product-card');
-        const totalPriceElement = document.getElementById('total-price');
-        const wattsDisplayElement = document.getElementById('watts-display');
-        const amdFilterButton = document.getElementById('amd-filter');
-        const intelFilterButton = document.getElementById('intel-filter');
+async function traerProductos(){
+    const {data,error} = await supabase
+    .from('products')
+    .select('*')
+    if (error) { 
+        console.error('Error fetching products:', error);
+        return;
+    }
+    const reponse = await fetch('js/textos.json');
+    const textos = await reponse.json();    
+    //filtros Btn 
+    const procesadorButton = document.getElementById('procesador');
+    const motherboardButton = document.getElementById('Motherboard');
+    const memoriaRAMButton = document.getElementById('Memoria-RAM');
 
-        let selectedProduct = null;
+    const allProductCards = document.querySelectorAll('.product-card');
+    const total = document.getElementById('total');
+    const saltarBtn = document.getElementById('saltar');
+    const retrocederBtn = document.getElementById('retroceder');
+    const textosSeccion = document.getElementById('textos-seccion');
+    const wattsDisplayElement = document.getElementById('watts-display');
+    const amdFilterButton = document.getElementById('amd-filter'); 
+    const intelFilterButton = document.getElementById('intel-filter');
 
-        // --- FUNCIÓN PARA ACTUALIZAR EL TOTAL ---
-        function updateSummary() {
-            if (selectedProduct) {
-                // Usamos toLocaleString para el formato de miles, si aplica (ej. 120.350)
-                const price = parseFloat(selectedProduct.dataset.price).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                const watts = selectedProduct.dataset.watts;
-                
-                totalPriceElement.textContent = `Total: $ ${price}`;
-                wattsDisplayElement.textContent = `(${watts} watts)`;
-            } else {
-                // Resetea si no hay nada seleccionado
-                totalPriceElement.textContent = 'Total: $ 0';
-                wattsDisplayElement.textContent = '(0 watts)';
-            }
+    //variables globales
+    const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM'];
+    let indiciesCategoria = 1; 
+    let filtroCategoria = null;
+    let precio = JSON.parse(localStorage.getItem('componentesPrecio')) || {};
+
+
+    function MostrarStorageAlReiniciar() {
+        const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
+        const componentesPrecio = JSON.parse(localStorage.getItem('componentesPrecio')) || {};
+        if (Object.keys(componentesSeleccionados).length === 0) return;
+
+        const totalElement = document.getElementById('total');
+        const totalGuardado = Object.values(componentesPrecio).reduce((acc, curr) => acc + curr, 0);
+        totalElement.textContent = `Total: $${totalGuardado}`;
+
+        // Mostrar productos seleccionados al reiniciar
+        Aplicarfiltros(2);
+    }
+    MostrarStorageAlReiniciar();
+
+    function totalCompra() {
+        const componentesPrecioStorage = JSON.parse(localStorage.getItem('componentesPrecio')) || {}; 
+        const suma = Object.values(precio).reduce((acc, curr) => acc + curr, 0);
+        total.textContent = `Total: $${suma}`;
+    }
+
+    //pasar a la siguiente sección por elegir un producto
+    async function ordenarPorCategoria(avanzar = true) {
+      
+        if (avanzar) indiciesCategoria++;
+
+        if (indiciesCategoria  >= categoriasOrden.length) {
+            console.log('completo');
+            indiciesCategoria = categoriasOrden.length - 1; 
+            return;
         }
+        filtroCategoria = categoriasOrden[indiciesCategoria];  
 
-        // --- FUNCIÓN PARA MANEJAR LA SELECCIÓN DE PRODUCTO ---
-        function handleProductSelection(event) {
-            const clickedCard = event.currentTarget;
-
-            // 1. Deseleccionar si se hace clic en el producto ya seleccionado
-            if (selectedProduct === clickedCard) {
-                clickedCard.classList.remove('border-red-600', 'border-2', 'shadow-xl');
-                selectedProduct = null;
-            } else {
-                // 2. Quita el resaltado de la tarjeta anteriormente seleccionada
-                if (selectedProduct) {
-                    selectedProduct.classList.remove('border-red-600', 'border-2', 'shadow-xl');
+        if(filtroCategoria === 'Procesadores') {
+            MostrarBtn(amdFilterButton);
+            MostrarBtn(intelFilterButton);
+        } else  {
+            OcultarBtn(amdFilterButton);
+            OcultarBtn(intelFilterButton);
+        }
+        // Mostrar el texto correspondiente 
+        MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos)
+        Aplicarfiltros(1);
+    }
+    
+    //aplicar filtros
+    function Aplicarfiltros(tipo) {
+        let filtros = data;
+        switch (tipo) {
+            case 1:
+                if (filtroCategoria) {
+                    filtros = filtros.filter(producto => producto.category === filtroCategoria);
                 }
-                
-                // 3. Resalta la nueva tarjeta seleccionada
-                clickedCard.classList.add('border-red-600', 'border-2', 'shadow-xl');
-                selectedProduct = clickedCard;
-            }
-
-            updateSummary();
+                mostrarProductos(filtros);
+                break;
+            case 2:
+                const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
+                const storageIDs = Object.values(componentesSeleccionados);
+                filtros = filtros.filter(producto => storageIDs.includes(producto.id));
+                mostrarSeleccionados(filtros); // mostrar en el contenedor de seleccionados
+                break;
         }
+    }
 
-        // --- FUNCIÓN PARA FILTRAR POR MARCA ---
-        function filterProducts(brand) {
-            // Recorrer y filtrar las tarjetas
-            allProductCards.forEach(card => {
-                if (card.dataset.brand === brand) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+    //econtrar palabras claves en el nombre del producto para así filtrarlo por AMD y Intel (ya que en la base de datos no hay nada que diga si es intel o AMD)
+    function EncontrarPalabra(palabrasClave) {
+        let filtros = data;
+        filtros = filtros.filter(producto => 
+            palabrasClave.some(palabra => 
+                producto.name.toLowerCase().includes(palabra)
+            )
+        );
+        mostrarProductos(filtros);
+    } 
 
-            // Actualizar el estilo de los botones de filtro
-            const activeClass = 'border-red-600 text-red-600';
-            const inactiveClass = 'border-transparent text-gray-600';
+    //Funciones para mostrar y ocultar botones
+    function OcultarBtn(btn) {
+        btn.classList.add('hidden');
+    }
+    function MostrarBtn(btn) {
+        btn.classList.remove('hidden');
+    }
 
-            if (brand === 'intel') {
-                intelFilterButton.className = intelFilterButton.className.replace(inactiveClass, activeClass);
-                amdFilterButton.className = amdFilterButton.className.replace(activeClass, inactiveClass);
-            } else if (brand === 'amd') {
-                amdFilterButton.className = amdFilterButton.className.replace(inactiveClass, activeClass);
-                intelFilterButton.className = intelFilterButton.className.replace(activeClass, inactiveClass);
-            }
-        }
-        
-        // --- EVENT LISTENERS E INICIALIZACIÓN ---
+    //funcion para activar y desactivar botones
+    function activarBtn(BotonActivo, BotonInactivo) {
+        // Activar botón
+        BotonActivo.classList.add('border-blue-600', 'text-blue-600');
+        BotonActivo.classList.remove('border-transparent', 'text-gray-600');
+        // Inactivar botón
+        BotonInactivo.classList.remove('border-blue-600', 'text-blue-600');
+        BotonInactivo.classList.add('border-transparent', 'text-gray-600');
+    }
 
-        // Asignar el evento de clic a cada tarjeta de producto
-        allProductCards.forEach(card => {
-            card.addEventListener('click', handleProductSelection);
-            card.classList.add('cursor-pointer'); 
-        });
+    //funcion para los botones de categoria
+    function Botones(boton,categoria,botonesMostrar = [], botonesOcultar = []) {
+       
+      boton.addEventListener('click', () => {
+            filtroCategoria = categoria;
+            Aplicarfiltros(1);                 
+            indiciesCategoria = categoriasOrden.indexOf(categoria);
+            botonesMostrar.forEach(btn => MostrarBtn(btn));
+            botonesOcultar.forEach(btn => OcultarBtn(btn)); 
+            MostrarTextoIndice( indiciesCategoria, categoriasOrden, textos) 
+        });          
+    }
 
-        // Asignar eventos a los botones de filtro
-        intelFilterButton.addEventListener('click', () => filterProducts('intel'));
-        amdFilterButton.addEventListener('click', () => filterProducts('amd'));
+    //mostrar todos los productos al cargar la página
+    filtroCategoria = 'Procesadores';
+    Aplicarfiltros(1);      
+    MostrarBtn(amdFilterButton);
+    MostrarBtn(intelFilterButton);
+    textosSeccion.innerHTML = textos['Procesadores'];    
+    //parte en donde se configura los botones para filtrar por categoría    
+    Botones(procesadorButton, 'Procesadores', [amdFilterButton, intelFilterButton], []);
+    Botones(motherboardButton, 'Placas Madre', [], [amdFilterButton, intelFilterButton]);
+    Botones(memoriaRAMButton, 'Memoria RAM', [], [amdFilterButton, intelFilterButton]);
+    //botones para saltar y retroceder entre categorías
 
-        // Inicia mostrando los productos Intel por defecto (como en la imagen)
-        filterProducts('intel'); 
+    saltarBtn.addEventListener('click', () => {
+         ordenarPorCategoria(true);
+        console.log(filtroCategoria);
+
     });
+    retrocederBtn.addEventListener('click', () => {
+      if(indiciesCategoria > 0){
+        ordenarPorCategoria(false);
+        indiciesCategoria--;
+        filtroCategoria = categoriasOrden[indiciesCategoria];
+        if (filtroCategoria === 'Procesadores') {
+      MostrarBtn(amdFilterButton);
+      MostrarBtn(intelFilterButton);
+    } else {
+      OcultarBtn(amdFilterButton);
+      OcultarBtn(intelFilterButton);
+    }
+
+    MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos);
+
+    Aplicarfiltros(1);
+
+    console.log(filtroCategoria);
+     }    
+    });
+    //textos dinámicos de cada boton    
+   function MostrarTextoIndice(indiceActual, categorias, textos) {
+    
+    for(let i = 0; i < categorias.length; i++) {
+      if(indiceActual === i) {
+        const categoriaActual = categorias[i];
+
+        if(textos[categoriaActual]) {
+          textosSeccion.innerHTML = textos[categoriaActual];
+      }else {
+          contenedorTexto.innerHTML = ''; // vacío si no hay texto
+          console.warn('No se encontró texto para:', categoriaActual);
+            }
+    } 
+  }
+}
+
+    //filtros por AMD e INTEL
+    amdFilterButton.addEventListener('click', () => {
+        const palabrasClave =  ["amd", "ryzen"];
+        EncontrarPalabra(palabrasClave)
+        activarBtn(amdFilterButton, intelFilterButton)
+    })
+    intelFilterButton.addEventListener('click', () => {
+        const palabrasClave =  ["intel", "core"];
+        EncontrarPalabra(palabrasClave)
+        activarBtn(intelFilterButton, amdFilterButton)
+    })
+
+    //funcion para mostrar los productos en el contenedor
+    function mostrarProductos(array) {
+        const contenedor = document.getElementById('products-grid');
+        contenedor.innerHTML = ''; 
+        array.forEach(productos => { 
+            const productCardHTML = renderCard(productos); 
+            productCardHTML.addEventListener('click', () => {
+                let categoria = productos.category;
+                let idcomponente = productos.id;
+                precio[categoria] = productos.price;
+                guardarComponentes(categoria,idcomponente)
+                ordenarPorCategoria();
+                totalCompra();
+                Aplicarfiltros(2);
+            })
+            contenedor.appendChild(productCardHTML); 
+        });
+    }
+
+    function guardarComponentes(tipo,idcomponente) {
+        localStorage.getItem('componentesSeleccionados');
+        let componentesPrecioAccountSeccion = JSON.parse(localStorage.getItem('componentesPrecio')) || {}; 
+        let ComponentesSelect = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {}; 
+        ComponentesSelect[tipo] = idcomponente;
+        componentesPrecioAccountSeccion[tipo] = precio[tipo];
+        localStorage.setItem('componentesPrecio', JSON.stringify(componentesPrecioAccountSeccion));
+        localStorage.setItem('componentesSeleccionados', JSON.stringify(ComponentesSelect));
+    }
+
+    // función nueva para mostrar los productos seleccionados (crea nuevos spans sin borrar los anteriores)
+    function mostrarSeleccionados(productosSeleccionados) {
+        const contenedorN = document.getElementById('componentes-elegidos');
+        contenedorN.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
+        productosSeleccionados.forEach(p => {
+            const span = document.createElement('span');
+            span.textContent = p.name;
+            span.classList.add('block', 'text-white', 'font-semibold', 'fade-in');
+            contenedorN.appendChild(span);
+        });
+    }
+}
+// --- RENDER CARD ---
+function renderCard(producto) {
+    const card = `
+        <button class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer">
+            <div class="relative overflow-hidden">
+                <span class="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-sky-400 px-2.5 py-0.5 text-xs font-medium text-gray-900">Más vendido</span>
+                <span class="absolute top-3 right-3 z-10 inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-xs font-medium text-white">-18%</span>
+                <div class="aspect-square overflow-hidden bg-gray-700"></div>
+            </div>
+            <div class="p-4">
+                <div class="mb-2">
+                    <span class="inline-flex items-center rounded-md bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300">${producto.category}</span>
+                </div>
+                <h3 class="font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">${producto.name}</h3>
+                <div class="flex items-center gap-1 mb-3">
+                    <span class="text-sm text-gray-400">(124)</span>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="text-xl font-bold text-sky-400">$${producto.price}</span>
+                </div>       
+            </div>
+        </button>
+    `;
+    const div = document.createElement('div');
+    div.innerHTML = card.trim();
+    return div.firstChild;
+}

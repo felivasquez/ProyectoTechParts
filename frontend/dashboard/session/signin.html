@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse - TechParts S.A.</title>
+    <link rel="shortcut icon" href="/icono.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -215,46 +216,7 @@
             </div>
         </div>
     </div>
-    <script>
-        function showAppMessage(message, type = 'success') {
-            const messageBox = document.getElementById('messageBox');
-            const appMessage = document.getElementById('app-message');
-            appMessage.textContent = message;
-            messageBox.style.display = 'block'; // Asegura que el div del mensaje se muestre
-
-            // Estilos del mensaje
-            if (type === 'success') {
-                appMessage.style.color = 'green';
-            } else if (type === 'error') {
-                appMessage.style.color = 'red';
-            }
-            appMessage.style.display = 'block';
-
-
-            setTimeout(() => {
-                appMessage.style.display = 'none';
-                messageBox.style.display = 'none';
-            }, 5000);
-        }
-
-        document.getElementById('signupForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                showAppMessage('Las contraseñas no coinciden.', 'error');
-                return;
-            }
-
-
-            showAppMessage('¡Registro exitoso! Ahora puedes iniciar sesión.', 'success');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-        });
-    </script>
-        <div class="relative z-20 w-full flex justify-center mt-8">
+    <script src="./js/signin.js" type="module"></script>
 </body>
+
 </html>
