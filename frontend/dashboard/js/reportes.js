@@ -1,9 +1,13 @@
 import supabase from './client.js';
 
+
+
+let chartt;
 // Menu despegable (variables)
 const btn = document.getElementById('menuButton');
 const menuDropdown = document.getElementById('menuDropdown');
 const menutext = document.getElementById('menutext');
+let selectedOption = null;
 // mostrar/ocultar menu
 btn.addEventListener('click', () => {
   menuDropdown.classList.remove('hidden');
@@ -12,14 +16,17 @@ btn.addEventListener('click', () => {
 document.addEventListener('click', (event) => {
   if (!btn.contains(event.target) && !menuDropdown.contains(event.target)) {
     menuDropdown.classList.add('hidden');
-  }})
+  }
+})
 // seleccionar una opcion
-   menuDropdown.querySelectorAll("a[data-value]").forEach(option => {
-    option.addEventListener("click", (e) => {
-      e.preventDefault();
-      menutext.textContent = option.textContent;
-      menuDropdown.classList.add("hidden");
-      // Mostrar/ocultar botones de cambio de mes
+menuDropdown.querySelectorAll("a[data-value]").forEach(option => {
+  option.addEventListener("click", (e) => {
+    e.preventDefault();
+    menutext.textContent = option.textContent;
+    const value = option.dataset.value;
+    menuDropdown.classList.add("hidden");
+
+    // Mostrar/ocultar botones de cambio de mes
     const prevBtn = document.getElementById('prevMes');
     const nextBtn = document.getElementById('nextMes');
     if (value === "ultMeses") {
@@ -32,11 +39,14 @@ document.addEventListener('click', (event) => {
 
     const chartData = getChartData(value, data);
     renderChart(chartData);
-    });
   });
+});
 
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 // datos traidos de supabase
 const ctx = document.getElementById('lineChart').getContext('2d');
 const { data, error } = await supabase
@@ -367,8 +377,9 @@ alertas.textContent = alertasNum;
 }
 cuadrosReport();
 
-  //-------------------------------------------------------------
+//-------------------------------------
 
+//------------------------------------------------------
 const options = {
   series: [
     {
