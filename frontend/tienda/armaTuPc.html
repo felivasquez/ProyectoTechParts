@@ -4,18 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arma Tu PC</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-</head>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Arma tu pc</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
 </head>
@@ -234,14 +223,17 @@
                     Volver atrás
                 </a>
                 <h1 class="text-2xl font-bold text-gray-900 mb-2">Elegí tu Procesador</h1>
-                <p id="textos-seccion" class="text-sm text-gray-600 mb-8 max-w-2xl">
+                <p class="text-sm text-gray-600 mb-8 max-w-2xl">
+                    Tu procesador es la pieza central del rendimiento de los programas. Para saber si un procesador es
+                    potente lo que tenés que medir es la frecuencia, el ancho de bus, la memoria caché y los núcleos e
+                    hilos de procesamiento.
                 </p>
 
-                <div class="flex flex-col lg:flex-row gap-8 ">
+                <div class="flex flex-col lg:flex-row gap-8 container mx-auto w-11/12">
 
-                    <div class="w-full lg:w-1/4 from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg shadow-md border h-fit hidden lg:block">
-                        <div class="space-y-4" >
-                            <button id="procesador" class="flex items-center p-3 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                    <div class="barra_lateral w-full lg:w-1/4 space-y-4">
+                        <div class="bg-gradient-to-b from-gray-800/70 to-gray-900/40 border border-gray-700 rounded-xl shadow-md p-4 space-y-4" >
+                            <button id="procesador" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
                                 <div
                                     class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
                                     <span class="font-mono text-lg">P</span>
@@ -250,15 +242,15 @@
                                     class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Procesador
                                 </span>
                             </button>
-                            <button id="Motherboard" class="flex items-center p-3 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                            <button id="Motherboard" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
                                 <div
                                     class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
                                     <span class="font-mono text-lg">M</span>                                    
                                 </div>
                                 <span
-                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2"> Motherboard</span>
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Motherboard</span>
                             </button>
-                            <button id="Memoria-RAM" class="flex items-center p-3 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                            <button id="Memoria-RAM" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
                                 <div
                                     class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
                                     <span class="font-mono text-lg">R</span>
@@ -266,28 +258,64 @@
                                 <span
                                     class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Memoria RAM</span>
                             </button>
+                            <button id="targetas-Graficas" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
+                                    <span class="font-mono text-lg">G</span>
+                                </div>
+                                <span
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Targetas Grafica</span>
+                            </button>
+                            <button id="Almacenamiento" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
+                                    <span class="font-mono text-lg">A</span>
+                                </div>
+                                <span
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Almacenamiento</span>
+                            </button>
+                            <button id="Fuente" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
+                                    <span class="font-mono text-lg">F</span>
+                                </div>
+                                <span
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Fuente de poder</span>
+                            </button>
+                            <button id="Gabinete" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
+                                    <span class="font-mono text-lg">F</span>
+                                </div>
+                                <span
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Gabinete</span>
+                            </button>
+                            <button id="Adicionales" class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 border border-gray-300">
+                                    <span class="font-mono text-lg">F</span>
+                                </div>
+                                <span
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Adicionales</span>
+                            </button>
                         </div>
+                    <div class="bg-gradient-to-b from-gray-800/70 to-gray-900/40 border border-gray-700 rounded-xl shadow-md p-4 space-y-4">
+                           
+                                        <div class="space-y-4">
+                                            <span id="total" class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Total:</span>
+                                        </div>
+                                    
+                                
+                                    <div id="componentes-elegidos" class="space-y-4">
+                                        <span  class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">componentes:</span>
+                                        <span  class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2"></span>
+                                    </div>
+                                
+                        
+                    </div>  
                     </div>
-                    <div class="w-full lg:w-1/4 from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg shadow-md border h-fit hidden lg:block">
-                        <div class="space-y-4">
-                            <span id="total" class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Total:</span>
-                        </div>
-                    </div>
-                    <div class="w-full lg:w-1/4 from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg shadow-md border h-fit hidden lg:block">
-                        <div id="componentes-elegidos" class="space-y-4">
-                            <span  class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">componentes:</span>
-                            <span  class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2"></span>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <button id="saltar" class="flex items-center p-3 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
-                    <span class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">saltar</span>
-                </button>
-                <button id="retroceder" class="flex items-center p-3 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
-                    <span class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">retroceder</span>
-                </button></div>
                     
-                    <div class="w-full lg:w-3/4">
+                    <div class="lg:w-2/3">
 
                         <div class="flex items-center space-x-4 mb-6">
                             <button id="amd-filter" class="px-6 py-2 border-b-2 border-transparent text-gray-600 font-semibold hover:text-gray-900 transition duration-150 ">
@@ -303,11 +331,9 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
-    <script type="module" src="js/carrito.js"></script>
     <script type="module" src="js/PcArmadas.js"></SCript>
 </body>
 
