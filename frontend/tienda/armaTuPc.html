@@ -221,8 +221,8 @@
                     </svg>
                     <h1 class=" text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8">Volver atrás</h1>
                 </a>
-                <h1 class="pl-8 text-2xl font-bold text-gray-600 mb-2">Elegí tu Procesador</h1>
-                <p class="pl-8 text-sm text-gray-300 mb-8 max-w-2xl">
+                <h1 class="pl-8 text-2xl font-bold text-gray-600 mb-2" id="tituloPc"></h1>
+                <p class="pl-8 text-sm text-gray-300 mb-8 max-w-2xl" id="textos-seccion">
                     Tu procesador es la pieza central del rendimiento de los programas. Para saber si un procesador es
                     potente lo que tenés que medir es la frecuencia, el ancho de bus, la memoria caché y los núcleos e
                     hilos de procesamiento.
@@ -329,7 +329,7 @@
                                     class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Memoria
                                     RAM</span>
                             </button>
-                            <button id="targetas-Graficas"
+                            <button id="tarjeta-Graficas"
                                 class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -339,7 +339,7 @@
                                     <line x1="12" x2="12" y1="17" y2="21"></line>
                                 </svg>
                                 <span
-                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Targetas
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Tarjeta
                                     Grafica</span>
                             </button>
                             <button id="Almacenamiento"
@@ -547,11 +547,11 @@
                                 <span id="total" class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Total:</span>
                             <div class="flex flex-col-4 gap-2 ">
                             <!-- Botón Volver Atrás -->
-                            <button class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
+                            <button id="retroceder" class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
                                 VOLVER ATRÁS
                             </button>
                             <!-- Botón Saltear Paso -->
-                            <button class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
+                            <button id="saltar" class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
                                 SALTEAR PASO 
                             </button>
                         </div>
@@ -584,5 +584,4 @@
     <script src="//code.tidio.co/v7ce3nirgobvtabgu1awhmnsescp1ihg.js" async></script>
     <script type="module" src="./js/main.js"></script>
 </body>
-
 </html>

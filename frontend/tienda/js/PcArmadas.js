@@ -15,9 +15,15 @@ async function traerProductos(){
     const reponse = await fetch('js/textos.json');
     const textos = await reponse.json();    
     //filtros Btn 
-    const procesadorButton = document.getElementById('procesador');
-    const motherboardButton = document.getElementById('Motherboard');
-    const memoriaRAMButton = document.getElementById('Memoria-RAM');
+    const procesadorBtn = document.getElementById('procesador');
+    const motherboardBtn = document.getElementById('Motherboard');
+    const memoriaRAMBtn = document.getElementById('Memoria-RAM');
+    const tarjetaGraficaBtn = document.getElementById('tarjeta-Graficas');
+    const AlmacenamientoBtn = document.getElementById('Almacenamiento');
+    const FuenteBtn = document.getElementById('Fuente');
+    const gabineteBtn = document.getElementById('Gabinete')
+    const adicionalesBtn = document.getElementById('Adicionales') 
+
 
     const allProductCards = document.querySelectorAll('.product-card');
     const total = document.getElementById('total');
@@ -27,9 +33,10 @@ async function traerProductos(){
     const wattsDisplayElement = document.getElementById('watts-display');
     const amdFilterButton = document.getElementById('amd-filter'); 
     const intelFilterButton = document.getElementById('intel-filter');
+    const tituloPc = document.getElementById('tituloPc');
 
     //variables globales
-    const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM'];
+    const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM','Tarjetas Gráficas','Almacenamiento','Fuente','Gabinete'];
     let indiciesCategoria = 1; 
     let filtroCategoria = null;
     let precio = JSON.parse(localStorage.getItem('componentesPrecio')) || {};
@@ -63,10 +70,14 @@ async function traerProductos(){
         if (indiciesCategoria  >= categoriasOrden.length) {
             console.log('completo');
             indiciesCategoria = categoriasOrden.length - 1; 
+            if(indiciesCategoria = categoriasOrden.length - 1){
+                finalizarCompra()
+            }
             return;
         }
         filtroCategoria = categoriasOrden[indiciesCategoria];  
 
+        
         if(filtroCategoria === 'Procesadores') {
             MostrarBtn(amdFilterButton);
             MostrarBtn(intelFilterButton);
@@ -78,7 +89,12 @@ async function traerProductos(){
         MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos)
         Aplicarfiltros(1);
     }
-    
+    function finalizarCompra() {
+        saltarBtn.innerHTML = "finalizar";
+        saltarBtn.addEventListener('click',() => {
+            window.location.href = '/frontend/tienda/checkout.html';
+        })
+    }
     //aplicar filtros
     function Aplicarfiltros(tipo) {
         let filtros = data;
@@ -129,7 +145,7 @@ async function traerProductos(){
 
     //funcion para los botones de categoria
     function Botones(boton,categoria,botonesMostrar = [], botonesOcultar = []) {
-       
+
       boton.addEventListener('click', () => {
             filtroCategoria = categoria;
             Aplicarfiltros(1);                 
@@ -146,14 +162,21 @@ async function traerProductos(){
     MostrarBtn(amdFilterButton);
     MostrarBtn(intelFilterButton);
     textosSeccion.innerHTML = textos['Procesadores'];    
+
     //parte en donde se configura los botones para filtrar por categoría    
-    Botones(procesadorButton, 'Procesadores', [amdFilterButton, intelFilterButton], []);
-    Botones(motherboardButton, 'Placas Madre', [], [amdFilterButton, intelFilterButton]);
-    Botones(memoriaRAMButton, 'Memoria RAM', [], [amdFilterButton, intelFilterButton]);
+    Botones(procesadorBtn, 'Procesadores', [amdFilterButton, intelFilterButton], []);
+    Botones(motherboardBtn, 'Placas Madre', [], [amdFilterButton, intelFilterButton]);
+    Botones(memoriaRAMBtn, 'Memoria RAM', [], [amdFilterButton, intelFilterButton]);
+    Botones(tarjetaGraficaBtn, 'Tarjetas Gráficas', [], [amdFilterButton, intelFilterButton]);
+    Botones(AlmacenamientoBtn, 'Almacenamiento', [], [amdFilterButton, intelFilterButton]);
+    Botones(FuenteBtn, 'Fuente', [], [amdFilterButton, intelFilterButton]);
+    Botones(gabineteBtn, 'Gabinete', [], [amdFilterButton, intelFilterButton]);
+       
+    
     //botones para saltar y retroceder entre categorías
 
     saltarBtn.addEventListener('click', () => {
-         ordenarPorCategoria(true);
+        ordenarPorCategoria(true);
         console.log(filtroCategoria);
 
     });
@@ -178,16 +201,17 @@ async function traerProductos(){
      }    
     });
     //textos dinámicos de cada boton    
-   function MostrarTextoIndice(indiceActual, categorias, textos) {
-    
+   function MostrarTextoIndice(indiceActual, categorias, textos) {            
     for(let i = 0; i < categorias.length; i++) {
       if(indiceActual === i) {
         const categoriaActual = categorias[i];
 
+        tituloPc.innerHTML = `Eligiendo: ${categoriaActual}` 
+
         if(textos[categoriaActual]) {
           textosSeccion.innerHTML = textos[categoriaActual];
       }else {
-          contenedorTexto.innerHTML = ''; // vacío si no hay texto
+          textosSeccion.innerHTML = ''; // vacío si no hay texto
           console.warn('No se encontró texto para:', categoriaActual);
             }
     } 
