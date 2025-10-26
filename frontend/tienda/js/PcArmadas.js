@@ -190,16 +190,50 @@ async function traerProductos(){
     }
 
     // función nueva para mostrar los productos seleccionados (crea nuevos spans sin borrar los anteriores)
+    const div = document.createElement('div');
+    div.innerHTML = card.trim();
+    return div.firstChild;
     function mostrarSeleccionados(productosSeleccionados) {
-        const contenedorN = document.getElementById('componentes-elegidos');
-        contenedorN.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
-        productosSeleccionados.forEach(p => {
-            const span = document.createElement('span');
-            span.textContent = p.name;
-            span.classList.add('block', 'text-white', 'font-semibold', 'fade-in');
-            contenedorN.appendChild(span);
-        });
-    }
+    const contenedorN = document.getElementById('componentes-elegidos');
+    contenedorN.innerHTML = ''; // Limpia antes de mostrar los nuevos seleccionados
+//targeta del carrito del armado de pc :)
+    productosSeleccionados.forEach(producto => {
+        const cardSeleccionada = `
+        <div class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer ">
+            <div class="flex items-start p-2 space-x-2 ">
+            <div class="relative bg-gray-700">
+                <img
+                src="${producto.image_url}"
+                alt="${producto.name}"
+                class="w-24 h-30 object-contain"
+                />
+            </div>
+
+            <div class="flex-1">
+                <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors line-clamp-2">
+                ${producto.name}
+                </h3>
+
+                <div class="flex flex-col leading-block">
+                <span class="text-sky-400 text-xl font-bold">$${producto.price}</span>
+                </div>
+                    <div class="pl-6 flex items-center">
+                        <button type="button" class="decrement-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >-</button>
+                            <input type="text" class="w-5 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" value="1" readonly />
+                        <button type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >+</button>
+                    </div>
+                <div class="mt-1 flex items-center space-x-2">
+                <span class="text-green-600 text-sm font-semibold flex items-center">✔️ Compatible</span>
+                </div>
+            </div>
+            </div>
+        </div>
+        `;
+ 
+    const div = document.createElement('div');
+    div.innerHTML = cardSeleccionada.trim();
+    contenedorN.appendChild(div.firstChild);
+  });}
 }
 
 // --- RENDER CARD ---
@@ -243,4 +277,7 @@ function renderCard(producto) {
     const div = document.createElement('div');
     div.innerHTML = card.trim();
     return div.firstChild;
+    
+
+
 }
