@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arma tu pc</title>
+    <title>Arma tu pc</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
 </head>
@@ -16,6 +17,14 @@
                 <div class="flex items-center gap-2">
                     <div
                         class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500">
+                        <a href="home.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-monitor h-5 w-5 text-gray-900">
+                                <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                                <line x1="8" x2="16" y1="21" y2="21"></line>
+                                <line x1="12" x2="12" y1="17" y2="21"></line>
+                            </svg></a>
                         <a href="home.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round"
@@ -152,6 +161,7 @@
                             <a href="#"
                                 class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">Apple
                                 </a>
+                                </a>
                             <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">$599</p>
                         </div>
 
@@ -213,16 +223,11 @@
         <!--Armado de PCs-->
         <div class="bg-gray-900 min-h-screen p-4 sm:p-8 pb-32 lg:pb-8">
             <div class="max-w-7xl mx-auto">
-                <a href="home.html">
-                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                        </path>
-                    </svg>
-                    <h1 class=" text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8">Volver atrás</h1>
+                <a href="home.html"
+                     class=" text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8 mb-2">Volver atrás
                 </a>
-                <h1 class="pl-8 text-2xl font-bold text-gray-600 mb-2" id="tituloPc"></h1>
-                <p class="pl-8 text-sm text-gray-300 mb-8 max-w-2xl" id="textos-seccion">
+                <h1 class="pl-8 text-2xl font-bold text-gray-600 mb-2">Elegí tu Procesador</h1>
+                <p class="pl-8 text-sm text-gray-300 mb-8 max-w-2xl">
                     Tu procesador es la pieza central del rendimiento de los programas. Para saber si un procesador es
                     potente lo que tenés que medir es la frecuencia, el ancho de bus, la memoria caché y los núcleos e
                     hilos de procesamiento.
@@ -329,7 +334,7 @@
                                     class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Memoria
                                     RAM</span>
                             </button>
-                            <button id="tarjeta-Graficas"
+                            <button id="targetas-Graficas"
                                 class="w-full flex items-center p-1 rounded-md hover:bg-gray-800 transition duration-150 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -339,7 +344,7 @@
                                     <line x1="12" x2="12" y1="17" y2="21"></line>
                                 </svg>
                                 <span
-                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Tarjeta
+                                    class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Targetas
                                     Grafica</span>
                             </button>
                             <button id="Almacenamiento"
@@ -537,24 +542,30 @@
                         </div>
                         <!--recio total de componentes-->
                         <div class="bg-gradient-to-b from-gray-800/70 to-gray-900/40 border border-gray-700 rounded-xl shadow-md p-4 space-y-4">
-                            <div id="componentes-elegidos" class="space-y-4">
-                            <span
-                                class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">componentes:</span>
-                            <span
-                                class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2"></span>
-                            </div>
-                            <div class="space-y-4">
-                                <span id="total" class="ml-3 font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">Total:</span>
-                            <div class="flex flex-col-4 gap-2 ">
-                            <!-- Botón Volver Atrás -->
-                            <button id="retroceder" class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
-                                VOLVER ATRÁS
-                            </button>
-                            <!-- Botón Saltear Paso -->
-                            <button id="saltar" class=" border border-purple-500 text-purple-500 font-semibold px-4 py-2 rounded-sm hover:bg-purple-50 transition">
-                                SALTEAR PASO 
-                            </button>
-                        </div>
+                            <div class="space-y-4 text-center">
+                                <!-- Total -->
+                                <div class="flex justify-center items-baseline space-x-2">
+                                <span class="text-white text-lg font-medium">Total:</span>
+                                <span id="total" class="text-purple-400 text-xl font-bold"></span>
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="flex justify-center gap-3">
+                                <!-- Botón Volver Atrás -->
+                                <button
+                                    class="border border-purple-500 text-purple-500 font-semibold text-sm px-5 py-2 rounded-sm uppercase tracking-wide transition duration-200 hover:bg-purple-500/10 active:scale-95">
+                                    Volver Atrás
+                                </button>
+
+                                <!-- Botón Saltear Paso -->
+                                <button
+                                    class="border border-purple-500 text-purple-500 font-semibold text-sm px-5 py-2 rounded-sm uppercase tracking-wide transition duration-200 hover:bg-purple-500/10 active:scale-95">
+                                    Saltear Paso
+                                </button>
+                                </div>
+
+                                <!-- Contenedor de componentes elegidos -->
+                                <div id="componentes-elegidos" class="space-y-2"></div>
                             </div>
                         </div>
                     </div>
@@ -572,7 +583,7 @@
                             </button>
                         </div>
 
-                        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
                         </div>
                     </div>
