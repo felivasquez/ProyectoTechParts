@@ -26,6 +26,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+ const camposTecnicosPorCategoria = {
+      "Procesadores": ["socket", "tdp", "frecuencia_base", "frecuencia_boost"],
+      "Placas Madre": ["socket", "chipset", "tipo_memoria", "slots_memoria", "formato"],
+      "Memoria RAM": ["tipo_memoria", "frecuencia", "capacidad_gb", "cantidad_modulos"],
+      "Tarjetas Gráficas": ["interfaz", "longitud_mm", "tdp", "recomendacion_fuente_w"],
+      "Almacenamiento": ["tipo_almacenamiento", "interfaz", "capacidad_gb", "longitud_mm"]
+     };
+ 
+    function generarCamposTecnicos(categoriaV, valores = {}) {
+    // Elimina campos técnicos previos
+    document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
+
+    const campos = camposTecnicosPorCategoria[categoriaV] || [];
+    if (campos.length === 0) return;
+
+    const grid = document.createElement('div');
+    grid.classList.add('grid', 'grid-cols-2', 'gap-4', 'campo-tecnico', 'mt-2');
+
+    campos.forEach(campo => {
+        const div = document.createElement('div');
+
+        const label = document.createElement('label');
+        label.textContent = campo;
+        label.classList.add('text-sm', 'font-medium', 'text-gray-700');
+        label.htmlFor = campo;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = campo;
+        input.name = campo;
+        input.value = valores[campo] || ''; 
+        input.classList.add(
+            'w-full', 'rounded-md', 'border', 'border-gray-300', 'px-3', 'py-2', 'text-sm',
+            'shadow-sm', 'focus:border-blue-500', 'focus:ring', 'focus:ring-blue-500/50'
+        );
+
+        div.appendChild(label);
+        div.appendChild(input);
+        grid.appendChild(div);
+    });
+
+    // Insertar antes del textarea de descripción
+    form.insertBefore(grid, form.querySelector('#description').parentElement);
+}
+
     // Lógica para agregar o editar
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -41,6 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const location = document.getElementById('location').value.trim();
         const description = document.getElementById('description').value.trim();
 
+
+         const formData = new FormData(form);
+         const producto = {};
+         const descripciones_tecnicas = [];
+         formData.forEach((valor, key) => {
+         producto[key] = valor;
+    if (camposTecnicosPorCategoria[producto.category]?.includes(key)) {
+        descripciones_tecnicas.push(`${key}: ${valor}`);
+    }
+  });
+
+  producto.descripciones_tecnicas = descripciones_tecnicas;
+
+  console.log("Producto listo para guardar:", producto);
+  alert(`Producto agregado con ${descripciones_tecnicas.length} descripciones técnicas.`);
         // manejar imagen con Signed URL
         const fileInput = document.getElementById('product-image');
         let imageUrl = null;
@@ -73,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imageUrl = signedData.signedUrl; // este link se guarda en la tabla
         }
 
+    
         let error;
 
         if (id) {
@@ -105,7 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.setAttribute('data-state', 'closed');
         if (typeof fetchProducts === 'function') fetchProducts();
         else if (window.fetchProducts) window.fetchProducts();
+
     });
+    
 
 
 
@@ -124,6 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('location').value = product.location || '';
         document.getElementById('description').value = product.description || '';
         document.getElementById('submit-product-btn').textContent = 'Guardar cambios';
+
+        generarCamposTecnicos(product.category, product);
+
         modal.classList.remove('hidden');
         modal.setAttribute('data-state', 'open');
     };
