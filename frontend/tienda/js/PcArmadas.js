@@ -2,7 +2,7 @@ import supabase from '../../dashboard/js/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
      traerProductos();
- });
+});
 
 async function traerProductos(){
     const {data,error} = await supabase
@@ -12,7 +12,8 @@ async function traerProductos(){
         console.error('Error fetching products:', error);
         return;
     }
-
+    const reponse = await fetch('js/textos.json');
+    const textos = await reponse.json();    
     //filtros Btn 
     const procesadorBtn = document.getElementById('procesador');
     const motherboardBtn = document.getElementById('Motherboard');
@@ -25,7 +26,10 @@ async function traerProductos(){
 
 
     const allProductCards = document.querySelectorAll('.product-card');
-    const total = document.getElementById('total'); 
+    const total = document.getElementById('total');
+    const saltarBtn = document.getElementById('saltar');
+    const retrocederBtn = document.getElementById('retroceder');
+    const textosSeccion = document.getElementById('textos-seccion');
     const wattsDisplayElement = document.getElementById('watts-display');
     const amdFilterButton = document.getElementById('amd-filter'); 
     const intelFilterButton = document.getElementById('intel-filter');
@@ -35,7 +39,8 @@ async function traerProductos(){
     const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM','Tarjetas Gráficas','Almacenamiento','Fuente','Gabinete'];
     let indiciesCategoria = 1; 
     let filtroCategoria = null;
-    let precio = {};
+    let precio = JSON.parse(localStorage.getItem('componentesPrecio')) || {};
+
 
     function MostrarStorageAlReiniciar() {
         const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
@@ -46,7 +51,7 @@ async function traerProductos(){
         const totalGuardado = Object.values(componentesPrecio).reduce((acc, curr) => acc + curr, 0);
         totalElement.textContent = `Total: $${totalGuardado}`;
 
-        // 👇 Mostrar productos seleccionados al reiniciar
+        // Mostrar productos seleccionados al reiniciar
         Aplicarfiltros(2);
     }
     MostrarStorageAlReiniciar();
@@ -58,8 +63,10 @@ async function traerProductos(){
     }
 
     //pasar a la siguiente sección por elegir un producto
-    function ordenarPorCategoria() {
-        indiciesCategoria++;
+    async function ordenarPorCategoria(avanzar = true) {
+      
+        if (avanzar) indiciesCategoria++;
+
         if (indiciesCategoria  >= categoriasOrden.length) {
             console.log('completo');
             indiciesCategoria = categoriasOrden.length - 1; 
@@ -70,13 +77,16 @@ async function traerProductos(){
         }
         filtroCategoria = categoriasOrden[indiciesCategoria];  
 
+        
         if(filtroCategoria === 'Procesadores') {
             MostrarBtn(amdFilterButton);
             MostrarBtn(intelFilterButton);
         } else  {
             OcultarBtn(amdFilterButton);
             OcultarBtn(intelFilterButton);
-        }          
+        }
+        // Mostrar el texto correspondiente 
+        MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos)
         Aplicarfiltros(1);
     }
     function finalizarCompra() {
@@ -100,7 +110,7 @@ async function traerProductos(){
                 const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
                 const storageIDs = Object.values(componentesSeleccionados);
                 filtros = filtros.filter(producto => storageIDs.includes(producto.id));
-                mostrarSeleccionados(filtros); // 👈 mostrar en el contenedor de seleccionados
+                mostrarSeleccionados(filtros); // mostrar en el contenedor de seleccionados
                 break;
         }
     }
@@ -142,7 +152,8 @@ async function traerProductos(){
             Aplicarfiltros(1);                 
             indiciesCategoria = categoriasOrden.indexOf(categoria);
             botonesMostrar.forEach(btn => MostrarBtn(btn));
-            botonesOcultar.forEach(btn => OcultarBtn(btn));  
+            botonesOcultar.forEach(btn => OcultarBtn(btn)); 
+            MostrarTextoIndice( indiciesCategoria, categoriasOrden, textos) 
         });          
     }
 
@@ -265,7 +276,7 @@ async function traerProductos(){
                     name: producto ? producto.name : "desconocido",
                     categoria: tipo,
                     price: componentesPrecio[tipo] || 0,
-                    quantity:1
+                    quantity: 1
                 };
             });
             let NuevoComponentes = componentesCompletos.filter(
@@ -282,11 +293,8 @@ async function traerProductos(){
     
 
     // función nueva para mostrar los productos seleccionados (crea nuevos spans sin borrar los anteriores)
-    const div = document.createElement('div');
-    div.innerHTML = card.trim();
-    return div.firstChild;
     function mostrarSeleccionados(productosSeleccionados) {
-    const contenedorN = document.getElementById('componentes-elegidos');
+       const contenedorN = document.getElementById('componentes-elegidos');
     contenedorN.innerHTML = ''; // Limpia antes de mostrar los nuevos seleccionados
 //targeta del carrito del armado de pc :)
     productosSeleccionados.forEach(producto => {
@@ -310,9 +318,9 @@ async function traerProductos(){
                 <span class="text-sky-400 text-xl font-bold">$${producto.price}</span>
                 </div>
                     <div class="pl-6 flex items-center">
-                        <button type="button" class="decrement-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >-</button>
+                        <button id="restar" type="button" class="decrement-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >-</button>
                             <input type="text" class="w-5 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" value="1" readonly />
-                        <button type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >+</button>
+                        <button id="sumar" type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">+</button>
                     </div>
                 <div class="mt-1 flex items-center space-x-2">
                 <span class="text-green-600 text-sm font-semibold flex items-center">✔️ Compatible</span>
@@ -327,10 +335,9 @@ async function traerProductos(){
     contenedorN.appendChild(div.firstChild);
   });}
 }
-
 // --- RENDER CARD ---
 function renderCard(producto) {
-    const card = `
+        const card = `
 <button class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer">
   <div class="bg-gradient-to-r to-green-0 text-white text-sm font-semibold px-3 py-1 rounded-br-xl inline-block ">
     Descuento $9.200
@@ -369,7 +376,4 @@ function renderCard(producto) {
     const div = document.createElement('div');
     div.innerHTML = card.trim();
     return div.firstChild;
-    
-
-
 }
