@@ -8,7 +8,6 @@
     <link rel="shortcut icon" href="/icono.svg" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
 </head>
 
 <body>
@@ -98,6 +97,9 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                         </svg>
+                        <!-- Badge: actualiza con data-cart-count -->
+                        <span data-cart-count
+                            class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
                         <span class="hidden sm:flex">My Cart</span>
                         <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -184,15 +186,9 @@
                         <li><a href="#" title=""
                                 class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                                 Settings </a></li>
-                        <li><a href="#" title=""
+                        <li><a href="/frontend/dashboard/dashboard.html" title=""
                                 class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Favourites </a></li>
-                        <li><a href="#" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Delivery Addresses </a></li>
-                        <li><a href="#" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Billing Data </a></li>
+                                Dashboard </a></li>
                     </ul>
 
                     <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -234,7 +230,7 @@
                         garantizada y envío gratuito.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <button
+                        <a href="#catalogo"
                             class="group inline-flex items-center justify-center gap-2 h-11 rounded-md px-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-gray-900 font-semibold hover:from-sky-500 hover:to-cyan-500 shadow-lg hover:shadow-xl transition-all duration-300">
                             Ver catálogo
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -244,10 +240,10 @@
                                 <path d="M5 12h14"></path>
                                 <path d="m12 5 7 7-7 7"></path>
                             </svg>
-                        </button>
+                        </a>
                         <button
                             class="h-11 rounded-md px-8 bg-gray-800 border border-purple-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300">
-                            Arma tu PC
+                                <a href="armaTuPc.html">Arma tu PC</a>
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -450,7 +446,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-16 bg-gray-900">
+        <section class="py-16 bg-gray-900" id="catalogo">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex items-center justify-between mb-12">
                     <div>
@@ -466,7 +462,7 @@
                         Ver todos
                     </button>
                 </div>
-                <div id="productos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div id="productos-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <!-- lista de productos-->
                 </div>
             </div>
@@ -561,8 +557,9 @@
             </div>
         </footer>
     </div>
+    <script src="//code.tidio.co/v7ce3nirgobvtabgu1awhmnsescp1ihg.js" async></script>
     <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/carrito.js"></script>
+    <script type="module" src="./js/addToCart.js"></script>
 </body>
 
 </html>

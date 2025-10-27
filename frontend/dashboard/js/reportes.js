@@ -1,9 +1,6 @@
 import supabase from './client.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderProductosMasActivos();
-  // ...tu código existente...
-});
+
 
 let chartt;
 // Menu despegable (variables)
@@ -45,6 +42,7 @@ menuDropdown.querySelectorAll("a[data-value]").forEach(option => {
   });
 });
 
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -67,6 +65,7 @@ function getChartData(tipo, data) {
   const NombreMeses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
   const entradasMap = new Map();
   const salidasMap = new Map();
+  const TextTendencias = document.getElementById('TextTendencias');
   data.forEach(movimiento => {
     const fecha = new Date(movimiento.created_at);
     const mesIndex = fecha.getMonth();
@@ -133,6 +132,7 @@ function getChartData(tipo, data) {
         const valores = salidasMap.get(NombreMes)?.get(semana);
         return valores ? valores.reduce((a, b) => a + b, 0) : 0;
       })
+      TextTendencias.textContent = `Entradas vs Salidas de ${NombreMes}`;
     }
       break;
     //filtro de la lógica si el data-value es ultMeses.
@@ -153,15 +153,19 @@ function getChartData(tipo, data) {
       renderChart(ctxF);
       //recorremos los labels para obtener las entradas y salidas de cada mes
       const len = ctxF.ultimosMeses.length;
+        TextTendencias.textContent = `Entradas vs Salidas de ${ctxF.NombreMeses[ctxF.ultimosMeses[indiceDelMesCambiante]]}`;
+      
       document.getElementById('prevMes').addEventListener('click', () => {
         indiceDelMesCambiante = (indiceDelMesCambiante + 1) % len;
         renderMes(indiceDelMesCambiante, ctxF);
+        TextTendencias.textContent = `Entradas vs Salidas de ${ctxF.NombreMeses[ctxF.ultimosMeses[indiceDelMesCambiante]]}`;
         renderChart(ctxF);
 
       })
       document.getElementById('nextMes').addEventListener('click', () => {
         indiceDelMesCambiante = (indiceDelMesCambiante - 1 + 5) % len;
         renderMes(indiceDelMesCambiante, ctxF);
+        TextTendencias.textContent = `Entradas vs Salidas de ${ctxF.NombreMeses[ctxF.ultimosMeses[indiceDelMesCambiante]]}`;
         renderChart(ctxF);
 
       })
@@ -195,18 +199,13 @@ function getChartData(tipo, data) {
           salidas.push(null);
         }
       })
+      TextTendencias.textContent = `Entradas vs Salidas del año ${añoActual}`;
     }
       break;
-    //filtro de la lógica si el data-value es perzonalido.
-    case "perzonalido": {
-
-      //logíca para personalizado 
-      // falta por hacer y no está del todo concreta :D, pero dejo mínimamente lo básico: 
-
-    }
-    break; 
+         
+  }
+  return { labels, entradas, salidas };
 }
-return{ labels, entradas, salidas };
 
 function ObtenerSemanaDelDia(año, mes, dia) {
   const primerDia = new Date(año, mes, 1);
@@ -253,7 +252,7 @@ function renderMes(indexMes, ctxF) {
   });
 
   document.getElementById('mesesCambiantes').innerHTML = `${nombreMes}`;
-
+  
 }
 
 function renderChart({ labels, entradas, salidas }) {
@@ -310,75 +309,173 @@ async function checkSession() {
 }
 checkSession();
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderProductosMasActivos();
-  const logoutButton = document.getElementById('logout-button');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        alert('Hubo un error al cerrar sesión.');
-      } else {
-        window.location.href = 'session/login.html';
-      }
-    });
+async function cuadrosReport() {
+  // Elementos del DOM
+  const valor = document.getElementById('valorT');
+  const sinStock = document.getElementById('sinStock');
+  const alertas = document.getElementById('alertas'); 
+  const ganacias = document.getElementById('ganancias');
+  const valorP = document.getElementById('porcentajeV');     
+  const stock = document.getElementById('div-stock'); 
+  const gananciasP = document.getElementById('gananciasP');
+  // Obtener datos de Supabase para Valor total del mes
+  const {data,error} = await supabase
+  .from('products')
+  .select('*');
+
+  if (error){
+    console.error("Error al obtener los datos:", error);
+    return;
+  }
+  
+const fechaA = new Date();
+const mesA  = fechaA.getMonth();
+let fechaAnterior = mesA - 1;
+if (fechaAnterior < 0) {
+  fechaAnterior = 11; 
+}
+
+let valorTotalM = 0;
+let valorTotalManterior = 0;
+
+data.forEach(producto => {
+  const fechaD = new Date(producto.created_at);
+  const mesD = fechaD.getMonth();
+  
+  const valorProducto = producto.price * producto.stock; // Valor de cada producto
+
+  if (mesD === mesA) {
+    valorTotalM += valorProducto; 
+  }  
+  if (mesD === fechaAnterior) {
+    valorTotalManterior += valorProducto; 
   }
 });
 
-async function renderProductosMasActivos() {
-  // 1. Traer todos los movimientos
-  const { data: movimientos, error: errorMov } = await supabase
-    .from('movements')
-    .select('componentes');
-  if (errorMov) {
-    console.error('Error al obtener movimientos:', errorMov);
-    return;
+// Calcular diferencia y porcentaje
+const valorFinal = valorTotalM - valorTotalManterior;
+const porcentaje = valorTotalManterior === 0 ? 0 : (valorFinal / valorTotalManterior) * 100;
+
+// Mostrar resultados
+valor.textContent = `$${valorTotalM.toLocaleString()}`;
+valorP.textContent = porcentaje.toLocaleString() + '% ' + 'vs mes anterior';
+//fin del valor total del mes
+//sin stock
+const filtroStock = data.filter(item => item.stock === 0);
+let sinStockNum = filtroStock.length;
+sinStock.textContent = sinStockNum;
+// Obtener datos de Supabase para las alertas de reportes
+if (error){
+  console.error("Error al obtener los datos:", errorMovimientos);
+  return;
+}
+const Filtro = data.filter(item => item.stock < item.min_stock);
+let alertasNum = Filtro.length;
+alertas.textContent = alertasNum;
+
+
+}
+cuadrosReport();
+
+//-------------------------------------
+
+//------------------------------------------------------
+const options = {
+  series: [
+    {
+      name: "Income",
+      color: "#31C48D",
+      data: ["1420", "1620", "1820", "1420", "1650", "2120"],
+    },
+    {
+      name: "Expense",
+      data: ["788", "810", "866", "788", "1100", "1200"],
+      color: "#F05252",
+    }
+  ],
+  chart: {
+    sparkline: {
+      enabled: false,
+    },
+    type: "bar",
+    width: "100%",
+    height: 400,
+    toolbar: {
+      show: true,
+    }
+  },
+  fill: {
+    opacity: 1,
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      columnWidth: "100%",
+      borderRadiusApplication: "end",
+      borderRadius: 6,
+      dataLabels: {
+        position: "top",
+      },
+    },
+  },
+  legend: {
+    show: true,
+    position: "bottom",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  tooltip: {
+    shared: true,
+    intersect: false,
+    formatter: function (value) {
+      return "$" + value
+    }
+  },
+  xaxis: {
+    labels: {
+      show: true,
+      style: {
+        fontFamily: "Inter, sans-serif",
+        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+      },
+      formatter: function(value) {
+        return "$" + value
+      }
+    },
+    categories: ["Targetas Graficas","Almacenamiento","Procesadores","Memoria RAM","Fuente","Placas Madre","Adicionales","Gabinete","Targetas Graficas"],
+    axisTicks: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+  },
+  yaxis: {
+    labels: {
+      show: true,
+      style: {
+        fontFamily: "Inter, sans-serif",
+        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+      }
+    }
+  },
+  grid: {
+    show: true,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: -20
+    },
+  },
+  fill: {
+    opacity: 1,
   }
+}
 
-  // 2. Contar movimientos por producto
-  const conteo = {};
-  movimientos.forEach(mov => {
-    conteo[mov.product_id] = (conteo[mov.product_id] || 0) + 1;
-  });
 
-  // 3. Ordenar por cantidad de movimientos (descendente)
-  const productosOrdenados = Object.entries(conteo)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5); // Top 5
-
-  // 4. Traer info de productos
-  const ids = productosOrdenados.map(([id]) => id);
-  if (ids.length === 0) return;
-
-  const { data: productos, error: errorProd } = await supabase
-    .from('products')
-    .select('id, name, category')
-    .in('id', ids);
-
-  if (errorProd) {
-    console.error('Error al obtener productos:', errorProd);
-    return;
-  }
-
-  // 5. Renderizar en el HTML
-  const contenedor = document.getElementsByClassName('.GraficoCategorias');
-  if (!contenedor) return;
-
-  contenedor.innerHTML = productosOrdenados.map(([id, cantidad]) => {
-    const prod = productos.find(p => p.id === id);
-    if (!prod) return '';
-    return `
-      <div class="flex items-center justify-between p-3 rounded-lg border">
-        <div>
-          <p class="font-medium text-sm">${prod.name}</p>
-          <p class="text-xs text-gray-500">${prod.category || ''}</p>
-        </div>
-        <div class="text-right">
-          <p class="font-semibold">${cantidad}</p>
-          <p class="text-xs text-gray-500">movimientos</p>
-        </div>
-      </div>
-    `;
-  }).join('');
+if(document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
+  const chart = new ApexCharts(document.getElementById("bar-chart"), options);
+  chart.render();
 }
