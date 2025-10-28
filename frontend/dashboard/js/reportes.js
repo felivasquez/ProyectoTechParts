@@ -42,6 +42,7 @@ menuDropdown.querySelectorAll("a[data-value]").forEach(option => {
   });
 });
 
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -280,6 +281,7 @@ function renderChart({ labels, entradas, salidas }) {
           backgroundColor: '#EF444420',
           tension: 0.4,
           spanGaps: true,
+          
         },
       ],
     },
@@ -292,8 +294,10 @@ function renderChart({ labels, entradas, salidas }) {
         x: { ticks: { color: '#374151' } },
         y: { ticks: { color: '#374151' } },
       },
+      
     },
   })
+
 };
 
 async function checkSession() {
@@ -375,3 +379,8 @@ alertas.textContent = alertasNum;
 
 }
 cuadrosReport();
+
+//-------------------------------------
+
+//------------------------------------------------------
+
