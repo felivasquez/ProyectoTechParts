@@ -27,6 +27,7 @@ async function traerProductos(){
     const wattsDisplayElement = document.getElementById('watts-display');
     const amdFilterButton = document.getElementById('amd-filter'); 
     const intelFilterButton = document.getElementById('intel-filter');
+    const tituloPc = document.getElementById('tituloPc');
 
     //variables globales
     const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM','Tarjetas Gráficas','Almacenamiento','Fuente','Gabinete','Adicionales'];
@@ -188,6 +189,38 @@ async function traerProductos(){
         localStorage.setItem('componentesPrecio', JSON.stringify(componentesPrecioAccountSeccion));
         localStorage.setItem('componentesSeleccionados', JSON.stringify(ComponentesSelect));
     }
+    function mandarPcarmardaAcarrito() {
+        let storageCart = localStorage.getItem('techparts_cart')
+        if(!storageCart){
+            localStorage.setItem('techparts_cart', JSON.stringify([]));
+            storageCart = JSON.stringify([]);            
+            }
+            let carrito = JSON.parse(storageCart);
+            let componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || [];
+            let componentesPrecio = JSON.parse(localStorage.getItem('componentesPrecio')) 
+           
+            const componentesCompletos = Object.entries(componentesSeleccionados).map(([tipo, id]) => {
+                const producto = data.find(p => p.id === id);
+                return {
+                    id: id,
+                    name: producto ? producto.name : "desconocido",
+                    categoria: tipo,
+                    price: componentesPrecio[tipo] || 0,
+                    quantity: 1
+                };
+            });
+            let NuevoComponentes = componentesCompletos.filter(
+                nuevo =>  !carrito.some(item => item.id === nuevo.id)                   
+            );
+            if(NuevoComponentes.length === 0){
+                console.log('Los componentes ya están en el carrito');
+                return;
+            } 
+            carrito.push(...NuevoComponentes);
+            localStorage.setItem('techparts_cart', JSON.stringify(carrito));
+            console.log('proceso completado, componentes añadidos al carrito');
+        }         
+    
 
     // función nueva para mostrar los productos seleccionados (crea nuevos spans sin borrar los anteriores)
     const div = document.createElement('div');
