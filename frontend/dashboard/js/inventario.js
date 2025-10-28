@@ -87,7 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const location = document.getElementById('location').value.trim();
         const description = document.getElementById('description').value.trim();
 
+    const formData = new FormData(form);
+    const producto = {};
+    const textoTecnico =[];
+    formData.forEach((valor, key) => {
+        producto[key] = valor;
+    });
 
+<<<<<<< HEAD
          const formData = new FormData(form);
          const producto = {};
          const descripciones_tecnicas = [];
@@ -101,13 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
   });
-
-  producto.descripciones_tecnicas = descripciones_tecnicas;
-
-  console.log("Producto listo para guardar:", producto);
-  document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
-  alert(`Producto agregado con ${producto.descripciones_tecnicas.length} descripciones técnicas.`);
-        // manejar imagen con Signed URL
+=======
+    // Manejar imagen
         const fileInput = document.getElementById('product-image');
         let imageUrl = null;
 
@@ -116,26 +118,59 @@ document.addEventListener('DOMContentLoaded', () => {
             const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
             const filePath = `products/${Date.now()}-${safeName}`;
 
-            // Subir al bucket privado
             const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('imagenes')
                 .upload(filePath, file);
 
-            if (uploadError) {
-                showNotification('Error al subir la imagen: ' + uploadError.message, 'error');
-                return;
-            }
+        if (uploadError) return showNotification('Error al subir la imagen: ' + uploadError.message, 'error');
 
-            // Generar Signed URL por 1 año (31,536,000 segundos)
             const { data: signedData, error: signedError } = await supabase.storage
                 .from('imagenes')
                 .createSignedUrl(filePath, 31536000);
 
-            if (signedError) {
-                showNotification('Error al generar enlace de imagen: ' + signedError.message, 'error');
-                return;
-            }
+        if (signedError) return showNotification('Error al generar enlace de imagen: ' + signedError.message, 'error');
 
+        imageUrl = signedData.signedUrl;
+    }
+>>>>>>> 6fda8d7d81ae3f8544c3962874546336ee5468ed
+
+    let productoId;
+
+<<<<<<< HEAD
+  console.log("Producto listo para guardar:", producto);
+  document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
+  alert(`Producto agregado con ${producto.descripciones_tecnicas.length} descripciones técnicas.`);
+        // manejar imagen con Signed URL
+        const fileInput = document.getElementById('product-image');
+        let imageUrl = null;
+=======
+    if (!id) {
+        // Agregar producto nuevo
+        const { data: productoInsertado, error } = await supabase.from('products').insert([{
+            name, category, brand, model, stock, min_stock, price, location, description,
+            image_url: imageUrl
+        }]).select('id');
+>>>>>>> 6fda8d7d81ae3f8544c3962874546336ee5468ed
+
+        if (error) return showNotification('Error al agregar producto: ' + error.message, 'error');
+
+        productoId = productoInsertado[0].id;
+    } else {
+        // Editar producto existente
+        const { error } = await supabase.from('products').update({
+            name, category, brand, model, stock, min_stock, price, location, description,
+            ...(imageUrl && { image_url: imageUrl })
+        }).eq('id', id);
+
+        if (error) return showNotification('Error al actualizar producto: ' + error.message, 'error');
+
+        productoId = id;
+
+        // Borrar specs previas
+        await supabase.from('component_specs').delete().eq('product_id', id);
+    }
+
+<<<<<<< HEAD
             imageUrl = signedData.signedUrl; // este link se guarda en la tabla
         }
            
@@ -165,7 +200,29 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.setAttribute('data-state', 'closed');
         if (typeof fetchProducts === 'function') fetchProducts();
         else if (window.fetchProducts) window.fetchProducts();
+=======
+    // Guardar specs técnicas
+    for (const campo of camposTecnicosPorCategoria[category] || []) {
+        const valor = producto[campo] || '';
+        if (valor) {
+        await supabase
+            .from('component_specs')
+            .upsert([{
+                product_id: productoId,
+                key: campo,
+                value: valor
+            }], { onConflict: ['product_id', 'key'] }); 
+    }
+}
 
+    showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
+    form.reset();
+    modal.classList.add('hidden');
+    modal.setAttribute('data-state', 'closed');
+>>>>>>> 6fda8d7d81ae3f8544c3962874546336ee5468ed
+
+    if (typeof fetchProducts === 'function') fetchProducts();
+    else if (window.fetchProducts) window.fetchProducts();
     });
     
 
@@ -235,7 +292,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Modifica fetchProducts para aceptar un parámetro de búsqueda
 async function fetchProducts(search = '', category = '', brand = '') {
-    let query = supabase.from('products').select('*');
+    let query = supabase.from('products').select(`*,component_specs(key,value)`); 
+
+    const { data, error } = await query;
+    if (error) return;
+    const { data: products, error: productError } = await query;
+    if (productError) {
+        console.error('Error al traer productos:', productError);
+        return;
+    }
+
 
     let orQuery = [];
     if (search) {
@@ -252,8 +318,23 @@ async function fetchProducts(search = '', category = '', brand = '') {
     if (category) query = query.eq('category', category);
     if (brand) query = query.eq('brand', brand);
     if (orQuery.length) query = query.or(orQuery.join(','));
+    const productIds = products.map(p => p.id);
+    let { data: specs, error: specsError } = await supabase
+        .from('component_specs')
+        .select('*')
+        .in('product_id', productIds);
 
-    const { data, error } = await query;
+    if (specsError) {
+        console.error('Error al traer specs:', specsError);
+        specs = [];
+    }
+
+    const productsWithSpecs = products.map(p => {
+        const productSpecs = specs.filter(s => s.product_id === p.id);
+        const specsText = productSpecs.map(s => `${s.key}: ${s.value}`).join(' | ');
+        return { ...p, specsText };
+    });
+
     if (error) {
         console.error('Error al traer productos:', error);
         return;
@@ -261,13 +342,16 @@ async function fetchProducts(search = '', category = '', brand = '') {
     const productsContainer = document.getElementById('products-container');
     productsContainer.innerHTML = '';
     data.forEach(product => {
+        const specsText = (product.component_specs || []).map(s => `${s.key}: ${s.value}`).join(' | ');
+        product.specsText = specsText;
         const productCard = renderProductCard(product);
         productsContainer.appendChild(productCard);
     });
 }
-
+     
 /*render product card */
-function renderProductCard(product) {
+ function renderProductCard(product) {
+     
     const card = document.createElement('div');
     card.className = 'rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow';
 
@@ -298,6 +382,7 @@ function renderProductCard(product) {
                 </div>
             </div>
             <h3 class="font-semibold tracking-tight text-lg">${product.name}</h3>
+<<<<<<< HEAD
             <p class="text-sm text-muted-foreground">${product.description || ''}</p>
             ${product.descripciones_tecnicas && product.descripciones_tecnicas.length?`
         <div class="mt-3 text-sm text-gray-700">
@@ -308,6 +393,9 @@ function renderProductCard(product) {
         </div>
       `: ''
 }
+=======
+            <p class="text-sm text-muted-foreground">${product.specsText || ''}</p>
+>>>>>>> 6fda8d7d81ae3f8544c3962874546336ee5468ed
         </div>
         <div class="p-6 pt-0 space-y-4">
             <div class="grid grid-cols-2 gap-4 text-sm">
