@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,7 +72,7 @@
                         Ofertas
                     </a>
                 </div>
-                <div class="hidden md:flex flex-1 max-w-sm mx-6">
+                <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
                     <div class="relative w-full">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -230,7 +229,7 @@
                         garantizada y envío gratuito.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <a href="#catalogo"
+                        <a href="#catalogoProductos"
                             class="group inline-flex items-center justify-center gap-2 h-11 rounded-md px-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-gray-900 font-semibold hover:from-sky-500 hover:to-cyan-500 shadow-lg hover:shadow-xl transition-all duration-300">
                             Ver catálogo
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -241,10 +240,12 @@
                                 <path d="m12 5 7 7-7 7"></path>
                             </svg>
                         </a>
+                        <a href="armaTuPc.html">
                         <button
                             class="h-11 rounded-md px-8 bg-gray-800 border border-purple-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300">
-                                <a href="armaTuPc.html">Arma tu PC</a>
+                            Arma tu PC
                         </button>
+                    </a>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="flex items-center gap-3">
@@ -300,7 +301,38 @@
                 </div>
             </div>
         </section>
-        <section class="py-16 bg-gray-900">
+        <section class="flex justify-center bg-gray-900 py-3">
+  <div class="relative w-full max-w-7xl h-[400px] overflow-hidden rounded-3xl shadow-lg">
+    <!-- Contenedor de imágenes -->
+    <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+      <img src="https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/1413018-am5-ryzen.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 2">
+      <img src="https://www.muycomputer.com/wp-content/uploads/2019/11/Cinco-cosas-falsas-sobre-la-memoria-RAM-que-debes-tener-claras-2.jpg?mrf-size=m" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 1">
+      <img src="https://www.guiahardware.es/wp-content/uploads/2022/02/Mejores-tarjetas-gráficas-para-Diseño-Gráfico.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
+      <img src="https://photo.coolenjoy.co.kr/data/editor/2402/thumb-8c7fa107a48a55f0b0a7bf2452334face8d67beb.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
+      <img src="https://cdn.wccftech.com/wp-content/uploads/2018/03/DSC_0822-Custom-1920x1280.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
+    </div>
+
+    <!-- Flechas -->
+    <button id="prev"
+      class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white text-gray-800 rounded-full p-2 shadow">
+      ‹
+    </button>
+    <button id="next"
+      class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white text-gray-800 rounded-full p-2 shadow">
+      ›
+    </button>
+
+    <!-- Indicadores -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
+      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
+      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
+      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
+      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
+      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
+    </div>
+</section>
+        <section class="py-0 bg-gray-900">
+            
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold mb-4 text-white">
@@ -445,8 +477,9 @@
                     </div>
                 </div>
             </div>
+
         </section>
-        <section class="py-16 bg-gray-900" id="catalogo">
+        <section class="py-16 bg-gray-900" id="catalogoProductos">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex items-center justify-between mb-12">
                     <div>
@@ -557,9 +590,15 @@
             </div>
         </footer>
     </div>
+    
+  <script>
+
+  </script>
+
     <script src="//code.tidio.co/v7ce3nirgobvtabgu1awhmnsescp1ihg.js" async></script>
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/addToCart.js"></script>
+
 </body>
 
 </html>
