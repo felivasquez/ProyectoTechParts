@@ -25,53 +25,7 @@
                             <line x1="12" x2="12" y1="17" y2="21"></line>
                         </svg>
                     </div>
-                    <span
-                        class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
-                </div>
-                <div class="hidden lg:flex items-center gap-6">
-                    <a href="#"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-sky-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-cpu h-4 w-4">
-                            <rect width="16" height="16" x="4" y="4" rx="2"></rect>
-                            <rect width="6" height="6" x="9" y="9" rx="1"></rect>
-                            <path d="M15 2v2"></path>
-                            <path d="M15 20v2"></path>
-                            <path d="M2 15h2"></path>
-                            <path d="M2 9h2"></path>
-                            <path d="M20 15h2"></path>
-                            <path d="M20 9h2"></path>
-                            <path d="M9 2v2"></path>
-                            <path d="M9 20v2"></path>
-                        </svg>
-                        Componentes
-                    </a>
-                    <a href="#"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-sky-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-monitor h-4 w-4">
-                            <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                            <line x1="8" x2="16" y1="21" y2="21"></line>
-                            <line x1="12" x2="12" y1="17" y2="21"></line>
-                        </svg>
-                        PCs Armadas
-                    </a>
-                    <a href="#"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-sky-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-hard-drive h-4 w-4">
-                            <line x1="22" x2="2" y1="12" y2="12"></line>
-                            <path
-                                d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z">
-                            </path>
-                            <line x1="6" x2="6.01" y1="16" y2="16"></line>
-                            <line x1="10" x2="10.01" y1="16" y2="16"></line>
-                        </svg>
-                        Ofertas
-                    </a>
+                    <span   class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
                 </div>
                 <div class="hidden md:flex flex-1 max-w-sm mx-6">
                     <div class="relative w-full">
@@ -81,7 +35,7 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.3-4.3"></path>
                         </svg>
-                        <input
+                        <input id="buscador-productos" type="text"
                             class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                             placeholder="Buscar productos...">
                     </div>
@@ -100,7 +54,7 @@
                         <!-- Badge: actualiza con data-cart-count -->
                         <span data-cart-count
                             class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
-                        <span class="hidden sm:flex">My Cart</span>
+                        <span class="hidden sm:flex">Mi carrito  </span>
                         <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -467,6 +421,23 @@
                 </div>
             </div>
         </section>
+        <div id="contenedorFiltrado" class="hidden h-full items-center py-16 bg-gray-900" >
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-4 text-white">
+                            <span
+                                class="bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-center text-transparent">Todos</span>
+                                nuestros Productos
+                        </h2>
+                        <p class="text-gray-400">Todos los componentes del mercado en TechParts</p>
+                    </div>
+                </div>
+                <div id="productos-filtrados" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- lista de productos-->
+                </div>
+            </div>
+        </div>
         <footer class="bg-gray-900 border-t border-gray-700">
             <div class="max-w-7xl mx-auto px-4 py-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -557,7 +528,6 @@
             </div>
         </footer>
     </div>
-    <script src="//code.tidio.co/v7ce3nirgobvtabgu1awhmnsescp1ihg.js" async></script>
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/addToCart.js"></script>
 </body>
