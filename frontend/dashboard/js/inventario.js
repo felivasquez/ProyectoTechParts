@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
      };
  
     function generarCamposTecnicos(categoriaV, valores = {}) {
-    // Elimina campos técnicos previos
+    
     document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
 
     const campos = camposTecnicosPorCategoria[categoriaV] || [];
@@ -61,10 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'w-full', 'rounded-md', 'border', 'border-gray-300', 'px-3', 'py-2', 'text-sm',
             'shadow-sm', 'focus:border-blue-500', 'focus:ring', 'focus:ring-blue-500/50'
         );
-
+                
         div.appendChild(label);
         div.appendChild(input);
         grid.appendChild(div);
+        
     });
 
     // Insertar antes del textarea de descripción
@@ -91,16 +92,21 @@ document.addEventListener('DOMContentLoaded', () => {
          const producto = {};
          const descripciones_tecnicas = [];
          formData.forEach((valor, key) => {
-         producto[key] = valor;
-    if (camposTecnicosPorCategoria[producto.category]?.includes(key)) {
-        descripciones_tecnicas.push(`${key}: ${valor}`);
+         const valorNormalizado = valor.trim().toLowerCase();
+         producto[key] = valorNormalizado;
+         
+         const categoria = producto.category;
+    if (camposTecnicosPorCategoria[categoria]?.includes(key)) {
+        descripciones_tecnicas.push(`${key.toLowerCase()}: ${valor.toLowerCase()}`);
     }
+    
   });
 
   producto.descripciones_tecnicas = descripciones_tecnicas;
 
   console.log("Producto listo para guardar:", producto);
-  alert(`Producto agregado con ${descripciones_tecnicas.length} descripciones técnicas.`);
+  document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
+  alert(`Producto agregado con ${producto.descripciones_tecnicas.length} descripciones técnicas.`);
         // manejar imagen con Signed URL
         const fileInput = document.getElementById('product-image');
         let imageUrl = null;
@@ -132,27 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             imageUrl = signedData.signedUrl; // este link se guarda en la tabla
         }
-
-    
+           
         let error;
 
         if (id) {
             // Editar producto
             ({ error } = await supabase
                 .from('products')
-                .update({
-                    name, category, brand, model, stock, min_stock, price, location, description,
-                    ...(imageUrl && { image_url: imageUrl }) // actualizar imagen solo si subieron una
-                })
+                .update(producto)
                 .eq('id', id));
         } else {
             // Agregar producto
             ({ error } = await supabase
                 .from('products')
-                .insert([{
-                    name, category, brand, model, stock, min_stock, price, location, description,
-                    image_url: imageUrl
-                }]));
+                .insert([producto]));
         }
 
         if (error) {
@@ -187,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('location').value = product.location || '';
         document.getElementById('description').value = product.description || '';
         document.getElementById('submit-product-btn').textContent = 'Guardar cambios';
-
+        
         generarCamposTecnicos(product.category, product);
 
         modal.classList.remove('hidden');
@@ -300,6 +299,15 @@ function renderProductCard(product) {
             </div>
             <h3 class="font-semibold tracking-tight text-lg">${product.name}</h3>
             <p class="text-sm text-muted-foreground">${product.description || ''}</p>
+            ${product.descripciones_tecnicas && product.descripciones_tecnicas.length?`
+        <div class="mt-3 text-sm text-gray-700">
+            <p class="font-semibold mb-1">Descripción técnica:</p>
+            <ul class="list-disc list-inside space-y-1">
+                ${product.descripciones_tecnicas.map(desc => `<li>${desc}</li>`).join('')}
+            </ul>
+        </div>
+      `: ''
+}
         </div>
         <div class="p-6 pt-0 space-y-4">
             <div class="grid grid-cols-2 gap-4 text-sm">
