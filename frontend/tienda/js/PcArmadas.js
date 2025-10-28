@@ -100,7 +100,7 @@ async function traerProductos(){
                 const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
                 const storageIDs = Object.values(componentesSeleccionados);
                 filtros = filtros.filter(producto => storageIDs.includes(producto.id));
-                mostrarSeleccionados(filtros); // 👈 mostrar en el contenedor de seleccionados
+                mostrarSeleccionados(filtros); // mostrar en el contenedor de seleccionados
                 break;
         }
     }
