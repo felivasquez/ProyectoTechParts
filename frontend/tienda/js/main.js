@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const RAMBtnHome = document.getElementById("RAM-Btn-home");
     const AlmacenamientoBtnHome = document.getElementById("Almacenamiento-Btn-home");
     const fuentesBntHome = document.getElementById("fuentes-Btn-home");
-    const pcsBtnHome = document.getElementById("pcs-Btn-home");
+    const destacados  = document.getElementById("destacados");
     let filtroCategoria = null;  
 
 async function fetchProducts(search = '') {
@@ -55,11 +55,19 @@ async function fetchProducts(search = '') {
         });
     }
 }
-async function AplicarFiltrosHome(params){
+async function AplicarFiltrosHome(){
     const productsContainer = document.getElementById('productos-container');
     const productosFiltrados = document.getElementById('contenedorFiltrado');
+    const textoHome = document.getElementById('texto-Home');
+    const productosText = document.getElementById('productosText');
     productsContainer.innerHTML = '';
     productosFiltrados.innerHTML = '';
+
+    [...productosText.childNodes].forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+      node.remove();
+    }
+  });
 
     if (!filtroCategoria) return;
 
@@ -81,6 +89,15 @@ async function AplicarFiltrosHome(params){
         return;
     }
 
+     if (filtroCategoria === '*') {
+        textoHome.textContent = 'Destacados';
+        productosText.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) node.textContent = 'Productos ';
+        });
+    } else {
+        textoHome.textContent = filtroCategoria;
+    }
+
     // Renderizar los productos
     data.forEach(product => {
         const card = renderProductCard(product);
@@ -92,12 +109,12 @@ BotonesHome(TarjetaBtnHome,'Tarjetas Gráficas')
 BotonesHome(RAMBtnHome,'Memoria RAM')
 BotonesHome(AlmacenamientoBtnHome,'Almacenamiento')
 BotonesHome(fuentesBntHome,'Fuente')
+BotonesHome(destacados,'*');
 
 function BotonesHome(boton, categoria) {
     boton.addEventListener('click', async () => {
         filtroCategoria = categoria; // guarda la categoría actual
         await AplicarFiltrosHome(); // ejecuta el filtrado
-        activarBotonSeleccionado(boton); // resalta el botón activo
     });
 }
 /*render product card */
