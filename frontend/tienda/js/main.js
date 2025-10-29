@@ -210,24 +210,75 @@ function mostrarResultadosBusqueda(searchValue) {
 }
 
 
-let cartButton = document.getElementById('myCartDropdownButton1');
-let cartModal = document.getElementById('myCartDropdown1');
-let userButton = document.getElementById('userDropdownButton1');
-let userModal = document.getElementById('userDropdown1');
+// === CARRITO ===
+const cartButton = document.getElementById("myCartDropdownButton1");
+const cartDropdown = document.getElementById("myCartDropdown1");
 
+// === USUARIO ===
+const userButton = document.getElementById("userDropdownButton1");
+const userDropdown = document.getElementById("userDropdown1");
 
-// Cart dropdown functionality
-cartButton.addEventListener('click', function () {
-    cartModal.classList.toggle('hidden');
-    userModal.classList.add('hidden');
+// === FUNCIONES DE TOGGLE ===
+function toggleDropdown(button, dropdown) {
+  const isVisible = !dropdown.classList.contains("hidden");
+
+  // Cierra todos los dropdowns abiertos antes de abrir otro
+  document.querySelectorAll("#myCartDropdown1, #userDropdown1").forEach((el) => {
+    el.classList.add("hidden");
+  });
+
+  // Si estaba oculto, mostrarlo
+  if (!isVisible) {
+    const rect = button.getBoundingClientRect();
+
+    // Calcula posición justo debajo del botón
+    dropdown.style.position = "absolute";
+    dropdown.style.top = `${rect.bottom + window.scrollY + 8}px`;
+    dropdown.style.left = `${rect.left}px`;
+
+    dropdown.classList.remove("hidden");
+    dropdown.classList.add("animate-fadeIn");
+  }
+}
+
+// === EVENTOS ===
+cartButton.addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleDropdown(cartButton, cartDropdown);
 });
 
-// User dropdown functionality
-userButton.addEventListener('click', function () {
-    userModal.classList.toggle('hidden');
-    cartModal.classList.add('hidden');
+if (userButton) {
+  userButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleDropdown(userButton, userDropdown);
+  });
+}
+
+// === Cerrar al hacer clic fuera ===
+document.addEventListener("click", (e) => {
+  if (
+    !cartDropdown.contains(e.target) &&
+    !userDropdown.contains(e.target) &&
+    !cartButton.contains(e.target) &&
+    !userButton.contains(e.target)
+  ) {
+    cartDropdown.classList.add("hidden");
+    userDropdown.classList.add("hidden");
+  }
 });
 
+// === Animación con Tailwind ===
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+`;
+document.head.appendChild(style);
 // logica para dirigir al login si no está autenticado
 const loginButton = document.getElementById('btnUser');
 
