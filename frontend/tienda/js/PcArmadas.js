@@ -48,13 +48,15 @@ async function traerProductos(){
     const reponse = await fetch('js/textos.json');
     const textos = await reponse.json();    
     //filtros Btn 
-    const procesadorButton = document.getElementById('procesador');
-    const motherboardButton = document.getElementById('Motherboard');
-    const memoriaRAMButton = document.getElementById('Memoria-RAM');
-    const targetasGraficas = document.getElementById('targetas-Graficas');
-    const almacenamiento = document.getElementById('Almacenamiento');
-    const fuenteDePoder = document.getElementById('Fuente');
-    const gabinete = document.getElementById('Gabinete');
+    const saltarBtn = document.getElementById('saltar');
+    const retrocederBtn = document.getElementById('retroceder');
+    const procesadorBtn = document.getElementById('procesador');
+    const motherboardBtn = document.getElementById('Motherboard');
+    const memoriaRAMBtn = document.getElementById('Memoria-RAM');
+    const tarjetaGraficaBtn = document.getElementById('targetas-Graficas');
+    const AlmacenamientoBtn = document.getElementById('Almacenamiento');
+    const FuenteBtn = document.getElementById('Fuente');
+    const gabineteBtn = document.getElementById('Gabinete');
     const adicionales = document.getElementById('Adicionales');   
     const allProductCards = document.querySelectorAll('.product-card');
     const total = document.getElementById('total'); 
@@ -62,7 +64,7 @@ async function traerProductos(){
     const amdFilterButton = document.getElementById('amd-filter'); 
     const intelFilterButton = document.getElementById('intel-filter');
     const tituloPc = document.getElementById('tituloPc');
-
+    const textosSeccion = document.getElementById('textos-seccion');
     //variables globales
     const categoriasOrden = ['Procesadores', 'Placas Madre', 'Memoria RAM','Tarjetas Gráficas','Almacenamiento','Fuente','Gabinete','Adicionales'];
     let indiciesCategoria = 0; 
@@ -90,31 +92,37 @@ async function traerProductos(){
     }
 
     //pasar a la siguiente sección por elegir un producto
-    function ordenarPorCategoria() {
-        indiciesCategoria++;
-        if (indiciesCategoria  >= categoriasOrden.length) {
-            console.log('completo');
-            return;
-        }
-        filtroCategoria = categoriasOrden[indiciesCategoria];  
-        if(filtroCategoria === 'Procesadores') {
-            MostrarBtn(amdFilterButton);
-            MostrarBtn(intelFilterButton);
-        } else  {
-            OcultarBtn(amdFilterButton);
-            OcultarBtn(intelFilterButton);
-        }
-        // Mostrar el texto correspondiente 
-        MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos)
-        Aplicarfiltros(1,datosCompatibilidad);
+    function ordenarPorCategoria(avanzar = true) {
+    if (avanzar) indiciesCategoria++;
+
+    if (indiciesCategoria >= categoriasOrden.length) {
+        indiciesCategoria = categoriasOrden.length - 1; 
     }
-    function finalizarCompra() {
-        saltarBtn.innerHTML = "finalizar";
-        saltarBtn.addEventListener('click',() => {
-            mandarPcarmardaAcarrito()
-            window.location.href = '/frontend/tienda/checkout.html';
-        })        
+
+    filtroCategoria = categoriasOrden[indiciesCategoria];  
+
+    if(filtroCategoria === 'Procesadores') {
+        MostrarBtn(amdFilterButton);
+        MostrarBtn(intelFilterButton);
+    } else  {
+        OcultarBtn(amdFilterButton);
+        OcultarBtn(intelFilterButton);
     }
+
+    MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos);
+    Aplicarfiltros(1, datosCompatibilidad);
+    actualizarBotonSaltar();
+}
+
+function actualizarBotonSaltar() {
+    if (indiciesCategoria === categoriasOrden.length - 1) {
+        saltarBtn.textContent = 'Finalizar';
+    } else {
+        saltarBtn.textContent = 'SALTEAR PASO';
+    }
+}
+
+
     
     //aplicar filtros
     function Aplicarfiltros(tipo,datosCompatibilidad) {
@@ -171,7 +179,8 @@ async function traerProductos(){
             Aplicarfiltros(1,datosCompatibilidad);                 
             indiciesCategoria = categoriasOrden.indexOf(categoria);
             botonesMostrar.forEach(btn => MostrarBtn(btn));
-            botonesOcultar.forEach(btn => OcultarBtn(btn));  
+            botonesOcultar.forEach(btn => OcultarBtn(btn));
+            MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos);  
         });          
     }
 
@@ -189,20 +198,24 @@ async function traerProductos(){
     Botones(AlmacenamientoBtn, 'Almacenamiento', [], [amdFilterButton, intelFilterButton]);
     Botones(FuenteBtn, 'Fuente', [], [amdFilterButton, intelFilterButton]);
     Botones(gabineteBtn, 'Gabinete', [], [amdFilterButton, intelFilterButton]);
-       
+    Botones(adicionales, 'Adicionales', [], [amdFilterButton, intelFilterButton]);   
     
     //botones para saltar y retroceder entre categorías
 
     saltarBtn.addEventListener('click', () => {
+    if (indiciesCategoria === categoriasOrden.length - 1) {
+        mandarPcarmardaAcarrito();
+        window.location.href = '/frontend/tienda/checkout.html';
+    } else {
         ordenarPorCategoria(true);
-        console.log(filtroCategoria);
-
-    });
+    }
+});
     retrocederBtn.addEventListener('click', () => {
       if(indiciesCategoria > 0){
-        ordenarPorCategoria(false);
         indiciesCategoria--;
+        ordenarPorCategoria(false);
         filtroCategoria = categoriasOrden[indiciesCategoria];
+        actualizarBotonSaltar();
         if (filtroCategoria === 'Procesadores') {
       MostrarBtn(amdFilterButton);
       MostrarBtn(intelFilterButton);
@@ -212,7 +225,6 @@ async function traerProductos(){
     }
 
     MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos);
-
     Aplicarfiltros(1,datosCompatibilidad);
 
     console.log(filtroCategoria);
@@ -352,10 +364,7 @@ async function traerProductos(){
         }         
     
 
-    // función nueva para mostrar los productos seleccionados (crea nuevos spans sin borrar los anteriores)
-    const div = document.createElement('div');
-    div.innerHTML = card.trim();
-    return div.firstChild;
+
     function mostrarSeleccionados(productosSeleccionados) {
        const contenedorN = document.getElementById('componentes-elegidos');
     contenedorN.innerHTML = ''; // Limpia antes de mostrar los nuevos seleccionados
@@ -399,23 +408,25 @@ async function traerProductos(){
   });}
 }
 // --- RENDER CARD ---
-function renderCard(producto,esCompatible) {
-        const card = `
-<button class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer">
+function renderCard(producto, esCompatible) {
+    const card = `
+<button class="group overflow-hidden rounded-lg border border-gray-700 transition-all duration-300 cursor-pointer
+  ${!esCompatible 
+      ? 'opacity-50 cursor-not-allowed bg-gray-600 hover:shadow-none' 
+      : 'bg-gradient-to-br from-gray-800 to-gray-800/50 hover:shadow-lg hover:shadow-sky-400/10'}"
+  ${!esCompatible ? 'disabled' : ''}>
+  
   <div class="bg-gradient-to-r to-green-0 text-white text-sm font-semibold px-3 py-1 rounded-br-xl inline-block ">
     Descuento $9.200
   </div>
 
   <div class="flex items-start p-2 space-x-2">
     <div class="relative bg-gray-700">
-      <img
-        src="${producto.image_url}" alt="${producto.name}"
-        class="w-24 h-24 object-contain"
-      />
+      <img src="${producto.image_url}" alt="${producto.name}" class="w-24 h-24 object-contain" />
     </div>
 
     <div class="flex-1">
-      <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors line-clamp-2">
+      <h3 class="font-semibold mb-1 text-white transition-colors line-clamp-2">
         ${producto.name}
       </h3>
 
@@ -428,20 +439,17 @@ function renderCard(producto,esCompatible) {
         <span class="text-sky-400 text-xl font-bold ">$${producto.price - 9200}</span>
       </div>
 
-       <div class="mt-1 flex items-center space-x-2">
-    <span class="${esCompatible ? 'text-green-600' : 'text-red-600'} text-sm font-semibold flex items-center">
-    ${esCompatible ? '✔️ Compatible' : '❌ No compatible'}
-    </span>
+      <div class="mt-1 flex items-center space-x-2">
+        <span class="${esCompatible ? 'text-green-600' : 'text-red-600'} text-sm font-semibold flex items-center">
+          ${esCompatible ? '✔️ Compatible' : '❌ No compatible'}
+        </span>
       </div>
     </div>
   </div>
 </button>
-
     `;
+
     const div = document.createElement('div');
     div.innerHTML = card.trim();
     return div.firstChild;
-    
-
-
 }
