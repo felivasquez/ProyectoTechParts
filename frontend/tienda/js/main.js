@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarResultadosBusqueda(searchValue);
     });
 });
-});  
 
     const procesadorBtnHome = document.getElementById("Procesadores-Btn-home");
     const TarjetaBtnHome = document.getElementById("Tarjetas-Btn-home");
