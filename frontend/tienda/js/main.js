@@ -1,473 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - TechParts</title>
-    <link rel="shortcut icon" href="/icono.svg" />
+import supabase from '../../dashboard/js/client.js';
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
+document.addEventListener('DOMContentLoaded', () => {
+    fetchProducts();
 
-<body>
-    <div class="min-h-screen bg-background">
-        <nav class="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur">
-            <div class="max-w-7xl mx-auto px-4 flex h-16 items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <div
-                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-monitor h-5 w-5 text-gray-900">
-                            <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                            <line x1="8" x2="16" y1="21" y2="21"></line>
-                            <line x1="12" x2="12" y1="17" y2="21"></line>
-                        </svg>
-                    </div>
-                    <span   class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
-                </div>
-        <!-- BARRA DE BÚSQUEDA - Desktop -->
-        <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
-          <div class="relative w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </svg>
-            <input id="buscador-productos" type="text"
-              class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
-              placeholder="Buscar productos...">
-          </div>
-        </div>
-                <div class="flex items-center lg:space-x-2">
-                    <button id="myCartDropdownButton1" type="button"
-                        class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                        <span class="sr-only">
-                            Cart
-                        </span>
-                        <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                        </svg>
-                        <!-- Badge: actualiza con data-cart-count -->
-                        <span data-cart-count
-                            class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
-                        <span class="hidden sm:flex">Mi carrito  </span>
-                        <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 9-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="hidden" id="contUserSec">
-                        <button id="userDropdownButton1" type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Account
-                            <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m19 9-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div id="btnUser">
-                        <button type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Iniciar Sesión
-                        </button>
-                    </div>
+    // Búsqueda en escritorio
+    const buscadorDesktop = document.getElementById('buscador-productos');
+    buscadorDesktop.addEventListener('input', function () {
+        const searchValue = this.value.trim();
+        mostrarResultadosBusqueda(searchValue);
+    });
+
+    // Búsqueda en móvil
+    const buscadorMobile = document.getElementById('buscador-productos-mobile');
+    buscadorMobile.addEventListener('input', function () {
+        const searchValue = this.value.trim();
+        mostrarResultadosBusqueda(searchValue);
+    });
+});
+
+async function fetchProducts(search = '') {
+    let query = supabase.from('products').select('*');
+    let orQuery = [];
+    if (search) {
+        const isNumber = !isNaN(search);
+        orQuery.push(`name.ilike.%${search}%`);
+        orQuery.push(`brand.ilike.%${search}%`);
+        orQuery.push(`model.ilike.%${search}%`);
+        if (isNumber) {
+            orQuery.push(`stock.eq.${search}`);
+            orQuery.push(`price.eq.${search}`);
+        }
+    }
+    if (orQuery.length) query = query.or(orQuery.join(','));
+    const { data, error } = await query;
+    if (error) {
+        console.error('Error al obtener productos:', error);
+        return;
+    }
+
+    const productsContainer = document.getElementById('productos-container');
+    const productosFiltrados = document.getElementById('productos-filtrados');
+    productsContainer.innerHTML = '';
+    productosFiltrados.innerHTML = '';
+
+    // Decide en qué contenedor mostrar
+    const targetContainer = search ? productosFiltrados : productsContainer;
+
+    if (data.length === 0 && search) {
+        targetContainer.innerHTML = `
+            <h2 class="text-3xl font-bold mb-4 text-white">
+                No se encontraron productos para esa búsqueda.
+            </h2>`;
+    } else {
+        data.forEach(product => {
+            const productCard = renderProductCard(product);
+            targetContainer.appendChild(productCard);
+        });
+    }
+}
+
+/* Render de la card del producto */
+function renderProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow';
+
+    card.innerHTML = `
+        <div class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10">
+            <div class="relative overflow-hidden">
+                <span class="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-sky-400 px-2.5 py-0.5 text-xs font-medium text-gray-900">
+                    Más vendido
+                </span>
+                <span class="absolute top-3 right-3 z-10 inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-xs font-medium text-white">
+                    -18%
+                </span>
+                <div class="aspect-square overflow-hidden bg-gray-700">
+                    <img src="${product.image_url}" alt="${product.name}"
+                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 </div>
             </div>
-            <div class="w-full max-w-screen flex justify-end">
-                <div id="myCartDropdown1"
-                    class="hidden z-10 fixed mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
-                    <div class="grid grid-cols-2">
-                        <div>
-                            <a href="#"
-                                class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline">Apple
-                                iPhone 15</a>
-                            <p class="mt-0.5 truncate text-sm font-normal text-gray-500 dark:text-gray-400">$599</p>
-                        </div>
-
-                        <div class="flex items-center justify-end gap-6">
-                            <p class="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">x</p>
-
-                            <button data-tooltip-target="tooltipRemoveItem1a" type="button"
-                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                                <span class="sr-only"> Remove </span>
-                                <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                            <div id="tooltipRemoveItem1a" role="tooltip"
-                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                                Remove item
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="checkout.html"
-                        class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        role="button">
-                        Proceed to Checkout
-                    </a>
-                </div>
-                <div id="userDropdown1" class="hidden fixed z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
-                    <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-                        <li><a href="#" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                My Account </a></li>
-                        <li><a href="#" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                My Orders </a></li>
-                        <li><a href="#" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Settings </a></li>
-                        <li><a href="/frontend/dashboard/dashboard.html" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                Dashboard </a></li>
-                    </ul>
-
-                    <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-                        <button id="logout-button"
-                            class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                            Sign Out
-                        </button>
-                    </div>
-                </div>
-            </div>
-<!-- BARRA DE BÚSQUEDA MÓVIL (expandible) -->
-      <div id="mobile-search-bar" class="hidden md:hidden max-w-7xl mx-auto px-4 pb-2">
-        <div class="relative w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.3-4.3"></path>
-          </svg>
-          <input id="buscador-productos-mobile" type="text"
-            class="flex h-10 w-full rounded-md border border-red-500 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
-            placeholder="Buscá por productos, marcas y categorías">
-        </div>
-      </div>
-</nav>
-        <section class="relative min-h-[80vh] flex items-center overflow-hidden bg-gray-900">
-            <div class="absolute inset-0 z-0">
-                <img src="../../assets/pc.jpg" alt="Gaming PC Setup" class="w-full h-full object-cover opacity-30">
-                <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/70 to-transparent"></div>
-            </div>
-            <div class="max-w-7xl mx-auto px-4 relative z-10">
-                <div class="max-w-2xl">
-                    <div class="mb-6">
-                        <span
-                            class="inline-flex items-center gap-2 rounded-full bg-sky-400/10 px-4 py-2 text-sm font-medium text-purple-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-zap h-4 w-4">
-                                <path
-                                    d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
-                                </path>
-                            </svg>
-                            Nueva colección gaming
+            <div class="p-4">
+                <a href="productDetails.html?id=${product.id}" class="block mb-4">
+                    <div class="mb-2">
+                        <span class="inline-flex items-center rounded-md bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300">
+                            ${product.category || 'Sin categoría'}
                         </span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
-                        Construye tu
-                        <span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"> PC
-                            soñada</span>
-                    </h1>
-                    <p class="text-xl text-gray-400 mb-8 max-w-lg">
-                        Los mejores componentes y PCs armadas para gaming, streaming y trabajo profesional. Calidad
-                        garantizada y envío gratuito.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                        <a href="#catalogoProductos"
-                            class="group inline-flex items-center justify-center gap-2 h-11 rounded-md px-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-gray-900 font-semibold hover:from-sky-500 hover:to-cyan-500 shadow-lg hover:shadow-xl transition-all duration-300">
-                            Ver catálogo
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-arrow-right h-5 w-5 group-hover:translate-x-1 transition-transform">
-                                <path d="M5 12h14"></path>
-                                <path d="m12 5 7 7-7 7"></path>
-                            </svg>
-                        </a>
-                        <a href="armaTuPc.html">
-                        <button
-                            class="h-11 rounded-md px-8 bg-gray-800 border border-purple-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300">
-                            Arma tu PC
-                        </button>
-                    </a>
+                    <h3 class="font-semibold mb-2 text-white group-hover:text-sky-400 transition-colors line-clamp-2">
+                        ${product.name}
+                    </h3>
+                    <div class="flex items-center gap-1 mb-3">
+                        <div class="flex">
+                            <!-- estrellas -->
+                            <svg class="lucide lucide-star h-4 w-4 fill-yellow-400 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"><path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path></svg>
+                        </div>
+                        <span class="text-sm text-gray-400">(124)</span>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-400/10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-shield h-5 w-5 text-indigo-400">
-                                    <path
-                                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white">Garantía extendida</h3>
-                                <p class="text-sm text-gray-400">2 años en todos los productos</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-400/10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-truck h-5 w-5 text-indigo-400">
-                                    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path>
-                                    <path d="M15 18H9"></path>
-                                    <path
-                                        d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14">
-                                    </path>
-                                    <circle cx="17" cy="18" r="2"></circle>
-                                    <circle cx="7" cy="18" r="2"></circle>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white">Envío gratis</h3>
-                                <p class="text-sm text-gray-400">En compras +$50,000</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-400/10">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-zap h-5 w-5 text-indigo-400">
-                                    <path
-                                        d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-white">Soporte técnico</h3>
-                                <p class="text-sm text-gray-400">24/7 especializado</p>
-                            </div>
-                        </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xl font-bold text-sky-400">$${product.price || 0}</span>
+                        <span class="text-sm text-gray-400 line-through">$${product.price * 1.3}</span>
                     </div>
-                </div>
+                </a>
+                <button class="add-to-cartBtn w-full group inline-flex items-center justify-center gap-2 h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md"
+                    data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-action="add-to-cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-shopping-cart h-4 w-4 group-hover:scale-110 transition-transform">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                    Agregar al carrito
+                </button>
             </div>
-        </section>
-        <section class="flex justify-center bg-gray-900 py-3">
-  <div class="relative w-full max-w-7xl h-[400px] overflow-hidden rounded-3xl shadow-lg">
-    <!-- Contenedor de imágenes -->
-    <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
-      <img src="https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/1413018-am5-ryzen.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 2">
-      <img src="https://www.muycomputer.com/wp-content/uploads/2019/11/Cinco-cosas-falsas-sobre-la-memoria-RAM-que-debes-tener-claras-2.jpg?mrf-size=m" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 1">
-      <img src="https://www.guiahardware.es/wp-content/uploads/2022/02/Mejores-tarjetas-gráficas-para-Diseño-Gráfico.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
-      <img src="https://photo.coolenjoy.co.kr/data/editor/2402/thumb-8c7fa107a48a55f0b0a7bf2452334face8d67beb.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
-      <img src="https://cdn.wccftech.com/wp-content/uploads/2018/03/DSC_0822-Custom-1920x1280.jpg" class="w-full h-100 flex-shrink-0 object-cover object-center" alt="Componentes 3">
-    </div>
+        </div>`;
+    return card;
+}
 
-    <!-- Flechas -->
-    <button id="prev"
-      class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white text-gray-800 rounded-full p-2 shadow">
-      ‹
-    </button>
-    <button id="next"
-      class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white text-gray-800 rounded-full p-2 shadow">
-      ›
-    </button>
+let oned = true;
 
-    <!-- Indicadores -->
-    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
-      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
-      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
-      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
-      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
-      <span class="dot w-3 h-3 bg-white/60 rounded-full cursor-pointer transition-all duration-300"></span>
-    </div>
-</section>
-        <section class="py-0 bg-gray-900">
-            
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold mb-4 text-white">
-                        Explora nuestras
-                        <span
-                            class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">categorías</span>
-                    </h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">
-                        Encuentra exactamente lo que necesitas para tu setup ideal
-                    </p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-cpu h-6 w-6 text-white">
-                                    <rect width="16" height="16" x="4" y="4" rx="2"></rect>
-                                    <rect width="6" height="6" x="9" y="9" rx="1"></rect>
-                                    <path d="M15 2v2"></path>
-                                    <path d="M15 20v2"></path>
-                                    <path d="M2 15h2"></path>
-                                    <path d="M2 9h2"></path>
-                                    <path d="M20 15h2"></path>
-                                    <path d="M20 9h2"></path>
-                                    <path d="M9 2v2"></path>
-                                    <path d="M9 20v2"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">
-                                Procesadores</h3>
-                            <p class="text-sm text-gray-400">120+ productos</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-monitor h-6 w-6 text-white">
-                                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                                    <line x1="8" x2="16" y1="21" y2="21"></line>
-                                    <line x1="12" x2="12" y1="17" y2="21"></line>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">
-                                Tarjetas Gráficas</h3>
-                            <p class="text-sm text-gray-400">85+ productos</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-memory-stick h-6 w-6 text-white">
-                                    <path d="M6 19v-3"></path>
-                                    <path d="M10 19v-3"></path>
-                                    <path d="M14 19v-3"></path>
-                                    <path d="M18 19v-3"></path>
-                                    <path d="M8 11V9"></path>
-                                    <path d="M16 11V9"></path>
-                                    <path d="M12 11V9"></path>
-                                    <path d="M2 15h20"></path>
-                                    <path
-                                        d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.1a2 2 0 0 0 0 3.837V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5.1a2 2 0 0 0 0-3.837Z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">Memoria
-                                RAM</h3>
-                            <p class="text-sm text-gray-400">200+ productos</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-hard-drive h-6 w-6 text-white">
-                                    <line x1="22" x2="2" y1="12" y2="12"></line>
-                                    <path
-                                        d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z">
-                                    </path>
-                                    <line x1="6" x2="6.01" y1="16" y2="16"></line>
-                                    <line x1="10" x2="10.01" y1="16" y2="16"></line>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">
-                                Almacenamiento</h3>
-                            <p class="text-sm text-gray-400">150+ productos</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-zap h-6 w-6 text-white">
-                                    <path
-                                        d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">Fuentes
-                                de Poder</h3>
-                            <p class="text-sm text-gray-400">90+ productos</p>
-                        </div>
-                    </div>
-                    <div
-                        class="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 hover:-translate-y-1 bg-gradient-to-br from-gray-800 to-gray-800/50 border border-gray-700 rounded-lg">
-                        <div class="p-6 text-center">
-                            <div
-                                class="mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-gamepad2 h-6 w-6 text-white">
-                                    <line x1="6" x2="10" y1="11" y2="11"></line>
-                                    <line x1="8" x2="8" y1="9" y2="13"></line>
-                                    <line x1="15" x2="15.01" y1="12" y2="12"></line>
-                                    <line x1="18" x2="18.01" y1="10" y2="10"></line>
-                                    <path
-                                        d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h3 class="font-semibold mb-1 text-white group-hover:text-sky-400 transition-colors">PCs
-                                Gaming</h3>
-                            <p class="text-sm text-gray-400">30+ configuraciones</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="py-16 bg-gray-900" id="catalogoProductos">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex items-center justify-between mb-12">
-                    <div>
-                        <h2 class="text-3xl font-bold mb-4 text-white">
-                            Productos
-                            <span
-                                class="bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">destacados</span>
-                        </h2>
-                        <p class="text-gray-400">Los componentes más populares y mejor valorados</p>
-                    </div>
-                    <button
-                        class="h-11 rounded-md px-8 bg-gray-800 border border-purple-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300">
-                        Ver todos
-                    </button>
-                </div>     
-                 <!-- Sidebar -->
-<div class="flex flex-col lg:flex-row gap-8 container mx-5 w-11/12 py-6">
+function mostrarResultadosBusqueda(searchValue) {
+  const contenedorFiltrado = document.getElementById('contenedorFiltrado');
+  const productosFiltrados = document.getElementById('productos-filtrados');
+  const sections = document.querySelectorAll('section');
+  const salir = document.getElementById('volver-Tech');
+  const mostrarCategorias = document.getElementById('mostrar-Categorias');
+  const volverAtras = document.createElement('div');
+  const layoutBusqueda = document.createElement('div');
 
-  <!-- 🧭 SIDEBAR -->
+  volverAtras.innerHTML = `
+    <a href="home.html"
+      class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8 mb-4 block">
+      < Volver atrás
+    </a>`;
+
+  layoutBusqueda.innerHTML = `
+    <div class="flex flex-col lg:flex-row gap-8 container mx-5 w-11/12 py-6">
+      <!-- 🧭 SIDEBAR -->
   <div class="barra_lateral w-full lg:w-1/4">
 <aside class="rounded-xl p-3 space-y-4 ">
   <h2 class="categoria-header text-lg font-semibold text-white cursor-pointer select-none border-b pb-2 mb-5 flex items-center justify-between hover:text-sky-400 transition-colors">
@@ -489,128 +163,210 @@
   </ul>
 </aside>
   </div>
-            <div id="productos-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <!-- lista de productos-->
-            </div>
-        </div>
-            </div>
-        </section>
-        <div id="contenedorFiltrado" class="hidden h-full items-center py-16 bg-gray-900" >
-            <div class=" max-w-7xl mx-auto px-4">
-                <div id="volver-Tech"></div>
-                <div class="volver-Tech text-center justify-between mb-12">
-                    <div>
-                        <h2 class="text-3xl font-bold mb-4 text-white">
-                            <span
-                                class="bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-center text-transparent">Todos</span>
-                                nuestros Productos
-                        </h2>
-                        <p class="text-gray-400">Todos los componentes del mercado en TechParts</p>
-                    </div>
-                </div>
-            <div id="mostrar-Categorias" class="flex max-w-7xl mx-auto mt-6 gap-6 px-4">
 
-
-                <div id="productos-filtrados" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- lista de productos-->
-                </div>
-            </div>
-        </div></div>
-        
-        <footer class="bg-gray-900 border-t border-gray-700">
-            <div class="max-w-7xl mx-auto px-4 py-12">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2">
-                            <div
-                                class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-monitor h-5 w-5 text-gray-900">
-                                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
-                                    <line x1="8" x2="16" y1="21" y2="21"></line>
-                                    <line x1="12" x2="12" y1="17" y2="21"></line>
-                                </svg>
-                            </div>
-                            <span
-                                class="text-xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">TechStore</span>
-                        </div>
-                        <p class="text-gray-400">Tu tienda especializada en componentes de PC y sistemas gaming de alta
-                            gama.</p>
-                        <div class="flex gap-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-facebook h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-instagram h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-twitter h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path
-                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
-                                </path>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-youtube h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path
-                                    d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
-                                </path>
-                                <path d="m10 15 5-3-5-3z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Productos</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Procesadores</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Tarjetas Gráficas</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Memoria RAM</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Almacenamiento</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">PCs Gaming</a></li>
-                        </ul>
-                    </div>
-                    <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Soporte</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Centro de ayuda</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Garantías</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Envíos</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Devoluciones</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Contacto</a></li>
-                        </ul>
-                    </div>
-                    <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Contacto</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li>📧 info@TechParts.com</li>
-                            <li>📞 +54 11 1234-5678</li>
-                            <li>📍 Buenos Aires, Argentina</li>
-                            <li>🕒 Lun - Vie: 9:00 - 18:00</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                    <p>© 2024 TechParts. Todos los derechos reservados.</p>
-                </div>
-            </div>
-        </footer>
+      <!-- 🛒 PRODUCTOS -->
+      <div id="productos-filtrados" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full"></div>
     </div>
+  `;
 
-    <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/addToCart.js"></script>
 
-</body>
+  if (searchValue) {
+        sections.forEach(s => s.style.display = 'none');
+                productosFiltrados.style.display = 'grid';
+        contenedorFiltrado.classList.remove('hidden');
+       
+            if(oned===true){ contenedorFiltrado.innerHTML = '';
+            contenedorFiltrado.appendChild(volverAtras);
+            contenedorFiltrado.appendChild(layoutBusqueda);
+            oned=false;
+        }
+        fetchProducts(searchValue);
 
-</html>
+        // ✅ AHORA que el HTML ya existe, agregamos la animación de categorías
+        const categoriaHeader = contenedorFiltrado.querySelector(".categoria-header");
+        const listaCategorias = contenedorFiltrado.querySelector(".lista-categorias");
+        const flecha = contenedorFiltrado.querySelector(".flecha-categoria");
+
+        let abierto = true;
+        categoriaHeader.addEventListener("click", () => {
+            abierto = !abierto;
+            if (abierto) {
+                listaCategorias.classList.remove("max-h-0", "opacity-0", "pointer-events-none");
+                listaCategorias.classList.add("max-h-[1000px]", "opacity-100");
+                flecha.classList.remove("rotate-180");
+            } else {
+                listaCategorias.classList.add("max-h-0", "opacity-0", "pointer-events-none");
+                listaCategorias.classList.remove("max-h-[1000px]", "opacity-100");
+                flecha.classList.add("rotate-180");
+            }
+        });
+    } else if(searchValue){
+        // Muestra secciones y contenedor general, oculta filtrados
+        sections.forEach(section => section.style.display = 'none');
+        productosFiltrados.style.display = 'none';
+        fetchProducts();
+    }
+
+}
+
+
+let cartButton = document.getElementById('myCartDropdownButton1');
+let cartModal = document.getElementById('myCartDropdown1');
+let userButton = document.getElementById('userDropdownButton1');
+let userModal = document.getElementById('userDropdown1');
+
+
+// Cart dropdown functionality
+cartButton.addEventListener('click', function () {
+    cartModal.classList.toggle('hidden');
+    userModal.classList.add('hidden');
+});
+
+// User dropdown functionality
+userButton.addEventListener('click', function () {
+    userModal.classList.toggle('hidden');
+    cartModal.classList.add('hidden');
+});
+
+// logica para dirigir al login si no está autenticado
+const loginButton = document.getElementById('btnUser');
+
+loginButton.addEventListener('click', async () => {
+    const user = supabase.auth.getUser();
+    if (!(await user).data.user) {
+        window.location.href = './auth/login.html';
+    }
+});
+
+// logica para si esta logueado mostrar el user modal
+const userDropdown1 = document.getElementById('contUserSec');
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const user = await supabase.auth.getUser();
+    if (user.data.user) {
+        userDropdown1.classList.remove('hidden');
+        loginButton.classList.add('hidden');
+        cartButton.style.display = 'flex';
+        console.log(user.data.user);
+    }
+    else {
+        userDropdown1.classList.add('hidden');
+        cartButton.style.display = 'none';
+        loginButton.classList.remove('hidden');
+        console.log('No hay usuario logueado');
+    }
+});
+
+// logica para cerrar sesión
+const logoutButton = document.getElementById('logout-button');
+
+logoutButton.addEventListener('click', async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error('Error al cerrar sesión:', error.message);
+        alert('Hubo un error al cerrar sesión.');
+    } else {
+        window.location.href = './home.html';
+    }
+    console.log('Sesión cerrada');
+});
+
+// Cerrar los dropdowns si se hace clic fuera de ellos
+document.addEventListener('click', function (event) {
+    if (!cartButton.contains(event.target) && !cartModal.contains(event.target)) {
+        cartModal.classList.add('hidden');
+    }
+    if (!userButton.contains(event.target) && !userModal.contains(event.target)) {
+        userModal.classList.add('hidden');
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileSearchBar = document.getElementById("mobile-search-bar");
+  const desktopSearch = document.querySelector(".BusquedaComponentes");
+  const nav = document.querySelector("nav");
+
+  // Crear botón de búsqueda solo en móvil
+  const searchBtn = document.createElement("button");
+  searchBtn.id = "mobile-search-btn";
+  searchBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+      fill="none" stroke="currentColor" stroke-width="2" 
+      stroke-linecap="round" stroke-linejoin="round" 
+      class="lucide lucide-search text-white">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </svg>
+  `;
+  searchBtn.className =
+    "md:hidden p-2 rounded-lg hover:bg-gray-800 transition-all duration-200";
+
+  // Insertar botón antes del carrito
+  const cartButton = document.getElementById("myCartDropdownButton1");
+  if (cartButton && nav) {
+    cartButton.parentNode.insertBefore(searchBtn, cartButton);
+  }
+
+  // Mostrar/ocultar barra móvil
+  let isSearchOpen = false;
+  searchBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isSearchOpen = !isSearchOpen;
+    mobileSearchBar.classList.toggle("hidden", !isSearchOpen);
+    if (isSearchOpen) {
+      document.getElementById("buscador-productos-mobile").focus();
+    }
+  });
+
+  // Ocultar al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    if (
+      isSearchOpen &&
+      !mobileSearchBar.contains(e.target) &&
+      !searchBtn.contains(e.target)
+    ) {
+      mobileSearchBar.classList.add("hidden");
+      isSearchOpen = false;
+    }
+  });
+
+  // Mostrar según tamaño de pantalla
+  const handleResize = () => {
+    if (window.innerWidth >= 768) {
+      // Desktop
+      desktopSearch.classList.remove("hidden");
+      mobileSearchBar.classList.add("hidden");
+      searchBtn.classList.add("hidden");
+    } else {
+      // Móvil
+      desktopSearch.classList.add("hidden");
+      searchBtn.classList.remove("hidden");
+    }
+  };
+
+  handleResize();
+  window.addEventListener("resize", handleResize);
+});
+
+//categorias animacion antes de la busqueda
+  const categoriaHeader = document.querySelector(".categoria-header");
+  const listaCategorias = document.querySelector(".lista-categorias");
+  const flecha = document.querySelector(".flecha-categoria");
+
+  // Estado inicial: visible
+  let abierto = true;
+
+  categoriaHeader.addEventListener("click", () => {
+    abierto = !abierto;
+
+    // Alternar visibilidad
+    if (abierto) {
+      listaCategorias.classList.remove("max-h-0", "opacity-0", "pointer-events-none");
+      listaCategorias.classList.add("max-h-[1000px]", "opacity-100");
+      flecha.classList.remove("rotate-180");
+    } else {
+      listaCategorias.classList.add("max-h-0", "opacity-0", "pointer-events-none");
+      listaCategorias.classList.remove("max-h-[1000px]", "opacity-100");
+      flecha.classList.add("rotate-180");
+    }
+  });
