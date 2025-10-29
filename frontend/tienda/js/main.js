@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchValue = this.value.trim();
         mostrarResultadosBusqueda(searchValue);
     });
-});
 });  
 
     const procesadorBtnHome = document.getElementById("Procesadores-Btn-home");
