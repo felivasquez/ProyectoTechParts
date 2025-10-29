@@ -8,10 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchValue = this.value.trim();
         mostrarResultadosBusqueda(searchValue);
     });
-});
+});  
 
+    const procesadorBtnHome = document.getElementById("Procesadores-Btn-home");
+    const TarjetaBtnHome = document.getElementById("Tarjetas-Btn-home");
+    const RAMBtnHome = document.getElementById("RAM-Btn-home");
+    const AlmacenamientoBtnHome = document.getElementById("Almacenamiento-Btn-home");
+    const fuentesBntHome = document.getElementById("fuentes-Btn-home");
+    const pcsBtnHome = document.getElementById("pcs-Btn-home");
+    let filtroCategoria = null;  
 
 async function fetchProducts(search = '') {
+    
+    
     let query = supabase.from('products').select('*');
     let orQuery = [];
     if (search) {
@@ -46,7 +55,51 @@ async function fetchProducts(search = '') {
         });
     }
 }
+async function AplicarFiltrosHome(params){
+    const productsContainer = document.getElementById('productos-container');
+    const productosFiltrados = document.getElementById('contenedorFiltrado');
+    productsContainer.innerHTML = '';
+    productosFiltrados.innerHTML = '';
 
+    if (!filtroCategoria) return;
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', filtroCategoria);
+
+    if (error) {
+        console.error('Error al filtrar productos:', error);
+        return;
+    }
+
+    if (!data.length) {
+        productsContainer.innerHTML = `
+            <h2 class="text-2xl font-bold text-white">
+                No se encontraron productos en ${filtroCategoria}.
+            </h2>`;
+        return;
+    }
+
+    // Renderizar los productos
+    data.forEach(product => {
+        const card = renderProductCard(product);
+        productsContainer.appendChild(card);
+    });
+}
+BotonesHome(procesadorBtnHome,'Procesadores');
+BotonesHome(TarjetaBtnHome,'Tarjetas Gráficas')
+BotonesHome(RAMBtnHome,'Memoria RAM')
+BotonesHome(AlmacenamientoBtnHome,'Almacenamiento')
+BotonesHome(fuentesBntHome,'Fuente')
+
+function BotonesHome(boton, categoria) {
+    boton.addEventListener('click', async () => {
+        filtroCategoria = categoria; // guarda la categoría actual
+        await AplicarFiltrosHome(); // ejecuta el filtrado
+        activarBotonSeleccionado(boton); // resalta el botón activo
+    });
+}
 /*render product card */
 function renderProductCard(product) {
     const card = document.createElement('div');
@@ -162,74 +215,4 @@ function mostrarResultadosBusqueda(searchValue) {
         fetchProducts();
     }
 }
-
-let cartButton = document.getElementById('myCartDropdownButton1');
-let cartModal = document.getElementById('myCartDropdown1');
-let userButton = document.getElementById('userDropdownButton1');
-let userModal = document.getElementById('userDropdown1');
-
-
-// Cart dropdown functionality
-cartButton.addEventListener('click', function () {
-    cartModal.classList.toggle('hidden');
-    userModal.classList.add('hidden');
-});
-
-// User dropdown functionality
-userButton.addEventListener('click', function () {
-    userModal.classList.toggle('hidden');
-    cartModal.classList.add('hidden');
-});
-
-// logica para dirigir al login si no está autenticado
-const loginButton = document.getElementById('btnUser');
-
-loginButton.addEventListener('click', async () => {
-    const user = supabase.auth.getUser();
-    if (!(await user).data.user) {
-        window.location.href = './auth/login.html';
-    }
-});
-
-// logica para si esta logueado mostrar el user modal
-const userDropdown1 = document.getElementById('contUserSec');
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const user = await supabase.auth.getUser();
-    if (user.data.user) {
-        userDropdown1.classList.remove('hidden');
-        loginButton.classList.add('hidden');
-        cartButton.style.display = 'flex';
-        console.log(user.data.user);
-    }
-    else {
-        userDropdown1.classList.add('hidden');
-        cartButton.style.display = 'none';
-        loginButton.classList.remove('hidden');
-        console.log('No hay usuario logueado');
-    }
-});
-
-// logica para cerrar sesión
-const logoutButton = document.getElementById('logout-button');
-
-logoutButton.addEventListener('click', async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error('Error al cerrar sesión:', error.message);
-        alert('Hubo un error al cerrar sesión.');
-    } else {
-        window.location.href = './home.html';
-    }
-    console.log('Sesión cerrada');
-});
-
-// Cerrar los dropdowns si se hace clic fuera de ellos
-document.addEventListener('click', function (event) {
-    if (!cartButton.contains(event.target) && !cartModal.contains(event.target)) {
-        cartModal.classList.add('hidden');
-    }
-    if (!userButton.contains(event.target) && !userModal.contains(event.target)) {
-        userModal.classList.add('hidden');
-    }
-});
+ 
