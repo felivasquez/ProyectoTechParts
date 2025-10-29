@@ -1,17 +1,5 @@
 import supabase from './client.js';
 
-async function saveComponentSpec(productId, keyName, valueText) {
-  const { data, error } = await supabase
-    .from('component_specs')
-    .upsert(
-      [
-        { product_id: productId, key: keyName, value: valueText }
-      ],
-      { onConflict: ['product_id', 'key'] }
-    );
-
-  if (error) console.error('Error al guardar componente:', error);
-}
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('add-product-form');
     const modal = document.getElementById('add-product-modal');
@@ -38,142 +26,86 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
- const camposTecnicosPorCategoria = {
-      "Procesadores": ["socket", "tdp", "frecuencia_base", "frecuencia_boost"],
-      "Placas Madre": ["socket", "chipset", "tipo_memoria", "slots_memoria", "formato"],
-      "Memoria RAM": ["tipo_memoria", "frecuencia", "capacidad_gb", "cantidad_modulos"],
-      "Tarjetas Gráficas": ["interfaz", "longitud_mm", "tdp", "recomendacion_fuente_w"],
-      "Almacenamiento": ["tipo_almacenamiento", "interfaz", "capacidad_gb", "longitud_mm"]
-     };
- 
-    function generarCamposTecnicos(categoriaV, valores = {}) {
-    // Elimina campos técnicos previos
-    document.querySelectorAll('.campo-tecnico').forEach(el => el.remove());
-
-    const campos = camposTecnicosPorCategoria[categoriaV] || [];
-    if (campos.length === 0) return;
-
-    const grid = document.createElement('div');
-    grid.classList.add('grid', 'grid-cols-2', 'gap-4', 'campo-tecnico', 'mt-2');
-
-    campos.forEach(campo => {
-        const div = document.createElement('div');
-
-        const label = document.createElement('label');
-        label.textContent = campo;
-        label.classList.add('text-sm', 'font-medium', 'text-gray-700');
-        label.htmlFor = campo;
-
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.id = campo;
-        input.name = campo;
-        input.value = valores[campo] || ''; 
-        input.classList.add(
-            'w-full', 'rounded-md', 'border', 'border-gray-300', 'px-3', 'py-2', 'text-sm',
-            'shadow-sm', 'focus:border-blue-500', 'focus:ring', 'focus:ring-blue-500/50'
-        );
-
-        div.appendChild(label);
-        div.appendChild(input);
-        grid.appendChild(div);
-    });
-
-    // Insertar antes del textarea de descripción
-    form.insertBefore(grid, form.querySelector('#description').parentElement);
-}
-
     // Lógica para agregar o editar
     form.addEventListener('submit', async (e) => {
-       e.preventDefault();
+        e.preventDefault();
 
-    const id = productIdInput.value;
-    const name = document.getElementById('name').value.trim();
-    const category = document.getElementById('category')?.value?.trim() || 'Sin categoría';
-    const brand = document.getElementById('brand').value.trim();
-    const model = document.getElementById('model').value.trim();
-    const stock = parseInt(document.getElementById('stock').value);
-    const min_stock = parseInt(document.getElementById('min_stock').value);
-    const price = parseFloat(document.getElementById('price').value);
-    const location = document.getElementById('location').value.trim();
-    const description = document.getElementById('description').value.trim();
+        const id = productIdInput.value;
+        const name = document.getElementById('name').value.trim();
+        const category = document.getElementById('category')?.value?.trim() || 'Sin categoría';
+        const brand = document.getElementById('brand').value.trim();
+        const model = document.getElementById('model').value.trim();
+        const stock = parseInt(document.getElementById('stock').value);
+        const min_stock = parseInt(document.getElementById('min_stock').value);
+        const price = parseFloat(document.getElementById('price').value);
+        const location = document.getElementById('location').value.trim();
+        const description = document.getElementById('description').value.trim();
 
-    const formData = new FormData(form);
-    const producto = {};
-    const textoTecnico =[];
-    formData.forEach((valor, key) => {
-        producto[key] = valor;
+        // manejar imagen con Signed URL
+        const fileInput = document.getElementById('product-image');
+        let imageUrl = null;
+
+        if (fileInput?.files?.length) {
+            const file = fileInput.files[0];
+            const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            const filePath = `products/${Date.now()}-${safeName}`;
+
+            // Subir al bucket privado
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('imagenes')
+                .upload(filePath, file);
+
+            if (uploadError) {
+                showNotification('Error al subir la imagen: ' + uploadError.message, 'error');
+                return;
+            }
+
+            // Generar Signed URL por 1 año (31,536,000 segundos)
+            const { data: signedData, error: signedError } = await supabase.storage
+                .from('imagenes')
+                .createSignedUrl(filePath, 31536000);
+
+            if (signedError) {
+                showNotification('Error al generar enlace de imagen: ' + signedError.message, 'error');
+                return;
+            }
+
+            imageUrl = signedData.signedUrl; // este link se guarda en la tabla
+        }
+
+        let error;
+
+        if (id) {
+            // Editar producto
+            ({ error } = await supabase
+                .from('products')
+                .update({
+                    name, category, brand, model, stock, min_stock, price, location, description,
+                    ...(imageUrl && { image_url: imageUrl }) // actualizar imagen solo si subieron una
+                })
+                .eq('id', id));
+        } else {
+            // Agregar producto
+            ({ error } = await supabase
+                .from('products')
+                .insert([{
+                    name, category, brand, model, stock, min_stock, price, location, description,
+                    image_url: imageUrl
+                }]));
+        }
+
+        if (error) {
+            showNotification('Error al guardar el producto: ' + error.message, 'error');
+            return;
+        }
+
+        showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
+        form.reset();
+        modal.classList.add('hidden');
+        modal.setAttribute('data-state', 'closed');
+        if (typeof fetchProducts === 'function') fetchProducts();
+        else if (window.fetchProducts) window.fetchProducts();
     });
-
-    // Manejar imagen
-    const fileInput = document.getElementById('product-image');
-    let imageUrl = null;
-
-    if (fileInput?.files?.length) {
-        const file = fileInput.files[0];
-        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const filePath = `products/${Date.now()}-${safeName}`;
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('imagenes')
-            .upload(filePath, file);
-
-        if (uploadError) return showNotification('Error al subir la imagen: ' + uploadError.message, 'error');
-
-        const { data: signedData, error: signedError } = await supabase.storage
-            .from('imagenes')
-            .createSignedUrl(filePath, 31536000);
-
-        if (signedError) return showNotification('Error al generar enlace de imagen: ' + signedError.message, 'error');
-
-        imageUrl = signedData.signedUrl;
-    }
-
-    let productoId;
-
-    if (!id) {
-        // Agregar producto nuevo
-        const { data: productoInsertado, error } = await supabase.from('products').insert([{
-            name, category, brand, model, stock, min_stock, price, location, description,
-            image_url: imageUrl
-        }]).select('id');
-
-        if (error) return showNotification('Error al agregar producto: ' + error.message, 'error');
-
-        productoId = productoInsertado[0].id;
-    } else {
-        // Editar producto existente
-        const { error } = await supabase.from('products').update({
-            name, category, brand, model, stock, min_stock, price, location, description,
-            ...(imageUrl && { image_url: imageUrl })
-        }).eq('id', id);
-
-        if (error) return showNotification('Error al actualizar producto: ' + error.message, 'error');
-
-        productoId = id;
-
-        // Borrar specs previas
-        await supabase.from('component_specs').delete().eq('product_id', id);
-    }
-
-    // Guardar specs técnicas
-for (const campo of camposTecnicosPorCategoria[category] || []) {
-  const valor = producto[campo] || '';
-  if (valor) {
-    await saveComponentSpec(productoId, campo, valor);
-  }
-}
-
-
-    showNotification(id ? 'Producto editado con éxito' : 'Producto agregado con éxito', 'success');
-    form.reset();
-    modal.classList.add('hidden');
-    modal.setAttribute('data-state', 'closed');
-
-    if (typeof fetchProducts === 'function') fetchProducts();
-    else if (window.fetchProducts) window.fetchProducts();
-    });
-    
 
 
 
@@ -192,9 +124,6 @@ for (const campo of camposTecnicosPorCategoria[category] || []) {
         document.getElementById('location').value = product.location || '';
         document.getElementById('description').value = product.description || '';
         document.getElementById('submit-product-btn').textContent = 'Guardar cambios';
-
-        generarCamposTecnicos(product.category, product);
-
         modal.classList.remove('hidden');
         modal.setAttribute('data-state', 'open');
     };
@@ -243,56 +172,37 @@ for (const campo of camposTecnicosPorCategoria[category] || []) {
 async function fetchProducts(search = '', category = '', brand = '') {
     let query = supabase.from('products').select('*');
 
-  const { data: products, error: productError } = await query;
-  if (productError) {
-    console.error('Error al traer productos:', productError);
-    return;
-  }
-
-  let orQuery = [];
-  if (search) {
-    const isNumber = !isNaN(search);
-    orQuery.push(`name.ilike.%${search}%`);
-    orQuery.push(`brand.ilike.%${search}%`);
-    orQuery.push(`model.ilike.%${search}%`);
-    if (isNumber) {
-      orQuery.push(`stock.eq.${search}`);
-      orQuery.push(`price.eq.${search}`);
+    let orQuery = [];
+    if (search) {
+        const isNumber = !isNaN(search);
+        orQuery.push(`name.ilike.%${search}%`);
+        orQuery.push(`brand.ilike.%${search}%`);
+        orQuery.push(`model.ilike.%${search}%`);
+        if (isNumber) {
+            orQuery.push(`stock.eq.${search}`);
+            orQuery.push(`price.eq.${search}`);
+        }
     }
-  }
 
-  if (category) query = query.eq('category', category);
-  if (brand) query = query.eq('brand', brand);
-  if (orQuery.length) query = query.or(orQuery.join(','));
+    if (category) query = query.eq('category', category);
+    if (brand) query = query.eq('brand', brand);
+    if (orQuery.length) query = query.or(orQuery.join(','));
 
-  const productIds = products.map(p => p.id);
-  let { data: specs, error: specsError } = await supabase
-    .from('component_specs')
-    .select('*')
-    .in('product_id', productIds);
-
-  if (specsError) {
-    console.error('Error al traer specs:', specsError);
-    specs = [];
-  }
-
-  const productsWithSpecs = products.map(p => {
-    const productSpecs = specs.filter(s => s.product_id === p.id);
-    const specsText = productSpecs.map(s => `${s.value}`).join('');
-    return { ...p, specsText };
-  });
-
-  const productsContainer = document.getElementById('products-container');
-  productsContainer.innerHTML = '';
-  productsWithSpecs.forEach(product => {
-    const productCard = renderProductCard(product);
-    productsContainer.appendChild(productCard);
-  });
+    const { data, error } = await query;
+    if (error) {
+        console.error('Error al traer productos:', error);
+        return;
+    }
+    const productsContainer = document.getElementById('products-container');
+    productsContainer.innerHTML = '';
+    data.forEach(product => {
+        const productCard = renderProductCard(product);
+        productsContainer.appendChild(productCard);
+    });
 }
 
 /*render product card */
- function renderProductCard(product) {
-     
+function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow';
 
@@ -315,7 +225,7 @@ async function fetchProducts(search = '', category = '', brand = '') {
                         <path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.1a2 2 0 0 0 0 3.837V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5.1a2 2 0 0 0 0-3.837Z"></path>
                     </svg>
                     <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold">
-                        ${ product.category|| 'Sin categoría'}
+                        ${product.category || 'Sin categoría'}
                     </div>
                 </div>
                 <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-primary text-primary-foreground">
@@ -323,7 +233,7 @@ async function fetchProducts(search = '', category = '', brand = '') {
                 </div>
             </div>
             <h3 class="font-semibold tracking-tight text-lg">${product.name}</h3>
-            <p class="text-sm text-muted-foreground">${product.specsText || ''}</p>
+            <p class="text-sm text-muted-foreground">${product.description || ''}</p>
         </div>
         <div class="p-6 pt-0 space-y-4">
             <div class="grid grid-cols-2 gap-4 text-sm">

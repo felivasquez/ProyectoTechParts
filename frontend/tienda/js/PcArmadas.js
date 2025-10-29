@@ -227,7 +227,7 @@ async function traerProductos(){
     div.innerHTML = card.trim();
     return div.firstChild;
     function mostrarSeleccionados(productosSeleccionados) {
-    const contenedorN = document.getElementById('componentes-elegidos');
+       const contenedorN = document.getElementById('componentes-elegidos');
     contenedorN.innerHTML = ''; // Limpia antes de mostrar los nuevos seleccionados
 //targeta del carrito del armado de pc :)
     productosSeleccionados.forEach(producto => {
@@ -251,9 +251,9 @@ async function traerProductos(){
                 <span class="text-sky-400 text-xl font-bold">$${producto.price}</span>
                 </div>
                     <div class="pl-6 flex items-center">
-                        <button type="button" class="decrement-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >-</button>
+                        <button id="restar" type="button" class="decrement-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >-</button>
                             <input type="text" class="w-5 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" value="1" readonly />
-                        <button type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700" >+</button>
+                        <button id="sumar" type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">+</button>
                     </div>
                 <div class="mt-1 flex items-center space-x-2">
                 <span class="text-green-600 text-sm font-semibold flex items-center">✔️ Compatible</span>
@@ -268,10 +268,9 @@ async function traerProductos(){
     contenedorN.appendChild(div.firstChild);
   });}
 }
-
 // --- RENDER CARD ---
 function renderCard(producto) {
-    const card = `
+        const card = `
 <button class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer">
   <div class="bg-gradient-to-r to-green-0 text-white text-sm font-semibold px-3 py-1 rounded-br-xl inline-block ">
     Descuento $9.200
