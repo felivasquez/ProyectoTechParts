@@ -26,19 +26,21 @@
                     </div>
                     <span   class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
                 </div>
-                <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
-                    <div class="relative w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.3-4.3"></path>
-                        </svg>
-                        <input id="buscador-productos" type="text"
-                            class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
-                            placeholder="Buscar productos...">
-                    </div>
-                </div>
+        <!-- BARRA DE BÚSQUEDA - Desktop -->
+        <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
+          <div class="relative w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input id="buscador-productos" type="text"
+              class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+              placeholder="Buscar productos...">
+          </div>
+        </div>
                 <div class="flex items-center lg:space-x-2">
                     <button id="myCartDropdownButton1" type="button"
                         class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
@@ -127,8 +129,7 @@
                         Proceed to Checkout
                     </a>
                 </div>
-                <div id="userDropdown1"
-                    class="hidden fixed z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+                <div id="userDropdown1" class="hidden fixed z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
                     <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
                         <li><a href="#" title=""
                                 class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -152,7 +153,22 @@
                     </div>
                 </div>
             </div>
-        </nav>
+<!-- BARRA DE BÚSQUEDA MÓVIL (expandible) -->
+      <div id="mobile-search-bar" class="hidden md:hidden max-w-7xl mx-auto px-4 pb-2">
+        <div class="relative w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input id="buscador-productos-mobile" type="text"
+            class="flex h-10 w-full rounded-md border border-red-500 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+            placeholder="Buscá por productos, marcas y categorías">
+        </div>
+      </div>
+</nav>
         <section class="relative min-h-[80vh] flex items-center overflow-hidden bg-gray-900">
             <div class="absolute inset-0 z-0">
                 <img src="../../assets/pc.jpg" alt="Gaming PC Setup" class="w-full h-full object-cover opacity-30">
@@ -431,7 +447,6 @@
                     </div>
                 </div>
             </div>
-
         </section>
         <section class="py-16 bg-gray-900" id="catalogoProductos">
             <div class="max-w-7xl mx-auto px-4">
@@ -445,18 +460,45 @@
                         <p class="text-gray-400">Los componentes más populares y mejor valorados</p>
                     </div>
                     <button
-                        class="h-10 px-4 py-2 bg-gray-800 border border-sky-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300 rounded-md">
+                        class="h-11 rounded-md px-8 bg-gray-800 border border-purple-400/20 text-white hover:bg-sky-400/10 hover:border-sky-400/40 transition-all duration-300">
                         Ver todos
                     </button>
-                </div>
-                <div id="productos-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- lista de productos-->
-                </div>
+                </div>     
+                 <!-- Sidebar -->
+<div class="flex flex-col lg:flex-row gap-8 container mx-5 w-11/12 py-6">
+
+  <!-- 🧭 SIDEBAR -->
+  <div class="barra_lateral w-full lg:w-1/4">
+<aside class="rounded-xl p-3 space-y-4 ">
+  <h2 class="categoria-header text-lg font-semibold text-white cursor-pointer select-none border-b pb-2 mb-5 flex items-center justify-between hover:text-sky-400 transition-colors">
+    Categorías
+    <svg xmlns="http://www.w3.org/2000/svg" class="flecha-categoria h-5 w-5 text-white transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+    </svg>
+  </h2>
+
+  <ul class="lista-categorias space-y-5 text-gray-300 transition-all duration-500 overflow-hidden">
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">PC de Escritorio <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Notebooks <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Procesadores <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Placas de Video <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Memorias RAM <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Fuentes <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Periféricos <span>›</span></li>
+    <li class="flex items-center justify-between hover:text-sky-400 cursor-pointer">Sillas Gamers <span>›</span></li>
+  </ul>
+</aside>
+  </div>
+            <div id="productos-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- lista de productos-->
+            </div>
+        </div>
             </div>
         </section>
         <div id="contenedorFiltrado" class="hidden h-full items-center py-16 bg-gray-900" >
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="text-center justify-between mb-12">
+            <div class=" max-w-7xl mx-auto px-4">
+                <div id="volver-Tech"></div>
+                <div class="volver-Tech text-center justify-between mb-12">
                     <div>
                         <h2 class="text-3xl font-bold mb-4 text-white">
                             <span
@@ -466,11 +508,15 @@
                         <p class="text-gray-400">Todos los componentes del mercado en TechParts</p>
                     </div>
                 </div>
+            <div id="mostrar-Categorias" class="flex max-w-7xl mx-auto mt-6 gap-6 px-4">
+
+
                 <div id="productos-filtrados" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <!-- lista de productos-->
                 </div>
             </div>
-        </div>
+        </div></div>
+        
         <footer class="bg-gray-900 border-t border-gray-700">
             <div class="max-w-7xl mx-auto px-4 py-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -561,6 +607,7 @@
             </div>
         </footer>
     </div>
+
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/addToCart.js"></script>
 
