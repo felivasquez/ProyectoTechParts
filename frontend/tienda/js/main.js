@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const RAMBtnHome = document.getElementById("RAM-Btn-home");
     const AlmacenamientoBtnHome = document.getElementById("Almacenamiento-Btn-home");
     const fuentesBntHome = document.getElementById("fuentes-Btn-home");
-    const destacados  = document.getElementById("destacados");
+    const Adicionales  = document.getElementById("Adicionales");
     let filtroCategoria = null;  
 
 async function fetchProducts(search = '') {
@@ -89,10 +89,10 @@ async function AplicarFiltrosHome(){
         return;
     }
 
-     if (filtroCategoria === '*') {
+     if (filtroCategoria ==='Adicionales') {
         textoHome.textContent = 'Destacados';
         productosText.childNodes.forEach(node => {
-            if (node.nodeType === Node.TEXT_NODE) node.textContent = 'Productos ';
+            if (node.nodeType === Node.TEXT_NODE) node.textContent = 'Productos';
         });
     } else {
         textoHome.textContent = filtroCategoria;
@@ -109,7 +109,7 @@ BotonesHome(TarjetaBtnHome,'Tarjetas Gráficas')
 BotonesHome(RAMBtnHome,'Memoria RAM')
 BotonesHome(AlmacenamientoBtnHome,'Almacenamiento')
 BotonesHome(fuentesBntHome,'Fuente')
-BotonesHome(destacados,'*');
+BotonesHome(Adicionales,'Adicionales');
 
 function BotonesHome(boton, categoria) {
     boton.addEventListener('click', async () => {
