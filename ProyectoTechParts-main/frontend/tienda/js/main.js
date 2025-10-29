@@ -23,6 +23,45 @@ async function fetchProducts() {
         productsContainer.appendChild(productCard);
     });
 }
+async function filtrarPorCategoria(categoria) {
+    const productsContainer = document.getElementById('productos-container');
+    const productosFiltrados = document.getElementById('productos-filtrados');
+
+    // Limpiar contenedores
+    productsContainer.innerHTML = '';
+    productosFiltrados.innerHTML = '';
+
+    // Consultar solo los productos con esa categoría
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', categoria);
+
+    if (error) {
+        console.error('Error al obtener productos:', error);
+        return;
+    }
+
+    // Si no hay resultados, mostrar mensaje
+    if (data.length === 0) {
+        productsContainer.innerHTML = `
+            <h2 class="text-3xl font-bold mb-4 text-white">
+                No se encontraron productos en la categoría ${categoria}.
+            </h2>`;
+        return;
+    }
+
+    // Renderizar los productos encontrados
+    data.forEach(product => {
+        const card = renderProductCard(product);
+        productsContainer.appendChild(card);
+    });
+
+    // Ocultar otras secciones si es necesario (opcional)
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => section.style.display = 'none');
+    productsContainer.style.display = 'grid';
+}
 
 /*render product card */
 function renderProductCard(product) {
