@@ -40,10 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
  const camposTecnicosPorCategoria = {
       "Procesadores": ["socket", "tdp", "frecuencia_base", "frecuencia_boost"],
-      "Placas Madre": ["socket", "chipset", "tipo_memoria", "slots_memoria", "formato"],
-      "Memoria RAM": ["tipo_memoria", "frecuencia", "capacidad_gb", "cantidad_modulos"],
+      "Placas Madre": ["socket", "chipset", "tipo_memoria", "slots_memoria", "formato","consumo"],
+      "Memoria RAM": ["tipo_memoria", "frecuencia", "capacidad_gb", "cantidad_modulos","consumo"],
       "Tarjetas Gráficas": ["interfaz", "longitud_mm", "tdp", "recomendacion_fuente_w"],
-      "Almacenamiento": ["tipo_almacenamiento", "interfaz", "capacidad_gb", "longitud_mm"]
+      "Almacenamiento": ["tipo_almacenamiento", "interfaz", "capacidad_gb", "longitud_mm","consumo"]
      };
  
     function generarCamposTecnicos(categoriaV, valores = {}) {

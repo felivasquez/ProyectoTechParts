@@ -5,13 +5,46 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function traerProductos(){
-    const {data,error} = await supabase
+    const {data: productsData, error: errorProducts } = await supabase
     .from('products')
     .select('*')
-    if (error) { 
-        console.error('Error fetching products:', error);
-        return;
-    }
+    
+    
+    if (errorProducts) {
+    console.error('Error fetching products:', errorProducts);
+    return;
+  }
+
+    const [
+    { data: procesadoresData, error: errorProc },
+    { data: placasMData, error: errorPlaca },
+    { data: ramData, error: errorRAM },
+    { data: tarjetasData, error: errorGPU },
+    { data: almacenamientoData, error: errorAlma }
+  ] = await Promise.all([
+    supabase.from('view_procesadores').select('*'),
+    supabase.from('view_placas_madre').select('*'),
+    supabase.from('view_memoria_ram').select('*'),
+    supabase.from('view_tarjetas_graficas').select('*'),
+    supabase.from('view_almacenamiento').select('*')
+  ]);
+  if (errorProc || errorPlaca || errorRAM || errorGPU || errorAlma) {
+    console.error('Error en alguna vista:', {
+    errorProc, errorPlaca, errorRAM, errorGPU, errorAlma
+    });
+  }
+  const datosCompatibilidad = {
+    procesadoresData,
+    placasMData,
+    ramData,
+    tarjetasData,
+    fuentesData: [], 
+    gabinetesData: [], 
+    almacenamientoData
+  };
+
+
+    const data = productsData;
     const reponse = await fetch('js/textos.json');
     const textos = await reponse.json();    
     //filtros Btn 
@@ -52,7 +85,7 @@ async function traerProductos(){
         totalElement.textContent = `Total: $${totalGuardado}`;
 
         // Mostrar productos seleccionados al reiniciar
-        Aplicarfiltros(2);
+        Aplicarfiltros(2,datosCompatibilidad);
     }
     MostrarStorageAlReiniciar();
 
@@ -87,7 +120,7 @@ async function traerProductos(){
         }
         // Mostrar el texto correspondiente 
         MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos)
-        Aplicarfiltros(1);
+        Aplicarfiltros(1,datosCompatibilidad);
     }
     function finalizarCompra() {
         saltarBtn.innerHTML = "finalizar";
@@ -96,15 +129,16 @@ async function traerProductos(){
             window.location.href = '/frontend/tienda/checkout.html';
         })        
     }
+    
     //aplicar filtros
-    function Aplicarfiltros(tipo) {
+    function Aplicarfiltros(tipo,datosCompatibilidad) {
         let filtros = data;
         switch (tipo) {
             case 1:
                 if (filtroCategoria) {
                     filtros = filtros.filter(producto => producto.category === filtroCategoria);
                 }
-                mostrarProductos(filtros);
+                mostrarProductos(filtros,datosCompatibilidad);
                 break;
             case 2:
                 const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
@@ -116,14 +150,14 @@ async function traerProductos(){
     }
 
     //econtrar palabras claves en el nombre del producto para así filtrarlo por AMD y Intel (ya que en la base de datos no hay nada que diga si es intel o AMD)
-    function EncontrarPalabra(palabrasClave) {
+    function EncontrarPalabra(palabrasClave,datosCompatibilidad) {
         let filtros = data;
         filtros = filtros.filter(producto => 
             palabrasClave.some(palabra => 
                 producto.name.toLowerCase().includes(palabra)
             )
         );
-        mostrarProductos(filtros);
+        mostrarProductos(filtros,datosCompatibilidad);
     } 
 
     //Funciones para mostrar y ocultar botones
@@ -149,7 +183,7 @@ async function traerProductos(){
 
       boton.addEventListener('click', () => {
             filtroCategoria = categoria;
-            Aplicarfiltros(1);                 
+            Aplicarfiltros(1,datosCompatibilidad);                 
             indiciesCategoria = categoriasOrden.indexOf(categoria);
             botonesMostrar.forEach(btn => MostrarBtn(btn));
             botonesOcultar.forEach(btn => OcultarBtn(btn)); 
@@ -159,7 +193,7 @@ async function traerProductos(){
 
     //mostrar todos los productos al cargar la página
     filtroCategoria = 'Procesadores';
-    Aplicarfiltros(1);      
+    Aplicarfiltros(1,datosCompatibilidad);      
     MostrarBtn(amdFilterButton);
     MostrarBtn(intelFilterButton);
     textosSeccion.innerHTML = textos['Procesadores'];    
@@ -196,7 +230,7 @@ async function traerProductos(){
 
     MostrarTextoIndice(indiciesCategoria, categoriasOrden, textos);
 
-    Aplicarfiltros(1);
+    Aplicarfiltros(1,datosCompatibilidad);
 
     console.log(filtroCategoria);
      }    
@@ -222,21 +256,64 @@ async function traerProductos(){
     //filtros por AMD e INTEL
     amdFilterButton.addEventListener('click', () => {
         const palabrasClave =  ["amd", "ryzen"];
-        EncontrarPalabra(palabrasClave)
+        EncontrarPalabra(palabrasClave,datosCompatibilidad)
         activarBtn(amdFilterButton, intelFilterButton)
     })
     intelFilterButton.addEventListener('click', () => {
         const palabrasClave =  ["intel", "core"];
-        EncontrarPalabra(palabrasClave)
+        EncontrarPalabra(palabrasClave,datosCompatibilidad)
         activarBtn(intelFilterButton, amdFilterButton)
     })
+    
+    function obtenerCompatibilidad(producto,filtroCategoria,componentesSeleccionados,datosCompatibilidad){
+    
+    const { procesadoresData, placasMData, ramData, tarjetasData, fuentesData, gabinetesData } = datosCompatibilidad;
 
+    const cpuSeleccionada = procesadoresData.find(p => p.id === componentesSeleccionados['Procesadores']);
+    const placaMSeleccionada = placasMData.find(m => m.id === componentesSeleccionados['Placas Madre']);
+    const ramSeleccionada = ramData.find(r => r.id === componentesSeleccionados['Memoria RAM']);
+    const gpuSeleccionada = tarjetasData.find(g => g.id === componentesSeleccionados['Tarjetas Gráficas']);
+    const fuenteSeleccionada = fuentesData.find(f => f.id === componentesSeleccionados['Fuente']);
+    const gabineteSeleccionado = gabinetesData.find(g => g.id === componentesSeleccionados['Gabinete']);
+
+    // Compatibilidad según categoría actual
+      try {
+        switch(filtroCategoria) {
+            case 'Procesadores':
+                return !placaMSeleccionada || producto.socket === placaMSeleccionada.socket;
+
+            case 'Placas Madre':
+                return !cpuSeleccionada || producto.socket === cpuSeleccionada.socket;
+
+            case 'Memoria RAM':
+                return !placaMSeleccionada || producto.tipo_ram === placaMSeleccionada.tipo_ram;
+
+            case 'Tarjetas Gráficas':
+                return !fuenteSeleccionada || parseInt(fuenteSeleccionada.potencia) >= parseInt(producto.potencia_recomendada || 0);
+
+            case 'Fuente':
+                return !gpuSeleccionada || parseInt(producto.potencia) >= parseInt(gpuSeleccionada.potencia_recomendada || 0);
+
+            case 'Almacenamiento':
+                return !placaMSeleccionada || producto.tipo_almacenamiento === placaMSeleccionada.tipo_almacenamiento;
+
+            default:
+                return true;
+        }
+    } catch (error) {
+        console.warn('Error al calcular compatibilidad:', error);
+        return true;
+    }                   
+    }
     //funcion para mostrar los productos en el contenedor
-    function mostrarProductos(array) {
+    function mostrarProductos(array,datosCompatibilidad) {
         const contenedor = document.getElementById('products-grid');
-        contenedor.innerHTML = ''; 
+        contenedor.innerHTML = '';     
+        const componentesSeleccionados = JSON.parse(localStorage.getItem('componentesSeleccionados')) || {};
+       
         array.forEach(productos => { 
-            const productCardHTML = renderCard(productos); 
+            const esCompatible = obtenerCompatibilidad(productos, filtroCategoria, componentesSeleccionados, datosCompatibilidad);
+            const productCardHTML = renderCard(productos, esCompatible); 
             productCardHTML.addEventListener('click', () => {
                 let categoria = productos.category;
                 let idcomponente = productos.id;
@@ -244,7 +321,7 @@ async function traerProductos(){
                 guardarComponentes(categoria,idcomponente)
                 ordenarPorCategoria();
                 totalCompra();
-                Aplicarfiltros(2);
+                Aplicarfiltros(2,datosCompatibilidad);
             })
             contenedor.appendChild(productCardHTML); 
         });
@@ -323,7 +400,7 @@ async function traerProductos(){
                         <button id="sumar" type="button" class="increment-btn inline-flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">+</button>
                     </div>
                 <div class="mt-1 flex items-center space-x-2">
-                <span class="text-green-600 text-sm font-semibold flex items-center">✔️ Compatible</span>
+                <span class="text-green-600 text-sm font-semibold flex items-center"></span>
                 </div>
             </div>
             </div>
@@ -336,7 +413,7 @@ async function traerProductos(){
   });}
 }
 // --- RENDER CARD ---
-function renderCard(producto) {
+function renderCard(producto,esCompatible) {
         const card = `
 <button class="group overflow-hidden rounded-lg border border-gray-700 bg-gradient-to-br from-gray-800 to-gray-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-sky-400/10 cursor-pointer">
   <div class="bg-gradient-to-r to-green-0 text-white text-sm font-semibold px-3 py-1 rounded-br-xl inline-block ">
@@ -365,8 +442,10 @@ function renderCard(producto) {
         <span class="text-sky-400 text-xl font-bold ">$${producto.price - 9200}</span>
       </div>
 
-      <div class="mt-1 flex items-center space-x-2">
-        <span class="text-green-600 text-sm font-semibold flex items-center">✔️ Compatible</span>
+       <div class="mt-1 flex items-center space-x-2">
+    <span class="${esCompatible ? 'text-green-600' : 'text-red-600'} text-sm font-semibold flex items-center">
+    ${esCompatible ? '✔️ Compatible' : '❌ No compatible'}
+    </span>
       </div>
     </div>
   </div>
