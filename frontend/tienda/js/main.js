@@ -17,8 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarResultadosBusqueda(searchValue);
     });
 });
+});  
+
+    const procesadorBtnHome = document.getElementById("Procesadores-Btn-home");
+    const TarjetaBtnHome = document.getElementById("Tarjetas-Btn-home");
+    const RAMBtnHome = document.getElementById("RAM-Btn-home");
+    const AlmacenamientoBtnHome = document.getElementById("Almacenamiento-Btn-home");
+    const fuentesBntHome = document.getElementById("fuentes-Btn-home");
+    const Adicionales  = document.getElementById("Adicionales");
+    let filtroCategoria = null;  
 
 async function fetchProducts(search = '') {
+    
+    
     let query = supabase.from('products').select('*');
     let orQuery = [];
     if (search) {
@@ -58,8 +69,70 @@ async function fetchProducts(search = '') {
         });
     }
 }
+async function AplicarFiltrosHome(){
+    const productsContainer = document.getElementById('productos-container');
+    const productosFiltrados = document.getElementById('contenedorFiltrado');
+    const textoHome = document.getElementById('texto-Home');
+    const productosText = document.getElementById('productosText');
+    productsContainer.innerHTML = '';
+    productosFiltrados.innerHTML = '';
+
+    [...productosText.childNodes].forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
+      node.remove();
+    }
+  });
+
+    if (!filtroCategoria) return;
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('category', filtroCategoria);
+
+    if (error) {
+        console.error('Error al filtrar productos:', error);
+        return;
+    }
+
+    if (!data.length) {
+        productsContainer.innerHTML = `
+            <h2 class="text-2xl font-bold text-white">
+                No se encontraron productos en ${filtroCategoria}.
+            </h2>`;
+        return;
+    }
+
+     if (filtroCategoria ==='Adicionales') {
+        textoHome.textContent = 'Destacados';
+        productosText.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) node.textContent = 'Productos';
+        });
+    } else {
+        textoHome.textContent = filtroCategoria;
+    }
 
 /* Render de la card del producto */
+    // Renderizar los productos
+    data.forEach(product => {
+        const card = renderProductCard(product);
+        productsContainer.appendChild(card);
+    });
+}
+BotonesHome(procesadorBtnHome,'Procesadores');
+BotonesHome(TarjetaBtnHome,'Tarjetas Gráficas')
+BotonesHome(RAMBtnHome,'Memoria RAM')
+BotonesHome(AlmacenamientoBtnHome,'Almacenamiento')
+BotonesHome(fuentesBntHome,'Fuente')
+BotonesHome(Adicionales,'Adicionales');
+
+function BotonesHome(boton, categoria) {
+    boton.addEventListener('click', async () => {
+        filtroCategoria = categoria; // guarda la categoría actual
+        await AplicarFiltrosHome(); // ejecuta el filtrado
+    });
+}
+/*render product card */
 function renderProductCard(product) {
     const card = document.createElement('div');
     card.className = 'rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow';
@@ -208,7 +281,6 @@ function mostrarResultadosBusqueda(searchValue) {
     }
 
 }
-
 
 // === CARRITO ===
 const cartButton = document.getElementById("myCartDropdownButton1");
