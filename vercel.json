@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "backend/server.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "frontend/tienda/**",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "frontend/dashboard/**",
+            "use": "@vercel/static"
+        }
+    ]
+}
