@@ -16,15 +16,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 app.use(cors());
 app.use(express.json());
 
-app.get('/prueba'), async (req,res) =>{
-    req.json({hola});
+app.get('/prueba'), async (res) =>{
+    res.json({ayuda})
 }
 
 app.post('/create-payment-intent', async (req, res) => {
     try {
         const { amount, save_card } = req.body; 
         
-        // Define la propiedad setup_future_usage condicionalmente.
         const setupFutureUsage = save_card ? 'off_session' : undefined;
 
         if (amount <= 0) {
