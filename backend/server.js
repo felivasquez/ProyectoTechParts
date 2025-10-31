@@ -16,6 +16,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 app.use(cors());
 app.use(express.json());
 
+app.get('/prueba'), async (req,res) =>{
+    req.json({hola});
+}
+
 app.post('/create-payment-intent', async (req, res) => {
     try {
         const { amount, save_card } = req.body; 
