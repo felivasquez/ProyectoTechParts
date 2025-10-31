@@ -1,5 +1,4 @@
-// server.js (Confirmado como correcto y completo)
-
+// server.js
 import express from 'express';
 import Stripe from 'stripe';
 import cors from 'cors';
@@ -16,10 +15,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 app.use(cors());
 app.use(express.json());
 
-app.get('/prueba'), async (res) =>{
-    res.json({ayuda});
-}
-
 app.post('/create-payment-intent', async (req, res) => {
     try {
         const { amount, save_card } = req.body; 
@@ -33,9 +28,8 @@ app.post('/create-payment-intent', async (req, res) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount, 
             currency: 'usd', 
-            // customer: customerId, // Descomentar si usas un Customer ID
             automatic_payment_methods: { enabled: true },
-            setup_future_usage: setupFutureUsage, // ¡Correcto!
+            setup_future_usage: setupFutureUsage,
         });
 
         res.json({
