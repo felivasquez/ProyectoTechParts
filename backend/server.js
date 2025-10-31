@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/prueba'), async (res) =>{
-    res.json({ayuda})
+    res.json({ayuda});
 }
 
 app.post('/create-payment-intent', async (req, res) => {
