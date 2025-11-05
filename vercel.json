@@ -13,15 +13,5 @@
             "src": "frontend/dashboard/**",
             "use": "@vercel/static"
         }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/home.html"
-        }
     ]
 }

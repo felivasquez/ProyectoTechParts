@@ -104,7 +104,7 @@ form.addEventListener('submit', async (e) => {
     const { paymentIntent, error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-            return_url: 'http://127.0.0.1:5500/frontend/tienda/congrats.html',
+            return_url: 'http://127.0.0.1:4242/frontend/tienda/congrats.html',
             payment_method_data: {
                 billing_details: {
                     name: cardHolderName || 'Customer Name',
