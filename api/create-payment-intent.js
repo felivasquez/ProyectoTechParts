@@ -1,30 +1,33 @@
-import Stripe from "stripe";
+import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2022-11-15',
+});
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "https://tiendatechparts.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).send("OK");
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
   try {
-    const { amount } = req.body;
+    const { amount, save_card } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: 'Amount must be positive' });
+    }
+
+    const setupFutureUsage = save_card ? 'off_session' : undefined;
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "usd",
+      currency: 'usd',
+      automatic_payment_methods: { enabled: true },
+      setup_future_usage: setupFutureUsage,
     });
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
+    res.status(500).json({ error: err.message });
+  }
 }
