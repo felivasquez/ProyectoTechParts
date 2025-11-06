@@ -299,11 +299,6 @@ function actualizarBotonSaltar() {
   const gpuSel = componentesSeleccionados["Tarjetas Gráficas"]
     ? tarjetasData.find(p => p.id === componentesSeleccionados["Tarjetas Gráficas"]): null;
 
-
-    const almaSel = componentesSeleccionados.Almacenamiento
-    ? almacenamientoData.find(p => p.id === componentesSeleccionados.Almacenamiento)
-    : null;
-
   // --- Compatibilidad procesador ↔ placa madre ---
   if (procSel && categoria === 'Placas Madre') {
     return vistaProducto.socket === procSel.socket;
@@ -318,14 +313,6 @@ function actualizarBotonSaltar() {
   }
   if (ramSel && categoria === 'Placas Madre') {
     return vistaProducto.tipo_memoria === ramSel.tipo_memoria;
-  }
-
-  // --- Compatibilidad almacenamiento ↔ placa madre ---
-  if (placaSel && categoria === 'Almacenamiento') {
-    return (
-      (vistaProducto.interfaz && vistaProducto.interfaz === placaSel.interfaz) ||
-      (vistaProducto.tipo_almacenamiento && vistaProducto.tipo_almacenamiento === placaSel.tipo_almacenamiento)
-    );
   }
 
   // --- Compatibilidad GPU ↔ placa madre (si aplica) ---
@@ -491,4 +478,5 @@ function renderCard(producto, esCompatible) {
     const div = document.createElement('div');
     div.innerHTML = card.trim();
     return div.firstChild;
+
 }
