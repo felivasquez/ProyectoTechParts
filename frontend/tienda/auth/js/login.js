@@ -1,4 +1,4 @@
-import supabase from './../../../../backend/config/client.js';
+import supabase from '../../../frontend/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (roles && roles.role === 'user') {
                     const username = data.user.user_metadata?.username || data.user.email;
                     showMessage(`¡Bienvenido, ${username}!`);
-                    window.location.href = '../index.html';
+                    window.location.href = '/index.html';
                     loginForm.reset();
 
                 } else {
