@@ -1,4 +1,4 @@
-import supabase from '../../../frontend/client.js';
+import supabase from '../../js/client.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
