@@ -1,33 +1,23 @@
-import Stripe from 'stripe';
+import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2022-11-15',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { amount, save_card } = req.body;
-
-    if (!amount || amount <= 0) {
-      return res.status(400).json({ error: 'Amount must be positive' });
-    }
-
-    const setupFutureUsage = save_card ? 'off_session' : undefined;
+    const { amount } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: 'usd',
-      automatic_payment_methods: { enabled: true },
-      setup_future_usage: setupFutureUsage,
+      currency: "usd", // o "ars" si estás en Argentina
     });
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 }
