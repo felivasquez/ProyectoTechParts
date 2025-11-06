@@ -1,4 +1,4 @@
-import supabase from '../../dashboard/js/client.js';
+import supabase from '../js/client.js';
 
     function getProductIdFromUrl() {
         const params = new URLSearchParams(window.location.search);

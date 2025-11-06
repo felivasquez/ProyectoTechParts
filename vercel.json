@@ -1,2 +1,14 @@
-
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "frontend/tienda/**", "use": "@vercel/static" },
+    { "src": "frontend/dashboard/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/frontend/tienda/$1" },
+    { "src": "/(.*)", "dest": "/frontend/dashboard/$1" }
+  ]
+}
     

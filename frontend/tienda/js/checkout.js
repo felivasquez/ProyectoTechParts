@@ -1,4 +1,4 @@
-import supabase from '../../dashboard/js/client.js';
+import supabase from '../js/client.js';
 
 // Traer todos los productos desde Supabase
 async function fetchAllProducts() {
