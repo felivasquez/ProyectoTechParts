@@ -206,7 +206,7 @@ function mostrarResultadosBusqueda(searchValue) {
   const layoutBusqueda = document.createElement('div');
 
   volverAtras.innerHTML = `
-    <a href="index.html"
+    <a href="home.html"
       class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8 mb-4 block">
       < Volver atrás
     </a>`;
@@ -281,214 +281,220 @@ function mostrarResultadosBusqueda(searchValue) {
 
 }
 
-// === CARRITO ===
+// === ELEMENTOS ===
 const cartButton = document.getElementById("myCartDropdownButton1");
 const cartDropdown = document.getElementById("myCartDropdown1");
-
-// === USUARIO ===
 const userButton = document.getElementById("userDropdownButton1");
 const userDropdown = document.getElementById("userDropdown1");
+const userSectionContainer = document.getElementById('contUserSec');
+const loginButtonContainer = document.getElementById('btnUser');
+const logoutButton = document.getElementById('logout-button');
+const mobileSearchBar = document.getElementById("mobile-search-bar");
+const desktopSearch = document.querySelector(".BusquedaComponentes");
+const navContainer = document.querySelector(".max-w-7xl.mx-auto.px-4.flex.h-16.items-center.justify-between");
 
-// === FUNCIONES DE TOGGLE ===
+// === FUNCIONES DE TOGGLE (Simplificada) ===
 function toggleDropdown(button, dropdown) {
-  const isVisible = !dropdown.classList.contains("hidden");
+    // Si el dropdown o el botón no existen, salir
+    if (!button || !dropdown) return;
 
-  // Cierra todos los dropdowns abiertos antes de abrir otro
-  document.querySelectorAll("#myCartDropdown1, #userDropdown1").forEach((el) => {
-    el.classList.add("hidden");
-  });
+    const isVisible = !dropdown.classList.contains("hidden");
 
-  // Si estaba oculto, mostrarlo
-  if (!isVisible) {
-    const rect = button.getBoundingClientRect();
+    // 1. Cierra todos los otros dropdowns abiertos
+    document.querySelectorAll("#myCartDropdown1, #userDropdown1").forEach((el) => {
+        if (el !== dropdown) { // Solo cierra si no es el dropdown actual
+            el.classList.add("hidden");
+            el.classList.remove("animate-fadeIn");
+        }
+    });
 
-    // Calcula posición justo debajo del botón
-    dropdown.style.position = "absolute";
-    dropdown.style.top = `${rect.bottom + window.scrollY + 8}px`;
-    dropdown.style.left = `${rect.left}px`;
-
-    dropdown.classList.remove("hidden");
-    dropdown.classList.add("animate-fadeIn");
-  }
+    // 2. Alterna la visibilidad del dropdown actual
+    if (isVisible) {
+        dropdown.classList.add("hidden");
+        dropdown.classList.remove("animate-fadeIn");
+    } else {
+        // Los estilos 'absolute right-0 mt-3' en el HTML se encargan del posicionamiento.
+        // Aquí solo gestionamos la visibilidad y la animación.
+        dropdown.classList.remove("hidden");
+        dropdown.classList.add("animate-fadeIn");
+    }
 }
 
-// === EVENTOS ===
-cartButton.addEventListener("click", (e) => {
-  e.stopPropagation();
-  toggleDropdown(cartButton, cartDropdown);
+// === EVENTOS DE DROPDOWN ===
+cartButton && cartButton.addEventListener("click", (e) => {
+    e.stopPropagation(); // Evita que el clic se propague al document y cierre el dropdown inmediatamente
+    toggleDropdown(cartButton, cartDropdown);
 });
 
-if (userButton) {
-  userButton.addEventListener("click", (e) => {
-    e.stopPropagation();
+userButton && userButton.addEventListener("click", (e) => {
+    e.stopPropagation(); // Evita que el clic se propague al document y cierre el dropdown inmediatamente
     toggleDropdown(userButton, userDropdown);
-  });
-}
-
-// === Cerrar al hacer clic fuera ===
-document.addEventListener("click", (e) => {
-  if (
-    !cartDropdown.contains(e.target) &&
-    !userDropdown.contains(e.target) &&
-    !cartButton.contains(e.target) &&
-    !userButton.contains(e.target)
-  ) {
-    cartDropdown.classList.add("hidden");
-    userDropdown.classList.add("hidden");
-  }
 });
 
-// === Animación con Tailwind ===
+
+// === Cerrar al hacer clic fuera (Mejorado con comprobaciones de existencia) ===
+document.addEventListener("click", (e) => {
+    // Verificar si el clic NO fue dentro del carrito o su botón
+    const clickedOutsideCart = !(cartDropdown && cartDropdown.contains(e.target)) && !(cartButton && cartButton.contains(e.target));
+    // Verificar si el clic NO fue dentro del usuario o su botón
+    const clickedOutsideUser = !(userDropdown && userDropdown.contains(e.target)) && !(userButton && userButton.contains(e.target));
+
+    if (clickedOutsideCart) {
+        cartDropdown && cartDropdown.classList.add("hidden");
+        cartDropdown && cartDropdown.classList.remove("animate-fadeIn");
+    }
+    if (clickedOutsideUser) {
+        userDropdown && userDropdown.classList.add("hidden");
+        userDropdown && userDropdown.classList.remove("animate-fadeIn");
+    }
+});
+
+// === Animación con Tailwind (Se mantiene igual) ===
 const style = document.createElement("style");
 style.innerHTML = `
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 .animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
+    animation: fadeIn 0.2s ease-out;
 }
 `;
 document.head.appendChild(style);
-// logica para dirigir al login si no está autenticado
-const loginButton = document.getElementById('btnUser');
 
-loginButton.addEventListener('click', async () => {
-    const user = supabase.auth.getUser();
+
+// === Lógica de Autenticación y Visibilidad de Botones (¡Se mantiene como estaba, asegurando funcionamiento!) ===
+
+// 1. Lógica para dirigir al login si no está autenticado
+loginButtonContainer && loginButtonContainer.addEventListener('click', async () => {
+    const user = supabase.auth.getUser(); // Asumo que 'supabase' está disponible globalmente
     if (!(await user).data.user) {
         window.location.href = './auth/login.html';
     }
 });
 
-// logica para si esta logueado mostrar el user modal
-const userDropdown1 = document.getElementById('contUserSec');
-
+// 2. Lógica para alternar la visibilidad de los botones al cargar la página
 document.addEventListener('DOMContentLoaded', async () => {
+    // Asumo que 'supabase' está disponible
     const user = await supabase.auth.getUser();
+    
+    // Si hay usuario logueado
     if (user.data.user) {
-        userDropdown1.classList.remove('hidden');
-        loginButton.classList.add('hidden');
-        cartButton.style.display = 'flex';
-        console.log(user.data.user);
-    }
+        userSectionContainer && userSectionContainer.classList.remove('hidden');
+        loginButtonContainer && loginButtonContainer.classList.add('hidden');
+        cartButton && (cartButton.style.display = 'flex'); // Asegura que el botón del carrito sea visible
+        console.log("Usuario logueado:", user.data.user);
+    } 
+    // Si NO hay usuario logueado
     else {
-        userDropdown1.classList.add('hidden');
-        cartButton.style.display = 'none';
-        loginButton.classList.remove('hidden');
+        userSectionContainer && userSectionContainer.classList.add('hidden');
+        loginButtonContainer && loginButtonContainer.classList.remove('hidden');
+        cartButton && (cartButton.style.display = 'none'); // Asegura que el botón del carrito sea oculto
         console.log('No hay usuario logueado');
     }
+    // Llama a la inicialización de la barra de búsqueda móvil después de asegurar la estructura
+    initMobileSearch();
 });
 
-// logica para cerrar sesión
-const logoutButton = document.getElementById('logout-button');
-
-logoutButton.addEventListener('click', async () => {
+// 3. Lógica para cerrar sesión
+logoutButton && logoutButton.addEventListener('click', async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Error al cerrar sesión:', error.message);
         alert('Hubo un error al cerrar sesión.');
     } else {
-        window.location.href = './index.html';
+        window.location.href = './home.html'; // O la página de inicio que desees
     }
     console.log('Sesión cerrada');
 });
 
-// Cerrar los dropdowns si se hace clic fuera de ellos
-document.addEventListener('click', function (event) {
-    if (!cartButton.contains(event.target) && !cartModal.contains(event.target)) {
-        cartModal.classList.add('hidden');
+
+// === Lógica de Barra de Búsqueda Móvil ===
+let searchBtn = null;
+let isSearchOpen = false;
+
+function initMobileSearch() {
+    // Solo crea el botón si no existe
+    if (!searchBtn) {
+        searchBtn = document.createElement("button");
+        searchBtn.id = "mobile-search-btn";
+        searchBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-search text-white">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+            </svg>
+        `;
+        searchBtn.className =
+            "md:hidden p-2 rounded-lg hover:bg-gray-800 transition-all duration-200";
     }
-    if (!userButton.contains(event.target) && !userModal.contains(event.target)) {
-        userModal.classList.add('hidden');
+
+    const userCartGroup = document.querySelector('.flex.items-center.lg\\:space-x-2');
+    
+    // Inserta el botón solo si el contenedor existe y el botón no ha sido insertado aún
+    if (userCartGroup && !document.getElementById("mobile-search-btn")) {
+        userCartGroup.insertBefore(searchBtn, userCartGroup.children[0]);
     }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  const mobileSearchBar = document.getElementById("mobile-search-bar");
-  const desktopSearch = document.querySelector(".BusquedaComponentes");
-  const nav = document.querySelector("nav");
+    searchBtn.onclick = (e) => { // Usar onclick o addEventListener para evitar duplicados si se llama varias veces
+        e.stopPropagation();
+        isSearchOpen = !isSearchOpen;
+        mobileSearchBar.classList.toggle("hidden", !isSearchOpen);
+        if (isSearchOpen) {
+            document.getElementById("buscador-productos-mobile")?.focus();
+        }
+    };
 
-  // Crear botón de búsqueda solo en móvil
-  const searchBtn = document.createElement("button");
-  searchBtn.id = "mobile-search-btn";
-  searchBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
-      fill="none" stroke="currentColor" stroke-width="2" 
-      stroke-linecap="round" stroke-linejoin="round" 
-      class="lucide lucide-search text-white">
-      <circle cx="11" cy="11" r="8"></circle>
-      <path d="m21 21-4.3-4.3"></path>
-    </svg>
-  `;
-  searchBtn.className =
-    "md:hidden p-2 rounded-lg hover:bg-gray-800 transition-all duration-200";
+    document.addEventListener("click", (e) => {
+        if (
+            isSearchOpen &&
+            mobileSearchBar &&
+            searchBtn &&
+            !mobileSearchBar.contains(e.target) &&
+            !searchBtn.contains(e.target)
+        ) {
+            mobileSearchBar.classList.add("hidden");
+            isSearchOpen = false;
+        }
+    });
 
-  // Insertar botón antes del carrito
-  const cartButton = document.getElementById("myCartDropdownButton1");
-  if (cartButton && nav) {
-    cartButton.parentNode.insertBefore(searchBtn, cartButton);
-  }
+    const handleResize = () => {
+        if (window.innerWidth >= 768) { // md: breakpoint
+            desktopSearch && desktopSearch.classList.remove("hidden");
+            mobileSearchBar && mobileSearchBar.classList.add("hidden");
+            searchBtn && searchBtn.classList.add("hidden");
+        } else {
+            desktopSearch && desktopSearch.classList.add("hidden");
+            searchBtn && searchBtn.classList.remove("hidden");
+        }
+    };
 
-  // Mostrar/ocultar barra móvil
-  let isSearchOpen = false;
-  searchBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    isSearchOpen = !isSearchOpen;
-    mobileSearchBar.classList.toggle("hidden", !isSearchOpen);
-    if (isSearchOpen) {
-      document.getElementById("buscador-productos-mobile").focus();
-    }
-  });
+    handleResize();
+    window.addEventListener("resize", handleResize);
+}
 
-  // Ocultar al hacer clic fuera
-  document.addEventListener("click", (e) => {
-    if (
-      isSearchOpen &&
-      !mobileSearchBar.contains(e.target) &&
-      !searchBtn.contains(e.target)
-    ) {
-      mobileSearchBar.classList.add("hidden");
-      isSearchOpen = false;
-    }
-  });
 
-  // Mostrar según tamaño de pantalla
-  const handleResize = () => {
-    if (window.innerWidth >= 768) {
-      // Desktop
-      desktopSearch.classList.remove("hidden");
-      mobileSearchBar.classList.add("hidden");
-      searchBtn.classList.add("hidden");
-    } else {
-      // Móvil
-      desktopSearch.classList.add("hidden");
-      searchBtn.classList.remove("hidden");
-    }
-  };
+// === Lógica de Categorías (Se mantiene igual, pero recuerda que el HTML para esto no está en tu navbar actual) ===
+const categoriaHeader = document.querySelector(".categoria-header");
+const listaCategorias = document.querySelector(".lista-categorias");
+const flecha = document.querySelector(".flecha-categoria");
 
-  handleResize();
-  window.addEventListener("resize", handleResize);
-});
+if (categoriaHeader && listaCategorias && flecha) {
+    let abierto = true;
 
-//categorias animacion antes de la busqueda
-  const categoriaHeader = document.querySelector(".categoria-header");
-  const listaCategorias = document.querySelector(".lista-categorias");
-  const flecha = document.querySelector(".flecha-categoria");
+    categoriaHeader.addEventListener("click", () => {
+        abierto = !abierto;
 
-  // Estado inicial: visible
-  let abierto = true;
-
-  categoriaHeader.addEventListener("click", () => {
-    abierto = !abierto;
-
-    // Alternar visibilidad
-    if (abierto) {
-      listaCategorias.classList.remove("max-h-0", "opacity-0", "pointer-events-none");
-      listaCategorias.classList.add("max-h-[1000px]", "opacity-100");
-      flecha.classList.remove("rotate-180");
-    } else {
-      listaCategorias.classList.add("max-h-0", "opacity-0", "pointer-events-none");
-      listaCategorias.classList.remove("max-h-[1000px]", "opacity-100");
-      flecha.classList.add("rotate-180");
-    }
-  });
+        if (abierto) {
+            listaCategorias.classList.remove("max-h-0", "opacity-0", "pointer-events-none");
+            listaCategorias.classList.add("max-h-[1000px]", "opacity-100");
+            flecha.classList.remove("rotate-180");
+        } else {
+            listaCategorias.classList.add("max-h-0", "opacity-0", "pointer-events-none");
+            listaCategorias.classList.remove("max-h-[1000px]", "opacity-100");
+            flecha.classList.add("rotate-180");
+        }
+    });
+}
