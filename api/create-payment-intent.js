@@ -3,14 +3,12 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  // Habilitar CORS
   res.setHeader("Access-Control-Allow-Origin", "https://tiendatechparts.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Manejar preflight OPTIONS
   if (req.method === "OPTIONS") {
-    return res.status(200).end();
+    return res.status(200).send("OK");
   }
 
   if (req.method !== "POST") {
@@ -19,15 +17,14 @@ export default async function handler(req, res) {
 
   try {
     const { amount } = req.body;
-
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "usd", // o "ars" si estás en Argentina
+      currency: "usd",
     });
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 }
