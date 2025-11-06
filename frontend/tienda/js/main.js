@@ -206,7 +206,7 @@ function mostrarResultadosBusqueda(searchValue) {
   const layoutBusqueda = document.createElement('div');
 
   volverAtras.innerHTML = `
-    <a href="home.html"
+    <a href="index.html"
       class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8 mb-4 block">
       < Volver atrás
     </a>`;
@@ -388,7 +388,7 @@ logoutButton.addEventListener('click', async () => {
         console.error('Error al cerrar sesión:', error.message);
         alert('Hubo un error al cerrar sesión.');
     } else {
-        window.location.href = './home.html';
+        window.location.href = './index.html';
     }
     console.log('Sesión cerrada');
 });
