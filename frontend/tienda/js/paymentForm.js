@@ -52,7 +52,7 @@ async function createPaymentIntent() {
     try {
         const saveCard = saveCardCheckbox.checked;
 
-        const response = await fetch('https://tiendatechparts.vercel.app/api/create-payment-intent', {
+        const response = await fetch('https://tiendatechparts.vercel.app/api/create-payment-intent.js', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
