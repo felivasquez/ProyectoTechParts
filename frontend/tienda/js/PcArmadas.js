@@ -33,14 +33,24 @@ async function traerProductos(){
     errorProc, errorPlaca, errorRAM, errorGPU, errorAlma
     });
   }
+  function limpiarDatos(array) {
+  return array?.map(item => {
+    const nuevoItem = {};
+    for (const key in item) {
+      const valor = item[key];
+      nuevoItem[key] = typeof valor === 'string' ? valor.trim() : valor;
+    }
+    return nuevoItem;
+  }) || [];
+}
   const datosCompatibilidad = {
-    procesadoresData,
-    placasMData,
-    ramData,
-    tarjetasData,
+    procesadoresData: limpiarDatos(procesadoresData),
+    placasMData: limpiarDatos(placasMData),
+    ramData: limpiarDatos(ramData),
+    tarjetasData: limpiarDatos(tarjetasData),
     fuentesData: [], 
     gabinetesData: [], 
-    almacenamientoData
+    almacenamientoData: limpiarDatos(almacenamientoData)
   };
 
 
@@ -260,46 +270,75 @@ function actualizarBotonSaltar() {
         activarBtn(intelFilterButton, amdFilterButton)
     })
     
-    function obtenerCompatibilidad(producto,filtroCategoria,componentesSeleccionados,datosCompatibilidad){
-    
-    const { procesadoresData, placasMData, ramData, tarjetasData, fuentesData, gabinetesData } = datosCompatibilidad;
+    function obtenerCompatibilidad(producto, categoria, componentesSeleccionados, datosCompatibilidad) {
+  const { procesadoresData, placasMData, ramData, tarjetasData, almacenamientoData } = datosCompatibilidad;
 
-    const cpuSeleccionada = procesadoresData.find(p => p.id === componentesSeleccionados['Procesadores']);
-    const placaMSeleccionada = placasMData.find(m => m.id === componentesSeleccionados['Placas Madre']);
-    const ramSeleccionada = ramData.find(r => r.id === componentesSeleccionados['Memoria RAM']);
-    const gpuSeleccionada = tarjetasData.find(g => g.id === componentesSeleccionados['Tarjetas Gráficas']);
-    const fuenteSeleccionada = fuentesData.find(f => f.id === componentesSeleccionados['Fuente']);
-    const gabineteSeleccionado = gabinetesData.find(g => g.id === componentesSeleccionados['Gabinete']);
+  // Buscar el producto en su vista correspondiente
+  const buscarEnVista = (vista) => vista.find(p => p.id === producto.id);
 
-    // Compatibilidad según categoría actual
-      try {
-        switch(filtroCategoria) {
-            case 'Procesadores':
-                return !placaMSeleccionada || producto.socket === placaMSeleccionada.socket;
+  const vistaProducto =
+    categoria == 'Procesadores' ? buscarEnVista(procesadoresData) :
+    categoria == 'Placas Madre' ? buscarEnVista(placasMData) :
+    categoria == 'Memoria RAM' ? buscarEnVista(ramData) :
+    categoria == 'Tarjetas Gráficas' ? buscarEnVista(tarjetasData) :
+    categoria == 'Almacenamiento' ? buscarEnVista(almacenamientoData) :
+    null;
+    if (!vistaProducto) return true;
 
-            case 'Placas Madre':
-                return !cpuSeleccionada || producto.socket === cpuSeleccionada.socket;
+  // Buscar los componentes ya seleccionados en sus respectivas vistas
+  const procSel = componentesSeleccionados.Procesadores
+    ? procesadoresData.find(p => p.id === componentesSeleccionados.Procesadores)
+    : null;
+  const placaSel = componentesSeleccionados["Placas Madre"]
+    ? placasMData.find(p => p.id === componentesSeleccionados["Placas Madre"])
+    : null;
+  const ramSel = componentesSeleccionados["Memoria RAM"]
+    ? ramData.find(p => p.id === componentesSeleccionados["Memoria RAM"])
+    : null;
 
-            case 'Memoria RAM':
-                return !placaMSeleccionada || producto.tipo_ram === placaMSeleccionada.tipo_ram;
+  const gpuSel = componentesSeleccionados["Tarjetas Gráficas"]
+    ? tarjetasData.find(p => p.id === componentesSeleccionados["Tarjetas Gráficas"]): null;
 
-            case 'Tarjetas Gráficas':
-                return !fuenteSeleccionada || parseInt(fuenteSeleccionada.potencia) >= parseInt(producto.potencia_recomendada || 0);
 
-            case 'Fuente':
-                return !gpuSeleccionada || parseInt(producto.potencia) >= parseInt(gpuSeleccionada.potencia_recomendada || 0);
+    const almaSel = componentesSeleccionados.Almacenamiento
+    ? almacenamientoData.find(p => p.id === componentesSeleccionados.Almacenamiento)
+    : null;
 
-            case 'Almacenamiento':
-                return !placaMSeleccionada || producto.tipo_almacenamiento === placaMSeleccionada.tipo_almacenamiento;
+  // --- Compatibilidad procesador ↔ placa madre ---
+  if (procSel && categoria === 'Placas Madre') {
+    return vistaProducto.socket === procSel.socket;
+  }
+  if (placaSel && categoria === 'Procesadores') {
+    return vistaProducto.socket === placaSel.socket;
+  }
 
-            default:
-                return true;
-        }
-    } catch (error) {
-        console.warn('Error al calcular compatibilidad:', error);
-        return true;
-    }                   
-    }
+  // --- Compatibilidad RAM ↔ placa madre ---
+  if (placaSel && categoria === 'Memoria RAM') {
+    return vistaProducto.tipo_memoria === placaSel.tipo_memoria;
+  }
+  if (ramSel && categoria === 'Placas Madre') {
+    return vistaProducto.tipo_memoria === ramSel.tipo_memoria;
+  }
+
+  // --- Compatibilidad almacenamiento ↔ placa madre ---
+  if (placaSel && categoria === 'Almacenamiento') {
+    return (
+      (vistaProducto.interfaz && vistaProducto.interfaz === placaSel.interfaz) ||
+      (vistaProducto.tipo_almacenamiento && vistaProducto.tipo_almacenamiento === placaSel.tipo_almacenamiento)
+    );
+  }
+
+  // --- Compatibilidad GPU ↔ placa madre (si aplica) ---
+  if (placaSel && categoria === 'Tarjetas Gráficas') {
+    return (
+      !vistaProducto.interfaz || !placaSel.interfaz ||
+      vistaProducto.interfaz === placaSel.interfaz
+    );
+  }
+
+  // Si no hay conflicto conocido → es compatible
+  return true;
+}
     //funcion para mostrar los productos en el contenedor
     function mostrarProductos(array,datosCompatibilidad) {
         const contenedor = document.getElementById('products-grid');
