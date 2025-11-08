@@ -11,7 +11,7 @@ const savedCardsContainer = document.getElementById('saved-cards-container');
 const DEFAULT_COUNTRY_CODE = 'AR';
 const DEFAULT_POSTAL_CODE = 'C1000AAB';
 
-// URL del backend - Cambiar según entorno
+// URL del backend
 const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://127.0.0.1:4242'
     : 'https://proyectotechparts-backend.vercel.app';
@@ -120,10 +120,15 @@ form.addEventListener('submit', async (e) => {
     const cardHolderName = cardholderNameInput.value;
 
     try {
+        // Determinar la URL de retorno según el entorno
+        const returnUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://127.0.0.1:4242/tienda/congrats.html'
+            : `${window.location.origin}/tienda/congrats.html`;
+
         const { paymentIntent, error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: window.location.origin + '/congrats.html',
+                return_url: returnUrl,
                 payment_method_data: {
                     billing_details: {
                         name: cardHolderName || 'Customer Name',
@@ -155,7 +160,8 @@ form.addEventListener('submit', async (e) => {
             // Limpiar carrito
             localStorage.removeItem('techparts_cart');
             
-            window.location.href = `congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}`;
+            // Redirigir a congrats con ruta absoluta
+            window.location.href = `/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}`;
         } else {
             errorMessage.textContent = `Payment status: ${paymentIntent?.status || 'unknown'}. Please try again.`;
             payBtn.disabled = false;
