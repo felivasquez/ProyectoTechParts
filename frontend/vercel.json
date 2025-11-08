@@ -2,14 +2,21 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "redirects": [
     {
       "source": "/",
-      "destination": "/tienda/index.html"
-    },
+      "destination": "/tienda",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
     {
       "source": "/tienda",
       "destination": "/tienda/index.html"
+    },
+    {
+      "source": "/tienda/(.*)",
+      "destination": "/tienda/$1"
     },
     {
       "source": "/dashboard",
