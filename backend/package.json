@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "express": "^5.1.0",
     "serverless-http": "^4.0.0",
-    "stripe": "^14.0.0"
+    "stripe": "^14.25.0"
   }
 }
