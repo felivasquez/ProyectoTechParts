@@ -5,11 +5,11 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/index.html"
+      "destination": "/tienda/index.html"
     },
     {
       "source": "/tienda",
-      "destination": "/index.html"
+      "destination": "/tienda/index.html"
     },
     {
       "source": "/dashboard",
