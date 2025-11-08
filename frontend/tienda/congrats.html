@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Gracias por tu compra</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/tienda/">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://js.stripe.com/v3/"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +17,7 @@
     }
   </style>
 </head>
+
 <body class="bg-[#0F172A] text-white flex items-center justify-center min-h-screen p-6">
 
   <div class="max-w-lg w-full bg-[#1E293B] p-8 rounded-2xl text-center shadow-xl">
@@ -32,14 +35,16 @@
       <h1 class="text-2xl font-semibold mb-2">¡Gracias por tu compra!</h1>
       <p class="text-gray-300">Tu pago se procesó correctamente.</p>
       <p id="order-id" class="text-sm text-gray-500 mt-2"></p>
-      <a href="./index.html#productos-container" class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium">
+      <a href="./index.html#productos-container"
+        class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium">
         Volver a la tienda
       </a>
     </div>
 
     <!-- Procesando -->
     <div id="processing" class="hidden">
-      <div class="w-16 h-16 mx-auto mb-4 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+      <div class="w-16 h-16 mx-auto mb-4 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin">
+      </div>
       <h1 class="text-xl font-semibold mb-2 text-yellow-400">Tu pago está en proceso</h1>
       <p class="text-gray-300">Te notificaremos una vez se confirme.</p>
     </div>
@@ -116,4 +121,5 @@
   </script>
 
 </body>
+
 </html>
