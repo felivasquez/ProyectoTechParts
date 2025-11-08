@@ -8,17 +8,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { amount } = req.body;
-
+    const { amount } = await req.json();
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "usd",
-      automatic_payment_methods: { enabled: true },
+      currency: "usd"
     });
 
-    res.status(200).json({ clientSecret: paymentIntent.client_secret });
+    return res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error("Stripe error:", error);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 }
