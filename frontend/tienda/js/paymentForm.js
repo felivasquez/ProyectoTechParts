@@ -52,7 +52,7 @@ async function createPaymentIntent() {
     try {
         const saveCard = saveCardCheckbox.checked;
 
-        const response = await fetch("https://proyecto-tech-parts.vercel.app/api/create-payment-intent", {
+        const response = await fetch("https://tiendatechparts.vercel.app/api/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -89,6 +89,7 @@ async function createPaymentIntent() {
         payBtn.textContent = 'Pay now';
 
     } catch (e) {
+        console.error(e)
         errorMessage.textContent = 'Error al iniciar el pago: ' + e.message;
         payBtn.disabled = true;
     }

@@ -1,32 +1,8 @@
 {
-  "name": "proyectotechparts",
+  "name": "techparts-backend",
   "version": "1.0.0",
   "type": "module",
-  "description": "proyectotechparts",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.13.0",
-    "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^1.10.45",
-    "@supabase/supabase-js": "^2.50.3",
-    "@vercel/analytics": "^1.5.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "gsap": "^3.13.0",
-    "pg": "^8.16.0",
-    "postgres": "^3.4.7",
-    "recharts": "^3.1.2",
-    "spline": "^0.0.0",
-    "stripe": "^19.1.0"
-  },
-  "devDependencies": {
-    "prisma": "^6.13.0"
+    "stripe": "^14.0.0"
   }
 }
