@@ -8,7 +8,8 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "https://tiendatechparts.vercel.app",
-    "https://dashboardtechparts.vercel.app"
+    "https://dashboardtechparts.vercel.app",
+    "https://proyectotechparts-backend.vercel.app"
   ]
 }));
 

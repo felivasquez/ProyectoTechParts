@@ -1,23 +1,12 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "tienda/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "dashboard/**",
-      "use": "@vercel/static"
-    }
+    { "src": "tienda/**", "use": "@vercel/static" },
+    { "src": "dashboard/**", "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "^(.*)$",
-      "dest": "/tienda/$1"
-    },
-        {
-      "src": "^/dashboard/(.*)$",
-      "dest": "/dashboard/$1"
-    }
+    { "src": "/tienda/(.*)", "dest": "/tienda/$1" },
+    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
+    { "src": "/", "dest": "/tienda/index.html" }
   ]
 }
