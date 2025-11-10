@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (roles && roles.role === 'user') {
                     const username = data.user.user_metadata?.username || data.user.email;
                     showMessage(`¡Bienvenido, ${username}!`);
-                    window.location.href = '/index.html';
+                    window.location.href = '/tienda';
                     loginForm.reset();
 
                 } else {

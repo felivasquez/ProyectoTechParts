@@ -206,7 +206,7 @@ function mostrarResultadosBusqueda(searchValue) {
   const layoutBusqueda = document.createElement('div');
 
   volverAtras.innerHTML = `
-    <a href="home.html"
+    <a href="/tienda"
       class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent pl-8 mb-4 block">
       < Volver atrás
     </a>`;
@@ -369,7 +369,7 @@ document.head.appendChild(style);
 loginButtonContainer && loginButtonContainer.addEventListener('click', async () => {
     const user = supabase.auth.getUser(); // Asumo que 'supabase' está disponible globalmente
     if (!(await user).data.user) {
-        window.location.href = './auth/login.html';
+        window.location.href = '/tienda';
     }
 });
 
@@ -403,7 +403,7 @@ logoutButton && logoutButton.addEventListener('click', async () => {
         console.error('Error al cerrar sesión:', error.message);
         alert('Hubo un error al cerrar sesión.');
     } else {
-        window.location.href = './home.html'; // O la página de inicio que desees
+        window.location.href = './tienda'; // O la página de inicio que desees
     }
     console.log('Sesión cerrada');
 });

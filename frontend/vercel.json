@@ -1,47 +1,20 @@
 {
   "version": 2,
   "routes": [
-    {
-      "src": "^/$",
-      "dest": "/tienda/index.html"
-    },
-    {
-      "src": "^/tienda$",
-      "dest": "/tienda/index.html"
-    },
-    {
-      "src": "^/tienda/(.*)$",
-      "dest": "/tienda/$1"
-    },
-    {
-      "src": "^/dashboard$",
-      "dest": "/dashboard/index.html"
-    },
-    {
-      "src": "^/dashboard/(.*)$",
-      "dest": "/dashboard/$1"
-    },
+    { "src": "^/$", "dest": "/tienda/index.html" },
+    { "src": "^/tienda$", "dest": "/tienda/index.html" },
+    { "src": "^/tienda/(.*)$", "dest": "/tienda/$1" },
+
+    { "src": "^/dashboard$", "dest": "/dashboard/dashboard.html" },
+    { "src": "^/dashboard/(.*)$", "dest": "/dashboard/$1" },
+
     {
       "src": "^/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp))$",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" },
       "continue": true
     },
-    {
-      "src": "^/(.*)$",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      },
-      "continue": true
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "status": 404,
-      "dest": "/404.html"
-    }
+    { "src": "^/(.*)$", "headers": { "Cache-Control": "public, max-age=0, must-revalidate" }, "continue": true },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ]
 }
