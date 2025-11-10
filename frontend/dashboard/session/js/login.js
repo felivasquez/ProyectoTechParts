@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.user) {
                 const username = data.user.user_metadata?.username || data.user.email;
                 showMessage(`¡Bienvenido, ${username}!`, 'success');
-                window.location.href = '../dashboard.html'; // Redirige al dashboard
+                window.location.href = '/dashboard/dashboard.html'; // Redirige al dashboard
                 loginForm.reset();
             } else {
                 showMessage('No se pudo iniciar sesión.', 'error');
