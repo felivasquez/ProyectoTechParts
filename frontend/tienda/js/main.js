@@ -369,7 +369,7 @@ document.head.appendChild(style);
 loginButtonContainer && loginButtonContainer.addEventListener('click', async () => {
     const user = supabase.auth.getUser(); // Asumo que 'supabase' está disponible globalmente
     if (!(await user).data.user) {
-        window.location.href = '/tienda';
+        window.location.href = '/tienda/auth/login.html';
     }
 });
 
