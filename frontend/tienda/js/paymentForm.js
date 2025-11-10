@@ -122,7 +122,7 @@ form.addEventListener('submit', async (e) => {
     try {
         // Determinar la URL de retorno según el entorno
         const returnUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://127.0.0.1:4242/tienda/congrats.html'
+            ? 'http://tiendatechparts.vercel.app/tienda/congrats.html'
             : `${window.location.origin}/tienda/congrats.html`;
 
         const { paymentIntent, error } = await stripe.confirmPayment({
