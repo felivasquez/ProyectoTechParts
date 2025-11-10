@@ -5,7 +5,7 @@ export async function checkSession(redirect = true) {
     const { data: { user }, error } = await supabase.auth.getUser();
 
     if (!user && redirect) {
-        window.location.href = '../views/session/login.html';
+        window.location.href = '/dashboard/session/login.html';
     }
 
     return user;
@@ -14,12 +14,12 @@ export async function checkSession(redirect = true) {
 // Función para cerrar sesión
 export async function logout() {
     await supabase.auth.signOut();
-    window.location.href = '../views/session/login.html';
+    window.location.href = '/dashboard/session/login.html';
 }
 
 // Escuchar cambios de sesión
 supabase.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_OUT') {
-        window.location.href = '../views/session/login.html';
+        window.location.href = '/dashboard/session/login.html';
     }
 });

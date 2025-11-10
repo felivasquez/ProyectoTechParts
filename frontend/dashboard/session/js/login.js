@@ -69,7 +69,7 @@ if (logoutButton) {
             console.error('Error al cerrar sesión:', error.message);
             alert('Hubo un error al cerrar sesión.');
         } else {
-            window.location.href = '/session/login.html';
+            window.location.href = '/dashboard/session/login.html';
         }
     });
 }

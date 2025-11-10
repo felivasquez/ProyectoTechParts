@@ -404,7 +404,7 @@ async function fetchProducts(search = '', category = '', brand = '') {
 async function checkSession() {
     const { data, error } = await supabase.auth.getSession();
     if (!data.session) {
-        window.location.href = 'session/login.html';
+        window.location.href = '/dashboard/session/login.html';
     } else {
         // Muestra el nombre de usuario en el dashboard
         const username = data.session.user.user_metadata?.username || data.session.user.email;
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) {
                 alert('Hubo un error al cerrar sesión.');
             } else {
-                window.location.href = 'session/login.html';
+                window.location.href = '/dashboard/session/login.html';
             }
         });
     }
