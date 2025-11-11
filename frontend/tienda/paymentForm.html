@@ -64,9 +64,35 @@
                 </div>
                 <div id="error-message" class="text-red-400 text-sm mt-2"></div>
             </form>
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4 text-white">Shipping Information</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="name" placeholder="Full Name"
+                            class="p-3 rounded bg-slate-700 border border-slate-600 text-white" required>
+                        <input type="email" id="email" placeholder="Email"
+                            class="p-3 rounded bg-slate-700 border border-slate-600 text-white" required>
+                    </div>
+
+                    <input type="text" id="address" placeholder="Street Address"
+                        class="w-full p-3 rounded bg-slate-700 border border-slate-600 text-white" required>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <input type="text" id="city" placeholder="City"
+                            class="p-3 rounded bg-slate-700 border border-slate-600 text-white" value="Buenos Aires">
+                        <input type="text" id="state" placeholder="Province"
+                            class="p-3 rounded bg-slate-700 border border-slate-600 text-white" value="Buenos Aires">
+                        <input type="text" id="postal-code" placeholder="Postal Code"
+                            class="p-3 rounded bg-slate-700 border border-slate-600 text-white" value="C1000AAB">
+                    </div>
+
+                    <input type="tel" id="phone" placeholder="Phone Number"
+                        class="w-full p-3 rounded bg-slate-700 border border-slate-600 text-white">
+                </div>
+            </div>
 
             <p class="text-xs text-gray-500 mt-4">Payment processed by <span class="underline">Stripe</span> for <span
-                    class="underline">Your Company</span></p>
+                    class="underline">Tech Parts</span></p>
         </div>
 
         <div class=" bg-[#334155] space-y-4 rounded-lg p-4 shadow-sm sm:p-6">

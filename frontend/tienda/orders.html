@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="bg-white rounded-lg shadow-sm p-8">
+        <!-- Title and Filter -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Your Orders</h1>
+            <button class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm">
+                <span>=</span>
+                Past 12 Weeks
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Order 1 -->
+        <div class="border border-gray-200 rounded-lg p-6 mb-6">
+            <!-- Order Header -->
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex gap-8 text-sm">
+                    <div>
+                        <span class="text-gray-500">Order Number:</span>
+                        <span class="font-semibold ml-2">#10234987</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Order Date:</span>
+                        <span class="font-semibold ml-2">Mar 18, 2021</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Total Amount:</span>
+                        <span class="font-semibold ml-2">$176.00</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Status:</span>
+                        <span class="text-yellow-600 font-semibold ml-2">Processed</span>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50">View
+                        Invoice</button>
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">View
+                        Order</button>
+                </div>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                <svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span>Estimated Delivery Tue, May 7 - Mon May 13</span>
+            </div>
+
+            <!-- Product 1 -->
+            <div class="flex gap-4 mb-4 pb-4 border-b border-gray-200">
+                <img src="https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=120&h=120&fit=crop"
+                    alt="Travelling Bag" class="w-24 h-24 object-cover rounded">
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <h3 class="font-semibold mb-2">Travelling Bag</h3>
+                        <span class="font-semibold">$80.00</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">The Blue Polypropylene Trolley Suitcase with 4-Wheel
+                        360-Degree Wheeling System. Engineered for Effortless Mobility and Durability. This Sleek
+                        Suitcase Offers Seamless Maneuverability in Any Direction. Making...</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-600">
+                            Size: <span class="font-medium">67 in</span> Color: <span class="font-medium">Blue</span>
+                            Quantity: <span class="font-medium">1</span>
+                        </div>
+                        <div class="flex gap-3 text-sm">
+                            <a href="#" class="text-indigo-600 hover:underline">View Product</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="#" class="text-indigo-600 hover:underline">Buy Again</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="flex gap-4">
+                <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=120&h=120&fit=crop"
+                    alt="Compact Travel Essentials" class="w-24 h-24 object-cover rounded">
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <h3 class="font-semibold mb-2">Compact Travel Essentials</h3>
+                        <span class="font-semibold">$96.00</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Elevate Your Travel Experience with the Timeless
+                        Sophistication of Mini Leather Black Bags. Crafted from Premium Materials, These Bags Exude
+                        Professionalism and Style, Making Them Ideal Companions for...</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-600">
+                            Size: <span class="font-medium">5'in</span> Color: <span class="font-medium">Black</span>
+                            Quantity: <span class="font-medium">1</span>
+                        </div>
+                        <div class="flex gap-3 text-sm">
+                            <a href="#" class="text-indigo-600 hover:underline">View Product</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="#" class="text-indigo-600 hover:underline">Buy Again</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order 2 -->
+        <div class="border border-gray-200 rounded-lg p-6">
+            <!-- Order Header -->
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex gap-8 text-sm">
+                    <div>
+                        <span class="text-gray-500">Order Number:</span>
+                        <span class="font-semibold ml-2">#10234987</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Order Date:</span>
+                        <span class="font-semibold ml-2">Mar 18, 2021</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Total Amount:</span>
+                        <span class="font-semibold ml-2">$176.00</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">Status:</span>
+                        <span class="text-green-600 font-semibold ml-2">Delivered</span>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50">View
+                        Invoice</button>
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">View
+                        Order</button>
+                </div>
+            </div>
+
+            <!-- Product -->
+            <div class="flex gap-4">
+                <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=120&h=120&fit=crop"
+                    alt="Classy Golden Metal Belt Watch" class="w-24 h-24 object-cover rounded">
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <h3 class="font-semibold mb-2">Classy Golden Metal Belt Watch</h3>
+                        <span class="font-semibold">$62.00</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Indulge in the Luxurious Charm of Golden Metal Belt Watches.
+                        Crafted with Precision and Style, Each Timepiece Embodies Sophistication and Prestige, Elevating
+                        Every Look with Effortless Elegance. Whether Paired...</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-600">
+                            Color: <span class="font-medium">Golden</span> Quantity: <span class="font-medium">1</span>
+                        </div>
+                        <div class="flex gap-3 text-sm">
+                            <a href="#" class="text-indigo-600 hover:underline">View Product</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="#" class="text-indigo-600 hover:underline">Buy Again</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</body>
+
+</html><!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders - TechParts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-6xl mx-auto p-8">
+        <!-- Main Container -->
+        <div class="bg-white rounded-lg shadow-sm p-8">
+            <!-- Title and Filter -->
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold">Your Orders</h1>
+                <button class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm">
+                    <span>=</span>
+                    Past 12 Weeks
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="text-center py-8">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                <p class="text-gray-500 mt-2">Loading your orders...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-12">
+                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">No orders yet</h2>
+                <p class="text-gray-500 mb-4">Start shopping to see your orders here</p>
+                <a href="/tienda/index.html" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Go Shopping
+                </a>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="hidden text-center py-12">
+                <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">Error loading orders</h2>
+                <p class="text-gray-500 mb-4" id="error-message">Something went wrong. Please try again.</p>
+                <button onclick="location.reload()" class="inline-block px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    Retry
+                </button>
+            </div>
+
+            <!-- Orders Container -->
+            <div id="orders-container" class="hidden"></div>
+        </div>
+    </div>
+
+    <!-- Script tipo módulo -->
+    <script type="module">
+        import { supabase, getCurrentUser } from './js/supabaseConfig.js';
+
+        const loadingState = document.getElementById('loading-state');
+        const emptyState = document.getElementById('empty-state');
+        const errorState = document.getElementById('error-state');
+        const ordersContainer = document.getElementById('orders-container');
+        const errorMessage = document.getElementById('error-message');
+
+        // Función para obtener el color según el estado
+        function getStatusColor(status) {
+            const colors = {
+                'pending': 'text-gray-600',
+                'processing': 'text-blue-600',
+                'processed': 'text-yellow-600',
+                'shipped': 'text-purple-600',
+                'delivered': 'text-green-600',
+                'cancelled': 'text-red-600'
+            };
+            return colors[status] || 'text-gray-600';
+        }
+
+        // Función para formatear fecha
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        // Función para renderizar una orden
+        function renderOrder(order) {
+            const hasDeliveryInfo = order.status === 'processing' || order.status === 'processed';
+            
+            return `
+                <div class="border border-gray-200 rounded-lg p-6 mb-6">
+                    <!-- Order Header -->
+                    <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
+                        <div class="flex gap-8 text-sm flex-wrap">
+                            <div>
+                                <span class="text-gray-500">Order Number:</span>
+                                <span class="font-semibold ml-2">${order.order_number}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Order Date:</span>
+                                <span class="font-semibold ml-2">${formatDate(order.order_date)}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Total Amount:</span>
+                                <span class="font-semibold ml-2">$${order.total_amount.toFixed(2)}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Status:</span>
+                                <span class="${getStatusColor(order.status)} font-semibold ml-2 capitalize">${order.status}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="viewInvoice('${order.id}')" class="px-4 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+                                View Invoice
+                            </button>
+                            <button onclick="viewOrder('${order.id}')" class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700">
+                                View Order
+                            </button>
+                        </div>
+                    </div>
+
+                    ${hasDeliveryInfo ? `
+                    <!-- Delivery Info -->
+                    <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                        <svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Estimated Delivery: ${formatDate(order.estimated_delivery)}</span>
+                    </div>
+                    ` : ''}
+
+                    <!-- Order Items -->
+                    ${order.order_items.map((item, index) => `
+                        <div class="flex gap-4 ${index < order.order_items.length - 1 ? 'mb-4 pb-4 border-b border-gray-200' : ''}">
+                            <img src="${item.product_image || 'https://via.placeholder.com/120'}" 
+                                 alt="${item.product_name}" 
+                                 class="w-24 h-24 object-cover rounded">
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <h3 class="font-semibold mb-2">${item.product_name}</h3>
+                                    <span class="font-semibold">$${item.total_price.toFixed(2)}</span>
+                                </div>
+                                ${item.metadata?.description ? `
+                                    <p class="text-sm text-gray-600 mb-2">${item.metadata.description}</p>
+                                ` : ''}
+                                <div class="flex justify-between items-center flex-wrap gap-2">
+                                    <div class="text-sm text-gray-600">
+                                        ${item.size ? `Size: <span class="font-medium">${item.size}</span> ` : ''}
+                                        ${item.color ? `Color: <span class="font-medium">${item.color}</span> ` : ''}
+                                        Quantity: <span class="font-medium">${item.quantity}</span>
+                                        Unit Price: <span class="font-medium">$${item.unit_price.toFixed(2)}</span>
+                                    </div>
+                                    <div class="flex gap-3 text-sm">
+                                        <a href="#" class="text-indigo-600 hover:underline">View Product</a>
+                                        <span class="text-gray-300">|</span>
+                                        <a href="#" class="text-indigo-600 hover:underline">Buy Again</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Función principal para cargar órdenes
+        async function loadUserOrders() {
+            try {
+                // Verificar si hay usuario autenticado
+                const user = await getCurrentUser();
+                
+                let query = supabase
+                    .from('orders')
+                    .select(`
+                        *,
+                        order_items (*),
+                        transactions (*)
+                    `)
+                    .order('created_at', { ascending: false });
+
+                // Si hay usuario, filtrar por su ID, sino mostrar todas (para testing)
+                if (user) {
+                    query = query.eq('user_id', user.id);
+                }
+
+                const { data: orders, error } = await query;
+
+                // Ocultar loading
+                loadingState.classList.add('hidden');
+
+                if (error) {
+                    throw error;
+                }
+
+                if (!orders || orders.length === 0) {
+                    // Mostrar estado vacío
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                // Renderizar órdenes
+                ordersContainer.classList.remove('hidden');
+                ordersContainer.innerHTML = orders.map(order => renderOrder(order)).join('');
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                errorMessage.textContent = error.message || 'Could not load orders. Please try again.';
+            }
+        }
+
+        // Funciones globales para los botones
+        window.viewInvoice = function(orderId) {
+            // TODO: Implementar vista de factura
+            console.log('View invoice for order:', orderId);
+            alert('Invoice feature coming soon!');
+        };
+
+        window.viewOrder = function(orderId) {
+            // Redirigir a página de detalle de orden
+            window.location.href = `/tienda/order-details.html?id=${orderId}`;
+        };
+
+        // Cargar órdenes cuando la página cargue
+        document.addEventListener('DOMContentLoaded', loadUserOrders);
+    </script>
+</body>
+
+</html>

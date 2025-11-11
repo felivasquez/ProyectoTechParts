@@ -1,3 +1,9 @@
+// ============================================
+// frontend/tienda/js/paymentForm.js (ACTUALIZADO)
+// ============================================
+
+import { createOrderInSupabase } from './orderService.js';
+
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 let elements;
 
@@ -111,6 +117,82 @@ async function createPaymentIntent() {
     }
 }
 
+// 🆕 FUNCIÓN PARA OBTENER DATOS DE DIRECCIÓN DEL FORMULARIO
+function getShippingAddressFromForm() {
+    // Intenta obtener los datos del formulario de checkout
+    // Ajusta los IDs según tu HTML real
+    return {
+        fullName: document.getElementById('shipping-name')?.value || 
+                  document.getElementById('name')?.value || 
+                  cardholderNameInput.value ||
+                  'Customer Name',
+        address: document.getElementById('shipping-address')?.value || 
+                 document.getElementById('address')?.value || 
+                 'N/A',
+        city: document.getElementById('shipping-city')?.value || 
+              document.getElementById('city')?.value || 
+              'Buenos Aires',
+        state: document.getElementById('shipping-state')?.value || 
+               document.getElementById('state')?.value || 
+               'Buenos Aires',
+        zipCode: document.getElementById('shipping-zip')?.value || 
+                 document.getElementById('postal-code')?.value || 
+                 DEFAULT_POSTAL_CODE,
+        country: document.getElementById('shipping-country')?.value || 
+                 document.getElementById('country')?.value || 
+                 'Argentina',
+        phone: document.getElementById('shipping-phone')?.value || 
+               document.getElementById('phone')?.value || 
+               'N/A',
+        email: document.getElementById('email')?.value || 'customer@example.com'
+    };
+}
+
+// 🆕 FUNCIÓN PARA MANEJAR EL ÉXITO DEL PAGO Y CREAR ORDEN
+async function handleSuccessfulPayment(paymentIntent) {
+    try {
+        console.log('💰 Pago exitoso, creando orden en Supabase...');
+
+        // 1. Obtener carrito
+        const cart = getCart();
+        
+        if (cart.length === 0) {
+            throw new Error('El carrito está vacío');
+        }
+
+        // 2. Obtener datos de dirección
+        const shippingAddress = getShippingAddressFromForm();
+        
+        console.log('📦 Datos de envío:', shippingAddress);
+        console.log('🛒 Items del carrito:', cart);
+
+        // 3. Crear orden en Supabase
+        const orderResult = await createOrderInSupabase({
+            cartItems: cart,
+            shippingAddress: shippingAddress,
+            billingAddress: shippingAddress, // Usa la misma dirección o captura una diferente
+            paymentIntentData: paymentIntent
+        });
+
+        if (!orderResult.success) {
+            throw new Error(orderResult.error || 'Error al crear la orden');
+        }
+
+        console.log('✅ Orden creada exitosamente:', orderResult);
+
+        // 4. Limpiar carrito
+        localStorage.removeItem('techparts_cart');
+
+        // 5. Redirigir a página de confirmación con el número de orden
+        window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+
+    } catch (error) {
+        console.error('❌ Error en handleSuccessfulPayment:', error);
+        throw error;
+    }
+}
+
+// 🔄 FORMULARIO DE PAGO ACTUALIZADO
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     payBtn.disabled = true;
@@ -157,11 +239,20 @@ form.addEventListener('submit', async (e) => {
                 renderSavedCard(card.brand, card.last4, card.exp_month, card.exp_year);
             }
 
-            // Limpiar carrito
-            localStorage.removeItem('techparts_cart');
+            // 🆕 CREAR ORDEN EN SUPABASE ANTES DE LIMPIAR CARRITO
+            try {
+                await handleSuccessfulPayment(paymentIntent);
+                // La redirección ocurre dentro de handleSuccessfulPayment
+            } catch (orderError) {
+                console.error('Error al crear orden:', orderError);
+                
+                // Aún así limpiar carrito y redirigir, pero mostrar advertencia
+                localStorage.removeItem('techparts_cart');
+                
+                // Redirigir con parámetro de error
+                window.location.href = `/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}&order_error=true`;
+            }
             
-            // Redirigir a congrats con ruta absoluta
-            window.location.href = `/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}`;
         } else {
             errorMessage.textContent = `Payment status: ${paymentIntent?.status || 'unknown'}. Please try again.`;
             payBtn.disabled = false;
@@ -213,4 +304,4 @@ function renderCart() {
 }
 
 renderCart();
-createPaymentIntent();
+createPaymentIntent(); 
