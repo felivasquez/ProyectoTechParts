@@ -146,45 +146,68 @@ function getShippingAddressFromForm() {
 
 // 🆕 FUNCIÓN PARA MANEJAR EL ÉXITO DEL PAGO Y CREAR ORDEN
 async function handleSuccessfulPayment(paymentIntent) {
+    console.log('💰 Pago exitoso, creando orden en Supabase...');
+    console.log('📦 Datos de envío:', getShippingAddressFromForm());
+    
+    const cartItems = getCart();
+    console.log('🛒 Items del carrito:', cartItems);
+
+    if (!cartItems || cartItems.length === 0) {
+        errorMessage.textContent = 'Error: carrito vacío';
+        console.error('❌ Carrito vacío');
+        return;
+    }
+
     try {
-        console.log('💰 Pago exitoso, creando orden en Supabase...');
-
-        // 1. Obtener carrito
-        const cart = getCart();
+        // Obtener usuario autenticado (opcional)
+        const { data: { user } } = await supabase.auth.getUser();
         
-        if (cart.length === 0) {
-            throw new Error('El carrito está vacío');
-        }
+        const orderPayload = {
+            user_id: user?.id || null,
+            cartItems: cartItems,
+            shippingAddress: getShippingAddressFromForm(),
+            billingAddress: {
+                name: cardholderNameInput.value,
+                email: document.getElementById('email')?.value || ''
+            },
+            paymentIntentId: paymentIntent.id,
+            paymentStatus: paymentIntent.status,
+            paymentMethod: 'stripe'
+        };
 
-        // 2. Obtener datos de dirección
-        const shippingAddress = getShippingAddressFromForm();
-        
-        console.log('📦 Datos de envío:', shippingAddress);
-        console.log('🛒 Items del carrito:', cart);
+        console.log('🚀 Enviando orden al backend:', orderPayload);
 
-        // 3. Crear orden en Supabase
-        const orderResult = await createOrderInSupabase({
-            cartItems: cart,
-            shippingAddress: shippingAddress,
-            billingAddress: shippingAddress, // Usa la misma dirección o captura una diferente
-            paymentIntentData: paymentIntent
+        // Llamar al endpoint del backend
+        const response = await fetch(`${BACKEND_URL}/api/create-order`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderPayload)
         });
 
-        if (!orderResult.success) {
-            throw new Error(orderResult.error || 'Error al crear la orden');
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Error creando orden');
         }
 
-        console.log('✅ Orden creada exitosamente:', orderResult);
+        console.log('✅ Orden creada exitosamente:', result.order);
+        console.log(`📦 Se guardaron ${result.itemsCount} items`);
 
-        // 4. Limpiar carrito
+        // Limpiar carrito
         localStorage.removeItem('techparts_cart');
 
-        // 5. Redirigir a página de confirmación con el número de orden
-        // window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        // Mostrar éxito
+        errorMessage.style.color = 'green';
+        errorMessage.textContent = `✅ ¡Compra exitosa! Orden #${result.order.order_number}`;
+        
+        // Redirigir después de 2 segundos
+        setTimeout(() => {
+            window.location.href = `/tienda/orders.html?order_id=${result.order.id}`;
+        }, 2000);
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
-        throw error;
+        errorMessage.textContent = `Error: ${error.message}`;
     }
 }
 
