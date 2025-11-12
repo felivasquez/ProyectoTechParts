@@ -1,8 +1,5 @@
-// ============================================
-// frontend/tienda/js/paymentForm.js (ACTUALIZADO)
-// ============================================
-
 import { createOrderInSupabase } from './orderService.js';
+import { supabase } from './supabaseConfig.js'; // <- ADD THIS LINE
 
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 let elements;
@@ -71,13 +68,8 @@ async function createPaymentIntent() {
 
         const response = await fetch(`${BACKEND_URL}/api/create-payment-intent`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                amount: totalAmount,
-                save_card: saveCard,
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: totalAmount, save_card: saveCard })
         });
 
         if (!response.ok) {
@@ -108,7 +100,6 @@ async function createPaymentIntent() {
 
         payBtn.disabled = false;
         payBtn.textContent = 'Pay now';
-
     } catch (e) {
         console.error('Payment intent error:', e);
         errorMessage.textContent = 'Error al iniciar el pago: ' + e.message;
@@ -122,73 +113,96 @@ function getShippingAddressFromForm() {
     // Intenta obtener los datos del formulario de checkout
     // Ajusta los IDs según tu HTML real
     return {
-        fullName: document.getElementById('shipping-name')?.value || 
-                  document.getElementById('name')?.value || 
-                  cardholderNameInput.value ||
-                  'Customer Name',
-        address: document.getElementById('shipping-address')?.value || 
-                 document.getElementById('address')?.value || 
-                 'N/A',
-        city: document.getElementById('shipping-city')?.value || 
-              document.getElementById('city')?.value || 
-              'Buenos Aires',
-        state: document.getElementById('shipping-state')?.value || 
-               document.getElementById('state')?.value || 
-               'Buenos Aires',
-        zipCode: document.getElementById('shipping-zip')?.value || 
-                 document.getElementById('postal-code')?.value || 
-                 DEFAULT_POSTAL_CODE,
-        country: document.getElementById('shipping-country')?.value || 
-                 document.getElementById('country')?.value || 
-                 'Argentina',
-        phone: document.getElementById('shipping-phone')?.value || 
-               document.getElementById('phone')?.value || 
-               'N/A',
+        fullName: document.getElementById('shipping-name')?.value ||
+            document.getElementById('name')?.value ||
+            cardholderNameInput.value ||
+            'Customer Name',
+        address: document.getElementById('shipping-address')?.value ||
+            document.getElementById('address')?.value ||
+            'N/A',
+        city: document.getElementById('shipping-city')?.value ||
+            document.getElementById('city')?.value ||
+            'Buenos Aires',
+        state: document.getElementById('shipping-state')?.value ||
+            document.getElementById('state')?.value ||
+            'Buenos Aires',
+        zipCode: document.getElementById('shipping-zip')?.value ||
+            document.getElementById('postal-code')?.value ||
+            DEFAULT_POSTAL_CODE,
+        country: document.getElementById('shipping-country')?.value ||
+            document.getElementById('country')?.value ||
+            'Argentina',
+        phone: document.getElementById('shipping-phone')?.value ||
+            document.getElementById('phone')?.value ||
+            'N/A',
         email: document.getElementById('email')?.value || 'customer@example.com'
     };
 }
 
 // 🆕 FUNCIÓN PARA MANEJAR EL ÉXITO DEL PAGO Y CREAR ORDEN
 async function handleSuccessfulPayment(paymentIntent) {
+    console.log('💰 Pago exitoso, creando orden en Supabase...');
+    console.log('📦 Datos de envío:', getShippingAddressFromForm());
+
+    const cartItems = getCart();
+    console.log('🛒 Items del carrito:', cartItems);
+
+    if (!cartItems || cartItems.length === 0) {
+        errorMessage.textContent = 'Error: carrito vacío';
+        console.error('❌ Carrito vacío');
+        return;
+    }
+
     try {
-        console.log('💰 Pago exitoso, creando orden en Supabase...');
+        // Obtener usuario autenticado (opcional)
+        const { data: { user } } = await supabase.auth.getUser();
 
-        // 1. Obtener carrito
-        const cart = getCart();
-        
-        if (cart.length === 0) {
-            throw new Error('El carrito está vacío');
-        }
+        const orderPayload = {
+            user_id: user?.id || null,
+            cartItems: cartItems,
+            shippingAddress: getShippingAddressFromForm(),
+            billingAddress: {
+                name: cardholderNameInput.value,
+                email: document.getElementById('email')?.value || ''
+            },
+            paymentIntentId: paymentIntent.id,
+            paymentStatus: paymentIntent.status,
+            paymentMethod: 'stripe'
+        };
 
-        // 2. Obtener datos de dirección
-        const shippingAddress = getShippingAddressFromForm();
-        
-        console.log('📦 Datos de envío:', shippingAddress);
-        console.log('🛒 Items del carrito:', cart);
+        console.log('🚀 Enviando orden al backend:', orderPayload);
 
-        // 3. Crear orden en Supabase
-        const orderResult = await createOrderInSupabase({
-            cartItems: cart,
-            shippingAddress: shippingAddress,
-            billingAddress: shippingAddress, // Usa la misma dirección o captura una diferente
-            paymentIntentData: paymentIntent
+        // Llamar al endpoint del backend (archivo backend: create-orders.js)
+        const response = await fetch(`${BACKEND_URL}/api/create-orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderPayload)
         });
 
-        if (!orderResult.success) {
-            throw new Error(orderResult.error || 'Error al crear la orden');
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Error creando orden');
         }
 
-        console.log('✅ Orden creada exitosamente:', orderResult);
+        console.log('✅ Orden creada exitosamente:', result.order);
+        console.log(`📦 Se guardaron ${result.itemsCount} items`);
 
-        // 4. Limpiar carrito
+        // Limpiar carrito
         localStorage.removeItem('techparts_cart');
 
-        // 5. Redirigir a página de confirmación con el número de orden
-        window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        // Mostrar éxito
+        errorMessage.style.color = 'green';
+        errorMessage.textContent = `✅ ¡Compra exitosa! Orden #${result.order.order_number}`;
+
+        // Redirigir después de 2 segundos
+        setTimeout(() => {
+            window.location.href = `/tienda/orders.html?order_id=${result.order.id}`;
+        }, 2000);
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
-        throw error;
+        errorMessage.textContent = `Error: ${error.message}`;
     }
 }
 
@@ -245,14 +259,14 @@ form.addEventListener('submit', async (e) => {
                 // La redirección ocurre dentro de handleSuccessfulPayment
             } catch (orderError) {
                 console.error('Error al crear orden:', orderError);
-                
+
                 // Aún así limpiar carrito y redirigir, pero mostrar advertencia
                 localStorage.removeItem('techparts_cart');
-                
+
                 // Redirigir con parámetro de error
                 window.location.href = `/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}&order_error=true`;
             }
-            
+
         } else {
             errorMessage.textContent = `Payment status: ${paymentIntent?.status || 'unknown'}. Please try again.`;
             payBtn.disabled = false;
@@ -304,4 +318,4 @@ function renderCart() {
 }
 
 renderCart();
-createPaymentIntent(); 
+createPaymentIntent();
