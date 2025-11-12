@@ -8,10 +8,9 @@ const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
 });
 
 export default async function handler(req, res) {
-  // CORS
+  // CORS - permitir orígenes concretos y responder OPTIONS (preflight)
   const allowedOrigins = [
     'https://tiendatechparts.vercel.app',
-    'https://dashboard-tech-parts.vercel.app',
     'http://127.0.0.1:4242',
     'http://localhost:3000'
   ];
@@ -21,10 +20,16 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   try {
     const { 
@@ -35,19 +40,16 @@ export default async function handler(req, res) {
       paymentIntentId,
       paymentStatus,
       paymentMethod 
-    } = req.body;
+    } = req.body || {};
 
-    // Validar carrito
     if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }
 
-    // Calcular total
     const total_amount = cartItems.reduce((sum, item) => 
-      sum + (item.price * (item.quantity || 1)), 0
+      sum + (parseFloat(item.price) * (parseInt(item.quantity || 1))), 0
     );
 
-    // 1️⃣ INSERTAR ORDEN
     const orderPayload = {
       user_id: user_id || null,
       order_number: `ORD-${Date.now()}`,
@@ -56,9 +58,9 @@ export default async function handler(req, res) {
       status: 'pending',
       payment_method: paymentMethod || 'stripe',
       payment_status: paymentStatus || 'succeeded',
-      payment_intent_id: paymentIntentId,
-      shipping_address: shippingAddress,
-      billing_address: billingAddress,
+      payment_intent_id: paymentIntentId || null,
+      shipping_address: shippingAddress || {},
+      billing_address: billingAddress || {},
       estimated_delivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
     };
 
@@ -69,43 +71,38 @@ export default async function handler(req, res) {
       .single();
 
     if (orderError) {
-      console.error('❌ Error inserting order:', orderError);
-      return res.status(500).json({ error: orderError.message });
+      console.error('Error inserting order:', orderError);
+      return res.status(500).json({ error: orderError.message || 'Insert order failed' });
     }
 
-    console.log('✅ Orden creada:', orderData.id);
-
-    // 2️⃣ INSERTAR ITEMS DEL CARRITO
     const orderItemsPayload = cartItems.map(item => ({
       order_id: orderData.id,
-      product_id: item.id,
-      product_name: item.name,
-      unit_price: parseFloat(item.price),
-      quantity: parseInt(item.quantity) || 1,
-      total_price: parseFloat(item.price) * (parseInt(item.quantity) || 1),
+      product_id: item.id || null,
+      product_name: item.name || item.product_name || '',
+      unit_price: parseFloat(item.price) || 0,
+      quantity: parseInt(item.quantity || 1),
+      total_price: (parseFloat(item.price) || 0) * (parseInt(item.quantity || 1)),
       metadata: item.metadata || {}
     }));
 
-    const { error: itemsError, data: itemsData } = await supabaseAdmin
+    const { data: itemsData, error: itemsError } = await supabaseAdmin
       .from('order_items')
       .insert(orderItemsPayload)
       .select();
 
     if (itemsError) {
-      console.warn('⚠️ Error inserting order items:', itemsError);
-      // No retornar error aquí, la orden ya fue creada
+      console.warn('Warning: order items insert error:', itemsError);
+      // no falla toda la petición, devolvemos la orden creada y el warning
     }
 
-    console.log('✅ Items guardados:', itemsData?.length);
-
-    return res.status(200).json({ 
-      success: true, 
+    return res.status(200).json({
+      success: true,
       order: orderData,
-      itemsCount: itemsData?.length || 0
+      itemsCount: itemsData?.length || 0,
+      itemsError: itemsError ? itemsError.message : null
     });
-
   } catch (error) {
-    console.error('❌ Handler error:', error);
+    console.error('create-orders handler error:', error);
     return res.status(500).json({ error: error.message || 'Internal server error' });
   }
 }
