@@ -151,7 +151,7 @@ function renderProductCard(product) {
                 </div>
             </div>
             <div class="p-4">
-                <a href="productDetails.html?id=${product.id}" class="block mb-4">
+                <a href="/tienda/productDetails.html?id=${product.id}" class="block mb-4">
                     <div class="mb-2">
                         <span class="inline-flex items-center rounded-md bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300">
                             ${product.category || 'Sin categoría'}

@@ -215,7 +215,7 @@ function actualizarBotonSaltar() {
     saltarBtn.addEventListener('click', () => {
     if (indiciesCategoria === categoriasOrden.length - 1) {
         mandarPcarmardaAcarrito();
-        window.location.href = '/frontend/tienda/checkout.html';
+        window.location.href = '/tienda/checkout.html';
     } else {
         ordenarPorCategoria(true);
     }
