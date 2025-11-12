@@ -1,7 +1,3 @@
-// ============================================
-// frontend/tienda/js/paymentForm.js (ACTUALIZADO)
-// ============================================
-
 import { createOrderInSupabase } from './orderService.js';
 
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
@@ -184,7 +180,7 @@ async function handleSuccessfulPayment(paymentIntent) {
         localStorage.removeItem('techparts_cart');
 
         // 5. Redirigir a página de confirmación con el número de orden
-        window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        // window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
