@@ -8,21 +8,35 @@ const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
 });
 
 export default async function handler(req, res) {
-  // CORS - permitir orígenes concretos y responder OPTIONS (preflight)
+  // mover/asegurar headers CORS al inicio para que siempre se envíen
   const allowedOrigins = [
     'https://tiendatechparts.vercel.app',
+    'https://dashboard-tech-parts.vercel.app',
     'http://127.0.0.1:4242',
     'http://localhost:3000'
   ];
 
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+
+  // Si quieres prueba rápida, puedes usar '*' temporalmente:
+  // res.setHeader('Access-Control-Allow-Origin', '*');
+
+  if (origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    // petición puede venir sin Origin (server-to-server) -> permitir por defecto
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else {
+    // origen no permitido -> no setear header (será bloqueado por el navegador)
+    console.warn('CORS: origin not allowed', origin);
   }
+
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  // Si tu frontend envía cookies/credenciales, deja esto true y no uses '*' arriba
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
+  // responder preflight inmediatamente
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -92,7 +106,6 @@ export default async function handler(req, res) {
 
     if (itemsError) {
       console.warn('Warning: order items insert error:', itemsError);
-      // no falla toda la petición, devolvemos la orden creada y el warning
     }
 
     return res.status(200).json({
