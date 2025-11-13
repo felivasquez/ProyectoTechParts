@@ -1,8 +1,4 @@
-// ============================================
-// frontend/tienda/js/paymentForm.js (ACTUALIZADO)
-// ============================================
-
-import { createOrderInSupabase } from './orderService.js';
+import { supabase } from './supabaseConfig.js';
 
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 let elements;
@@ -153,41 +149,34 @@ async function handleSuccessfulPayment(paymentIntent) {
     try {
         console.log('💰 Pago exitoso, creando orden en Supabase...');
 
-        // 1. Obtener carrito
         const cart = getCart();
-        
-        if (cart.length === 0) {
-            throw new Error('El carrito está vacío');
-        }
+        if (!cart || cart.length === 0) throw new Error('El carrito está vacío');
 
-        // 2. Obtener datos de dirección
         const shippingAddress = getShippingAddressFromForm();
-        
+
         console.log('📦 Datos de envío:', shippingAddress);
         console.log('🛒 Items del carrito:', cart);
 
-        // 3. Crear orden en Supabase
-        const orderResult = await createOrderInSupabase({
+        // Guardar directamente en Supabase (frontend)
+        const result = await saveOrderDirectly({
             cartItems: cart,
-            shippingAddress: shippingAddress,
-            billingAddress: shippingAddress, // Usa la misma dirección o captura una diferente
-            paymentIntentData: paymentIntent
+            shippingAddress,
+            billingAddress: shippingAddress,
+            paymentIntent
         });
 
-        if (!orderResult.success) {
-            throw new Error(orderResult.error || 'Error al crear la orden');
-        }
+        if (!result.success) throw new Error(result.error || 'Error creando la orden');
 
-        console.log('✅ Orden creada exitosamente:', orderResult);
+        console.log('✅ Orden creada:', result.order);
 
-        // 4. Limpiar carrito
         localStorage.removeItem('techparts_cart');
 
-        // 5. Redirigir a página de confirmación con el número de orden
-        window.location.href = `/tienda/congrats.html?order_number=${orderResult.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
+        // Mostrar error en UI
+        document.getElementById('error-message').textContent = 'Error creando orden: ' + (error.message || error);
         throw error;
     }
 }
@@ -304,4 +293,4 @@ function renderCart() {
 }
 
 renderCart();
-createPaymentIntent(); 
+createPaymentIntent();
