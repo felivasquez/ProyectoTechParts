@@ -147,34 +147,41 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         if (userError || !user) {
             console.error('Usuario no autenticado:', userError);
-            return { success: false, error: 'No user logged in' };
+            throw new Error('Usuario no autenticado');
         }
 
+        console.log('👤 Usuario autenticado:', user.id);
+
         // Crear registro en "orders"
+        const orderNumber = `TP-${Date.now()}`;
+        const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        
         const { data: orderData, error: orderError } = await supabase
             .from('orders')
             .insert([
                 {
                     user_id: user.id,
-                    order_number: `TP-${Date.now()}`,
+                    order_number: orderNumber,
                     order_date: new Date().toISOString(),
-                    total_amount: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+                    total_amount: totalAmount,
                     status: 'paid',
                     payment_method: 'card',
                     payment_status: 'succeeded',
                     payment_intent_id: paymentIntent.id,
                     shipping_address: `${shippingAddress.address}, ${shippingAddress.city}`,
                     billing_address: `${billingAddress.address}, ${billingAddress.city}`,
-                    estimated_delivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // +5 días
+                    estimated_delivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
                 }
             ])
             .select()
             .single();
 
         if (orderError) {
-            console.error('Error creando orden:', orderError);
-            throw orderError;
+            console.error('❌ Error creando orden:', orderError);
+            throw new Error(`Error al crear orden: ${orderError.message}`);
         }
+
+        console.log('✅ Orden creada:', orderData);
         const orderId = orderData.id;
 
         // Crear registros en "order_items"
@@ -187,81 +194,60 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
             total_price: item.price * item.quantity,
         }));
 
-        const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+        const { error: itemsError } = await supabase
+            .from('order_items')
+            .insert(orderItems);
+
         if (itemsError) {
-            console.error('Error creando items de orden:', itemsError);
-            throw itemsError;
+            console.error('❌ Error creando items de orden:', itemsError);
+            throw new Error(`Error al crear items: ${itemsError.message}`);
         }
 
-        // Actualizar stock y registrar movimientos
+        console.log('✅ Items de orden creados');
+
+        // Actualizar stock de productos
         for (const item of cartItems) {
-            // Primero, obtener el stock actual
-            const { data: productData, error: fetchError } = await supabase
-                .from('products')
-                .select('stock')
-                .eq('id', item.id)
-                .single();
+            try {
+                // Obtener stock actual
+                const { data: productData, error: fetchError } = await supabase
+                    .from('products')
+                    .select('stock, name')
+                    .eq('id', item.id)
+                    .single();
 
-            if (fetchError) {
-                console.error(`Error obteniendo producto ${item.id}:`, fetchError);
-                continue; // Continuar con el siguiente item
+                if (fetchError) {
+                    console.warn(`⚠️ Error obteniendo producto ${item.id}:`, fetchError.message);
+                    continue;
+                }
+
+                const currentStock = productData.stock;
+                const newStock = Math.max(0, currentStock - item.quantity);
+
+                console.log(`📦 Actualizando stock de "${productData.name}": ${currentStock} → ${newStock}`);
+
+                // Actualizar stock
+                const { error: updateError } = await supabase
+                    .from('products')
+                    .update({ stock: newStock })
+                    .eq('id', item.id);
+
+                if (updateError) {
+                    console.warn(`⚠️ Error actualizando stock del producto ${item.id}:`, updateError.message);
+                    continue;
+                }
+
+                console.log(`✅ Stock actualizado para producto ${item.id}`);
+
+            } catch (stockError) {
+                console.warn(`⚠️ Error procesando stock del producto ${item.id}:`, stockError);
+                // Continuar con el siguiente producto
             }
-
-            const currentStock = productData.stock;
-            const newStock = currentStock - item.quantity;
-
-            // Actualizar stock usando el cliente de Supabase correctamente
-            const { error: updateError } = await supabase
-                .from('products')
-                .update({ stock: newStock })
-                .eq('id', item.id);
-
-            if (updateError) {
-                console.error(`Error actualizando stock del producto ${item.id}:`, updateError);
-                continue; // Continuar con el siguiente item
-            }
-
-            // Registrar movimiento (intentar, pero no fallar si hay error)
-            // try {
-            //     const movementData = {
-            //         type: "Salida", // Cambiado a "Salida" porque el producto sale del inventario
-            //         quantity: parseInt(item.quantity) || 1,
-            //         reason: "Venta online", // Cambiado a "Venta online" para ser más específico
-            //         user_id: user.id,
-            //         product_id: item.id,
-            //         order_id: orderId,
-            //         supplier: null // Agregado explícitamente como null
-            //     };
-
-            //     console.log('Intentando crear movimiento:', movementData);
-
-            //     const { data: movementResult, error: movementError } = await supabase
-            //         .from('movements')
-            //         .insert(movementData)
-            //         .select();
-
-            //     if (movementError) {
-            //         console.error(`Error registrando movimiento para producto ${item.id}:`, {
-            //             error: movementError,
-            //             message: movementError.message,
-            //             details: movementError.details,
-            //             hint: movementError.hint,
-            //             code: movementError.code,
-            //             data: movementData
-            //         });
-            //         // No lanzar error, solo registrar - el pedido ya se creó exitosamente
-            //     } else {
-            //         console.log('✅ Movimiento creado exitosamente:', movementResult);
-            //     }
-            // } catch (movError) {
-            //     console.error(`Error inesperado registrando movimiento:`, movError);
-            // }
         }
 
         return { success: true, order: orderData };
 
     } catch (error) {
-        console.error('Error guardando orden en Supabase:', error);
+        console.error('❌ Error en saveOrderDirectly:', error);
         return { success: false, error: error.message };
     }
 }
@@ -271,10 +257,12 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
 // =============================
 async function handleSuccessfulPayment(paymentIntent) {
     try {
-        console.log('💰 Pago exitoso, creando orden en Supabase...');
+        console.log('💰 Pago exitoso, procesando orden...');
 
         const cart = getCart();
-        if (!cart || cart.length === 0) throw new Error('El carrito está vacío');
+        if (!cart || cart.length === 0) {
+            throw new Error('El carrito está vacío');
+        }
 
         const shippingAddress = {
             address: 'Av. Siempre Viva 123',
@@ -290,17 +278,26 @@ async function handleSuccessfulPayment(paymentIntent) {
             paymentIntent
         });
 
-        if (!result.success) throw new Error(result.error || 'Error creando la orden');
-        console.log('✅ Orden creada:', result.order);
+        if (!result.success) {
+            throw new Error(result.error || 'Error al crear la orden');
+        }
 
+        console.log('✅ Orden procesada exitosamente:', result.order.order_number);
+
+        // Limpiar carrito
         localStorage.removeItem('techparts_cart');
 
         // Redirección a página de confirmación
-        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
+        const redirectUrl = `${window.location.origin}/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
+        console.log('🔄 Redirigiendo a:', redirectUrl);
+        
+        window.location.href = redirectUrl;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
-        document.getElementById('error-message').textContent = 'Error creando orden: ' + (error.message || error);
+        errorMessage.textContent = 'Error al procesar la orden: ' + (error.message || error);
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pay now';
         throw error;
     }
 }
@@ -314,7 +311,7 @@ form.addEventListener('submit', async (e) => {
     payBtn.textContent = 'Confirming...';
     errorMessage.textContent = '';
 
-    const cardHolderName = cardholderNameInput.value;
+    const cardHolderName = cardholderNameInput.value.trim();
 
     try {
         const returnUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -339,6 +336,7 @@ form.addEventListener('submit', async (e) => {
         });
 
         if (error) {
+            console.error('❌ Error de Stripe:', error);
             errorMessage.textContent = error.message;
             payBtn.disabled = false;
             payBtn.textContent = 'Pay now';
@@ -346,29 +344,38 @@ form.addEventListener('submit', async (e) => {
         }
 
         if (paymentIntent && paymentIntent.status === 'succeeded') {
-            const saveCard = saveCardCheckbox.checked;
+            console.log('✅ Payment Intent exitoso:', paymentIntent.id);
 
+            // Guardar tarjeta si está marcada la opción
+            const saveCard = saveCardCheckbox.checked;
             if (saveCard && paymentIntent.latest_charge?.payment_method_details?.card) {
                 const card = paymentIntent.latest_charge.payment_method_details.card;
                 renderSavedCard(card.brand, card.last4, card.exp_month, card.exp_year);
             }
 
+            // Procesar orden
             await handleSuccessfulPayment(paymentIntent);
         } else {
-            errorMessage.textContent = `Payment status: ${paymentIntent?.status || 'unknown'}. Please try again.`;
+            const status = paymentIntent?.status || 'unknown';
+            console.warn('⚠️ Estado del pago:', status);
+            errorMessage.textContent = `Estado del pago: ${status}. Por favor intenta nuevamente.`;
             payBtn.disabled = false;
             payBtn.textContent = 'Pay now';
         }
     } catch (err) {
-        console.error('Confirmation error:', err);
-        errorMessage.textContent = 'Error confirming payment: ' + err.message;
+        console.error('❌ Error en confirmación:', err);
+        errorMessage.textContent = 'Error al confirmar el pago: ' + err.message;
         payBtn.disabled = false;
         payBtn.textContent = 'Pay now';
     }
 });
 
+// Event listener para cambios en el checkbox
 saveCardCheckbox.addEventListener('change', createPaymentIntent);
 
-// Inicializar
+// =============================
+// INICIALIZACIÓN
+// =============================
+console.log('🚀 Inicializando checkout...');
 renderCart();
 createPaymentIntent();
