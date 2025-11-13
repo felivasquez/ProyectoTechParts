@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <!-- <script>
+  <script>
     const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 
     const loadingEl = document.getElementById('loading');
@@ -74,8 +74,7 @@
 
     async function checkPayment() {
       const urlParams = new URLSearchParams(window.location.search);
-      const clientSecret = urlParams.get('payment_intent_client_secret') || urlParams.get('payment_intent');
-
+      const clientSecret = urlParams.get('payment_intent_client_secret');
 
       if (!clientSecret) {
         showError('No se encontró información del pago. Por favor, contactá a soporte.');
@@ -119,64 +118,6 @@
     }
 
     checkPayment();
-  </script> -->
-
-  <script>
-      const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
-
-      const loadingEl = document.getElementById('loading');
-      const successEl = document.getElementById('success');
-      const errorEl = document.getElementById('error');
-      const processingEl = document.getElementById('processing');
-      const errorMessageEl = document.getElementById('error-message');
-      const orderIdEl = document.getElementById('order-id');
-
-      async function checkPayment() {
-    const urlParams = new URLSearchParams(window.location.search);
-      const paymentIntentId = urlParams.get('payment_intent'); // viene del redirect manual
-      const orderNumber = urlParams.get('order_number');
-
-      if (!paymentIntentId) {
-        showError('No se encontró información del pago. Por favor, contactá a soporte.');
-      return;
-    }
-
-      try {
-      // Consultar el PaymentIntent desde tu backend
-      const response = await fetch(`https://proyectotechparts-backend.vercel.app/api/create-payment-intent/${paymentIntentId}`);
-      if (!response.ok) throw new Error('No se pudo verificar el estado del pago.');
-
-      const paymentIntent = await response.json();
-
-      loadingEl.classList.add('hidden');
-
-      switch (paymentIntent.status) {
-        case 'succeeded':
-      successEl.classList.remove('hidden');
-      orderIdEl.textContent = `ID de transacción: ${paymentIntent.id}`;
-          break;
-        case 'processing':
-          processingEl.classList.remove('hidden');
-          break;
-        case 'requires_payment_method':
-          showError('El pago no se pudo completar. Por favor, intentá nuevamente.');
-          break;
-        default:
-          showError('Ocurrió un estado inesperado en el pago.');
-      }
-    } catch (err) {
-      showError('Error al verificar el pago. Intenta nuevamente.');
-      console.error(err);
-    }
-  }
-
-  function showError(message) {
-    loadingEl.classList.add('hidden');
-    errorEl.classList.remove('hidden');
-    errorMessageEl.textContent = message;
-  }
-
-  checkPayment();
   </script>
 
 </body>
