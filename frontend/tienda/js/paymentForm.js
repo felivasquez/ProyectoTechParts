@@ -1,4 +1,4 @@
-import { supabase } from './supabaseConfig.js'; 
+import { supabase } from './supabaseConfig.js';
 
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 let elements;
@@ -196,15 +196,24 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
                 .eq('id', item.id);
 
             // Registrar movimiento
-            await supabase.from('movements').insert([
-                {
+            await fetch(`${SUPABASE_URL}/rest/v1/movements`, {
+                method: "POST",
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": `Bearer ${SUPABASE_KEY}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=representation"
+                },
+                body: JSON.stringify({
+                    type: "Compra",
+                    quantity: item.quantity || 1,
+                    reason: "Compra online",
                     user_id: user.id,
                     product_id: item.id,
-                    type: 'purchase',
-                    amount: item.price * item.quantity,
+                    order_id: orderId, // el id de la orden recién creada
                     created_at: new Date().toISOString()
-                }
-            ]);
+                })
+            });
         }
 
         return { success: true, order: orderData };
