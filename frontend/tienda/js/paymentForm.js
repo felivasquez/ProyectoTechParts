@@ -171,7 +171,10 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
             .select()
             .single();
 
-        if (orderError) throw orderError;
+        if (orderError) {
+            console.error('Error creando orden:', orderError);
+            throw orderError;
+        }
         const orderId = orderData.id;
 
         // Crear registros en "order_items"
@@ -185,35 +188,55 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
         }));
 
         const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-        if (itemsError) throw itemsError;
+        if (itemsError) {
+            console.error('Error creando items de orden:', itemsError);
+            throw itemsError;
+        }
 
         // Actualizar stock y registrar movimientos
         for (const item of cartItems) {
-            // Actualizar stock
-            await supabase
+            // Primero, obtener el stock actual
+            const { data: productData, error: fetchError } = await supabase
                 .from('products')
-                .update({ stock: item.stock - item.quantity })
+                .select('stock')
+                .eq('id', item.id)
+                .single();
+
+            if (fetchError) {
+                console.error(`Error obteniendo producto ${item.id}:`, fetchError);
+                continue; // Continuar con el siguiente item
+            }
+
+            const currentStock = productData.stock;
+            const newStock = currentStock - item.quantity;
+
+            // Actualizar stock usando el cliente de Supabase correctamente
+            const { error: updateError } = await supabase
+                .from('products')
+                .update({ stock: newStock })
                 .eq('id', item.id);
 
+            if (updateError) {
+                console.error(`Error actualizando stock del producto ${item.id}:`, updateError);
+                continue; // Continuar con el siguiente item
+            }
+
             // Registrar movimiento
-            await fetch(`${SUPABASE_URL}/rest/v1/movements`, {
-                method: "POST",
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization": `Bearer ${SUPABASE_KEY}`,
-                    "Content-Type": "application/json",
-                    "Prefer": "return=representation"
-                },
-                body: JSON.stringify({
+            const { error: movementError } = await supabase
+                .from('movements')
+                .insert({
                     type: "Compra",
                     quantity: item.quantity || 1,
                     reason: "Compra online",
                     user_id: user.id,
                     product_id: item.id,
-                    order_id: orderId, // el id de la orden recién creada
+                    order_id: orderId,
                     created_at: new Date().toISOString()
-                })
-            });
+                });
+
+            if (movementError) {
+                console.error(`Error registrando movimiento para producto ${item.id}:`, movementError);
+            }
         }
 
         return { success: true, order: orderData };
@@ -254,7 +277,7 @@ async function handleSuccessfulPayment(paymentIntent) {
         localStorage.removeItem('techparts_cart');
 
         // Redirección a página de confirmación
-        // window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
+        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
@@ -276,7 +299,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
         const returnUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? 'http://tiendatechparts.vercel.app/tienda/congrats.html'
+            ? 'http://127.0.0.1:5500/tienda/congrats.html'
             : `${window.location.origin}/tienda/congrats.html`;
 
         const { paymentIntent, error } = await stripe.confirmPayment({
