@@ -114,35 +114,35 @@ async function createPaymentIntent() {
 }
 
 // 🆕 FUNCIÓN PARA OBTENER DATOS DE DIRECCIÓN DEL FORMULARIO
-function getShippingAddressFromForm() {
-    // Intenta obtener los datos del formulario de checkout
-    // Ajusta los IDs según tu HTML real
-    return {
-        fullName: document.getElementById('shipping-name')?.value || 
-                  document.getElementById('name')?.value || 
-                  cardholderNameInput.value ||
-                  'Customer Name',
-        address: document.getElementById('shipping-address')?.value || 
-                 document.getElementById('address')?.value || 
-                 'N/A',
-        city: document.getElementById('shipping-city')?.value || 
-              document.getElementById('city')?.value || 
-              'Buenos Aires',
-        state: document.getElementById('shipping-state')?.value || 
-               document.getElementById('state')?.value || 
-               'Buenos Aires',
-        zipCode: document.getElementById('shipping-zip')?.value || 
-                 document.getElementById('postal-code')?.value || 
-                 DEFAULT_POSTAL_CODE,
-        country: document.getElementById('shipping-country')?.value || 
-                 document.getElementById('country')?.value || 
-                 'Argentina',
-        phone: document.getElementById('shipping-phone')?.value || 
-               document.getElementById('phone')?.value || 
-               'N/A',
-        email: document.getElementById('email')?.value || 'customer@example.com'
-    };
-}
+// function getShippingAddressFromForm() {
+//     // Intenta obtener los datos del formulario de checkout
+//     // Ajusta los IDs según tu HTML real
+//     return {
+//         fullName: document.getElementById('shipping-name')?.value || 
+//                   document.getElementById('name')?.value || 
+//                   cardholderNameInput.value ||
+//                   'Customer Name',
+//         address: document.getElementById('shipping-address')?.value || 
+//                  document.getElementById('address')?.value || 
+//                  'N/A',
+//         city: document.getElementById('shipping-city')?.value || 
+//               document.getElementById('city')?.value || 
+//               'Buenos Aires',
+//         state: document.getElementById('shipping-state')?.value || 
+//                document.getElementById('state')?.value || 
+//                'Buenos Aires',
+//         zipCode: document.getElementById('shipping-zip')?.value || 
+//                  document.getElementById('postal-code')?.value || 
+//                  DEFAULT_POSTAL_CODE,
+//         country: document.getElementById('shipping-country')?.value || 
+//                  document.getElementById('country')?.value || 
+//                  'Argentina',
+//         phone: document.getElementById('shipping-phone')?.value || 
+//                document.getElementById('phone')?.value || 
+//                'N/A',
+//         email: document.getElementById('email')?.value || 'customer@example.com'
+//     };
+// }
 
 // 🆕 FUNCIÓN PARA MANEJAR EL ÉXITO DEL PAGO Y CREAR ORDEN
 async function handleSuccessfulPayment(paymentIntent) {
@@ -171,7 +171,7 @@ async function handleSuccessfulPayment(paymentIntent) {
 
         localStorage.removeItem('techparts_cart');
 
-        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        // window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
