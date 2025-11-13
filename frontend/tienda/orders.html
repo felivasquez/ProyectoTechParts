@@ -6,177 +6,398 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Pedidos - TechParts</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-    </style>
+
 </head>
 
-<body>
-    <!-- Header -->
-    <header class="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-8">
-                    <a href="/tienda/index.html" class="text-2xl font-bold text-white">TechParts</a>
-                    <div class="hidden md:flex space-x-6">
-                        <a href="/tienda/index.html" class="text-white/90 hover:text-white transition">Inicio</a>
-                        <a href="/tienda/products.html" class="text-white/90 hover:text-white transition">Productos</a>
-                        <a href="/tienda/orders.html" class="text-white font-semibold transition">Mis Pedidos</a>
+<body class="bg-gray-900 text-white">
+    <div class="min-h-screen bg-background">
+        <nav class="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur">
+            <div class="max-w-7xl mx-auto px-4 flex h-16 items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-monitor h-5 w-5 text-gray-900">
+                            <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                            <line x1="8" x2="16" y1="21" y2="21"></line>
+                            <line x1="12" x2="12" y1="17" y2="21"></line>
+                        </svg>
+                    </div>
+                    <span
+                        class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
+                </div>
+                <!-- BARRA DE BÚSQUEDA - Desktop -->
+                <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
+                    <div class="relative w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </svg>
+                        <input id="buscador-productos" type="text"
+                            class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
+                            placeholder="Buscar productos...">
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/tienda/cart.html" class="text-white/90 hover:text-white transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                <div class="flex items-center lg:space-x-2">
+                    <button id="myCartDropdownButton1" type="button"
+                        class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-800 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-100 dark:text-white">
+                        <span class="sr-only">
+                            Cart
+                        </span>
+                        <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                         </svg>
-                    </a>
-                    <button id="user-menu-btn" class="text-white/90 hover:text-white transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        <!-- Badge: actualiza con data-cart-count -->
+                        <span data-cart-count
+                            class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
+                        <span class="hidden sm:flex">Mi carrito </span>
+                        <svg class="hidden sm:flex w-4 h-4 text-gray-100 dark:text-white ms-1" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 9-7 7-7-7" />
                         </svg>
                     </button>
+                    <div class="hidden" id="contUserSec">
+                        <button id="userDropdownButton1" type="button"
+                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-800 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-100 dark:text-white">
+                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="2"
+                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            Account
+                            <svg class="w-4 h-4 text-gray-100 dark:text-white ms-1" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 9-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="btnUser">
+                        <button type="button"
+                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-700 dark:hover:bg-gray-800 text-sm font-medium leading-none text-gray-100 dark:text-white">
+                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-width="2"
+                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            Iniciar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full max-w-screen flex justify-end">
+                <div id="myCartDropdown1"
+                    class="hidden z-10 fixed mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-gray-800 p-4 antialiased shadow-lg dark:bg-gray-800">
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <a href="#"
+                                class="truncate text-sm font-semibold leading-none text-gray-100 dark:text-white hover:underline">Apple
+                                iPhone 15</a>
+                            <p class="mt-0.5 truncate text-sm font-normal text-gray-100 dark:text-gray-400">$599</p>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-6">
+                            <p class="text-sm font-normal leading-none text-gray-100 dark:text-gray-400">x</p>
+
+                            <button data-tooltip-target="tooltipRemoveItem1a" type="button"
+                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                                <span class="sr-only"> Remove </span>
+                                <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="tooltipRemoveItem1a" role="tooltip"
+                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
+                                Remove item
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/tienda/checkout.html"
+                        class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        role="button">
+                        Proceed to Checkout
+                    </a>
+                </div>
+                <div id="userDropdown1"
+                    class="hidden fixed z-10 w-56 divide-y divide-gray-600 overflow-hidden overflow-y-auto rounded-lg  shadow dark:divide-gray-800 dark:bg-gray-800">
+                    <ul class="p-2 text-start text-sm font-medium bg-gray-800 text-gray-100 dark:text-white">
+                        <li><a href="config.html" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
+                                My Account </a></li>
+                        <li><a href="config.html" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
+                                My Orders </a></li>
+                        <li><a href="config.html" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
+                                Settings </a></li>
+                        <li><a href="/frontend/dashboard/dashboard.html" title=""
+                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
+                                Dashboard </a></li>
+                    </ul>
+
+                    <div class="p-2 text-sm font-medium bg-gray-800 text-gray-100 dark:text-white">
+                        <button id="logout-button"
+                            class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- BARRA DE BÚSQUEDA MÓVIL (expandible) -->
+            <div id="mobile-search-bar" class="hidden md:hidden max-w-7xl mx-auto px-4 pb-2">
+                <div class="relative w-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input id="buscador-productos-mobile" type="text"
+                        class="flex h-10 w-full rounded-md border bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                        placeholder="Buscá por productos, marcas y categorías">
                 </div>
             </div>
         </nav>
-    </header>
+        <!-- Main Content -->
+        <div class="container mx-auto px-6 py-12 bg-gray-900">
+            <div class="max-w-6xl mx-auto">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <h1 class="text-4xl font-bold text-white mb-2">Mis Pedidos</h1>
+                    <p class="text-white/80">Revisa el estado de tus pedidos y compras anteriores</p>
+                </div>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-6 py-12">
-        <div class="max-w-6xl mx-auto">
-            <!-- Page Header -->
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold text-white mb-2">Mis Pedidos</h1>
-                <p class="text-white/80">Revisa el estado de tus pedidos y compras anteriores</p>
-            </div>
-
-            <!-- Main Container -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
-                <!-- Filter Bar -->
-                <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        <span class="text-lg font-semibold text-gray-800">Historial de Pedidos</span>
+                <!-- Main Container -->
+                <div class="bg-gray-800 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-gray-200">
+                    <!-- Filter Bar -->
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                            <span class="text-lg font-semibold text-gray-200">Historial de Pedidos</span>
+                        </div>
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm text-purple-700 hover:bg-purple-100 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                            Últimas 12 semanas
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
                     </div>
-                    <button class="flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm text-purple-700 hover:bg-purple-100 transition">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                        Últimas 12 semanas
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                </div>
 
-                <!-- Loading State -->
-                <div id="loading-state" class="text-center py-16">
-                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600"></div>
-                    <p class="text-gray-600 mt-4 text-lg">Cargando tus pedidos...</p>
-                </div>
-
-                <!-- Empty State -->
-                <div id="empty-state" class="hidden text-center py-16">
-                    <div class="bg-purple-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
+                    <!-- Loading State -->
+                    <div id="loading-state" class="text-center py-16">
+                        <div
+                            class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600">
+                        </div>
+                        <p class="text-gray-600 mt-4 text-lg">Cargando tus pedidos...</p>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Aún no tienes pedidos</h2>
-                    <p class="text-gray-600 mb-6">Comienza a comprar para ver tus pedidos aquí</p>
-                    <a href="/tienda/index.html" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
-                        Ir a la Tienda
-                    </a>
-                </div>
 
-                <!-- Error State -->
-                <div id="error-state" class="hidden text-center py-16">
-                    <div class="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <!-- Empty State -->
+                    <div id="empty-state" class="hidden text-center py-16">
+                        <div class="bg-purple-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Aún no tienes pedidos</h2>
+                        <p class="text-gray-600 mb-6">Comienza a comprar para ver tus pedidos aquí</p>
+                        <a href="/tienda/index.html"
+                            class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
+                            Ir a la Tienda
+                        </a>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Error al cargar pedidos</h2>
-                    <p class="text-gray-600 mb-6" id="error-message">Algo salió mal. Por favor intenta de nuevo.</p>
-                    <button onclick="location.reload()" class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
-                        Reintentar
-                    </button>
-                </div>
 
-                <!-- Orders Container -->
-                <div id="orders-container" class="hidden space-y-6"></div>
+                    <!-- Error State -->
+                    <div id="error-state" class="hidden text-center py-16">
+                        <div class="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Error al cargar pedidos</h2>
+                        <p class="text-gray-600 mb-6" id="error-message">Algo salió mal. Por favor intenta de nuevo.</p>
+                        <button onclick="location.reload()"
+                            class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
+                            Reintentar
+                        </button>
+                    </div>
+
+                    <!-- Orders Container -->
+                    <div id="orders-container" class="hidden space-y-6">
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="bg-white/10 backdrop-blur-md border-t border-white/20 mt-20">
-        <div class="container mx-auto px-6 py-8">
-            <div class="text-center text-white/80">
-                <p>&copy; 2025 TechParts. Todos los derechos reservados.</p>
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-cyan-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-monitor h-5 w-5 text-gray-900">
+                                    <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+                                    <line x1="8" x2="16" y1="21" y2="21"></line>
+                                    <line x1="12" x2="12" y1="17" y2="21"></line>
+                                </svg>
+                            </div>
+                            <span
+                                class="text-xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">TechStore</span>
+                        </div>
+                        <p class="text-gray-400">Tu tienda especializada en componentes de PC y sistemas gaming de alta
+                            gama.</p>
+                        <div class="flex gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-facebook h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-instagram h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
+                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-twitter h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
+                                <path
+                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
+                                </path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-youtube h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
+                                <path
+                                    d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
+                                </path>
+                                <path d="m10 15 5-3-5-3z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-white">Productos</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Procesadores</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Tarjetas Gráficas</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Memoria RAM</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Almacenamiento</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">PCs Gaming</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-white">Soporte</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Centro de ayuda</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Garantías</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Envíos</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Devoluciones</a></li>
+                            <li><a href="#" class="hover:text-sky-400 transition-colors">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-semibold text-white">Contacto</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>📧 info@TechParts.com</li>
+                            <li>📞 +54 11 1234-5678</li>
+                            <li>📍 Buenos Aires, Argentina</li>
+                            <li>🕒 Lun - Vie: 9:00 - 18:00</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                    <p>© 2024 TechParts. Todos los derechos reservados.</p>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
 
-    <!-- Script tipo módulo -->
-    <script type="module">
-        import { supabase } from './js/supabaseConfig.js';
+        <!-- Script tipo módulo -->
+        <script type="module">
+            import { supabase } from './js/supabaseConfig.js';
 
-        const loadingState = document.getElementById('loading-state');
-        const emptyState = document.getElementById('empty-state');
-        const errorState = document.getElementById('error-state');
-        const ordersContainer = document.getElementById('orders-container');
-        const errorMessage = document.getElementById('error-message');
+            const loadingState = document.getElementById('loading-state');
+            const emptyState = document.getElementById('empty-state');
+            const errorState = document.getElementById('error-state');
+            const ordersContainer = document.getElementById('orders-container');
+            const errorMessage = document.getElementById('error-message');
 
-        // Función para obtener el color según el estado
-        function getStatusColor(status) {
-            const colors = {
-                'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-                'processing': 'bg-blue-100 text-blue-800 border-blue-200',
-                'paid': 'bg-green-100 text-green-800 border-green-200',
-                'shipped': 'bg-purple-100 text-purple-800 border-purple-200',
-                'delivered': 'bg-green-100 text-green-800 border-green-200',
-                'cancelled': 'bg-red-100 text-red-800 border-red-200'
-            };
-            return colors[status] || 'bg-gray-100 text-gray-800 border-gray-200';
-        }
+            // Función para obtener el color según el estado
+            function getStatusColor(status) {
+                const colors = {
+                    'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                    'processing': 'bg-blue-100 text-blue-800 border-blue-200',
+                    'paid': 'bg-green-100 text-green-800 border-green-200',
+                    'shipped': 'bg-purple-100 text-purple-800 border-purple-200',
+                    'delivered': 'bg-green-100 text-green-800 border-green-200',
+                    'cancelled': 'bg-red-100 text-red-800 border-red-200'
+                };
+                return colors[status] || 'bg-gray-100 text-gray-800 border-gray-200';
+            }
 
-        function getStatusText(status) {
-            const texts = {
-                'pending': 'Pendiente',
-                'processing': 'Procesando',
-                'paid': 'Pagado',
-                'shipped': 'Enviado',
-                'delivered': 'Entregado',
-                'cancelled': 'Cancelado'
-            };
-            return texts[status] || status;
-        }
+            function getStatusText(status) {
+                const texts = {
+                    'pending': 'Pendiente',
+                    'processing': 'Procesando',
+                    'paid': 'Pagado',
+                    'shipped': 'Enviado',
+                    'delivered': 'Entregado',
+                    'cancelled': 'Cancelado'
+                };
+                return texts[status] || status;
+            }
 
-        // Función para formatear fecha
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('es-ES', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-        }
+            // Función para formatear fecha
+            function formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
 
-        // Función para renderizar una orden
-        function renderOrder(order) {
-            const hasDeliveryInfo = order.estimated_delivery;
-            const orderItems = order.order_items || [];
-            
-            return `
+            // Función para renderizar una orden
+            function renderOrder(order) {
+                const hasDeliveryInfo = order.estimated_delivery;
+                const orderItems = order.order_items || [];
+
+                return `
                 <div class="border-2 border-purple-100 rounded-xl p-6 bg-gradient-to-br from-white to-purple-50/30 hover:shadow-xl transition-all duration-300">
                     <!-- Order Header -->
-                    <div class="flex justify-between items-start mb-6 flex-wrap gap-4">
+                    <div class="flex justify-between items-start mb-6 flex-wrap gap-4">e
                         <div class="flex flex-wrap gap-6 text-sm">
                             <div>
                                 <span class="text-gray-500 font-medium">Número de Pedido</span>
@@ -269,89 +490,89 @@
                     </div>
                 </div>
             `;
-        }
+            }
 
-        // Función principal para cargar órdenes
-        async function loadUserOrders() {
-            try {
-                console.log('🔄 Cargando pedidos...');
-                
-                // Obtener usuario autenticado
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
-                
-                if (userError) {
-                    console.error('Error obteniendo usuario:', userError);
-                }
+            // Función principal para cargar órdenes
+            async function loadUserOrders() {
+                try {
+                    console.log('🔄 Cargando pedidos...');
 
-                console.log('👤 Usuario actual:', user?.id);
+                    // Obtener usuario autenticado
+                    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
-                // Query para obtener órdenes
-                let query = supabase
-                    .from('orders')
-                    .select(`
+                    if (userError) {
+                        console.error('Error obteniendo usuario:', userError);
+                    }
+
+                    console.log('👤 Usuario actual:', user?.id);
+
+                    // Query para obtener órdenes
+                    let query = supabase
+                        .from('orders')
+                        .select(`
                         *,
                         order_items (*)
                     `)
-                    .order('order_date', { ascending: false });
+                        .order('order_date', { ascending: false });
 
-                // Si hay usuario, filtrar por su ID
-                if (user) {
-                    query = query.eq('user_id', user.id);
+                    // Si hay usuario, filtrar por su ID
+                    if (user) {
+                        query = query.eq('user_id', user.id);
+                    }
+
+                    const { data: orders, error } = await query;
+
+                    console.log('📦 Pedidos obtenidos:', orders);
+
+                    // Ocultar loading
+                    loadingState.classList.add('hidden');
+
+                    if (error) {
+                        console.error('Error obteniendo pedidos:', error);
+                        throw error;
+                    }
+
+                    if (!orders || orders.length === 0) {
+                        console.log('📭 No se encontraron pedidos');
+                        emptyState.classList.remove('hidden');
+                        return;
+                    }
+
+                    // Renderizar órdenes
+                    console.log('✅ Renderizando', orders.length, 'pedidos');
+                    ordersContainer.classList.remove('hidden');
+                    ordersContainer.innerHTML = orders.map(order => renderOrder(order)).join('');
+
+                } catch (error) {
+                    console.error('❌ Error cargando pedidos:', error);
+                    loadingState.classList.add('hidden');
+                    errorState.classList.remove('hidden');
+                    errorMessage.textContent = error.message || 'No se pudieron cargar los pedidos. Por favor intenta de nuevo.';
                 }
-
-                const { data: orders, error } = await query;
-
-                console.log('📦 Pedidos obtenidos:', orders);
-
-                // Ocultar loading
-                loadingState.classList.add('hidden');
-
-                if (error) {
-                    console.error('Error obteniendo pedidos:', error);
-                    throw error;
-                }
-
-                if (!orders || orders.length === 0) {
-                    console.log('📭 No se encontraron pedidos');
-                    emptyState.classList.remove('hidden');
-                    return;
-                }
-
-                // Renderizar órdenes
-                console.log('✅ Renderizando', orders.length, 'pedidos');
-                ordersContainer.classList.remove('hidden');
-                ordersContainer.innerHTML = orders.map(order => renderOrder(order)).join('');
-
-            } catch (error) {
-                console.error('❌ Error cargando pedidos:', error);
-                loadingState.classList.add('hidden');
-                errorState.classList.remove('hidden');
-                errorMessage.textContent = error.message || 'No se pudieron cargar los pedidos. Por favor intenta de nuevo.';
             }
-        }
 
-        // Funciones globales para los botones
-        window.viewInvoice = function(orderId) {
-            console.log('📄 Ver factura del pedido:', orderId);
-            alert('Función de factura próximamente!');
-        };
+            // Funciones globales para los botones
+            window.viewInvoice = function (orderId) {
+                console.log('📄 Ver factura del pedido:', orderId);
+                alert('Función de factura próximamente!');
+            };
 
-        window.viewOrder = function(orderId) {
-            console.log('👁️ Ver detalles del pedido:', orderId);
-            window.location.href = `/tienda/order-details.html?id=${orderId}`;
-        };
+            window.viewOrder = function (orderId) {
+                console.log('👁️ Ver detalles del pedido:', orderId);
+                window.location.href = `/tienda/order-details.html?id=${orderId}`;
+            };
 
-        window.buyAgain = function(productId) {
-            console.log('🛒 Comprar de nuevo producto:', productId);
-            alert('Función de comprar de nuevo próximamente!');
-        };
+            window.buyAgain = function (productId) {
+                console.log('🛒 Comprar de nuevo producto:', productId);
+                alert('Función de comprar de nuevo próximamente!');
+            };
 
-        // Cargar órdenes cuando la página cargue
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Página de pedidos cargada');
-            loadUserOrders();
-        });
-    </script>
+            // Cargar órdenes cuando la página cargue
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🚀 Página de pedidos cargada');
+                loadUserOrders();
+            });
+        </script>
 </body>
 
 </html>

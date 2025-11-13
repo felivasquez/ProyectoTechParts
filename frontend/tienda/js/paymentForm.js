@@ -297,7 +297,7 @@ async function handleSuccessfulPayment(paymentIntent) {
         localStorage.removeItem('techparts_cart');
 
         // Redirección a página de confirmación
-        // window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
+        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
