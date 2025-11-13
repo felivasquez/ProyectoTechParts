@@ -24,21 +24,42 @@
     <!-- Estado cargando -->
     <div id="loading" class="animate-pulse">
       <div class="w-12 h-12 mx-auto mb-4 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      <p>Verificando tu pago...</p>
+      <p class="text-gray-300">Verificando tu pago...</p>
     </div>
 
     <!-- Éxito -->
     <div id="success" class="hidden">
-      <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-green-600 rounded-full">
+      <div class="w-20 h-20 mx-auto mb-6 flex items-center justify-center bg-green-600 rounded-full text-4xl shadow-lg">
         ✅
       </div>
-      <h1 class="text-2xl font-semibold mb-2">¡Gracias por tu compra!</h1>
-      <p class="text-gray-300">Tu pago se procesó correctamente.</p>
-      <p id="order-id" class="text-sm text-gray-500 mt-2"></p>
-      <a href="/tienda#productos-container"
-        class="inline-block mt-6 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium">
-        Volver a la tienda
-      </a>
+      <h1 class="text-3xl font-bold mb-3 text-green-400">¡Gracias por tu compra!</h1>
+      <p class="text-gray-300 mb-4">Tu pago se procesó correctamente.</p>
+      
+      <div class="bg-[#334155] rounded-lg p-4 mb-6 text-left">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-gray-400 text-sm">Número de orden:</span>
+          <span id="order-number" class="font-mono font-semibold text-blue-400"></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400 text-sm">ID de transacción:</span>
+          <span id="payment-id" class="font-mono text-xs text-gray-300"></span>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-400 mb-6">
+        Recibirás un correo de confirmación con los detalles de tu compra.
+      </p>
+
+      <div class="space-y-3">
+        <a href="/tienda#productos-container"
+          class="block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white font-medium transition-colors">
+          Volver a la tienda
+        </a>
+        <a href="/tienda/mis-pedidos.html"
+          class="block bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg text-white font-medium transition-colors">
+          Ver mis pedidos
+        </a>
+      </div>
     </div>
 
     <!-- Procesando -->
@@ -46,7 +67,8 @@
       <div class="w-16 h-16 mx-auto mb-4 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin">
       </div>
       <h1 class="text-xl font-semibold mb-2 text-yellow-400">Tu pago está en proceso</h1>
-      <p class="text-gray-300">Te notificaremos una vez se confirme.</p>
+      <p class="text-gray-300 mb-4">Esto puede tardar unos minutos. Te notificaremos una vez se confirme.</p>
+      <p class="text-sm text-gray-500">Puedes cerrar esta ventana de forma segura.</p>
     </div>
 
     <!-- Error -->
@@ -54,11 +76,19 @@
       <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-red-600 rounded-full text-2xl">
         ❌
       </div>
-      <h1 class="text-2xl font-semibold mb-2">Hubo un problema con tu pago</h1>
-      <p id="error-message" class="text-gray-300"></p>
-      <a href="/" class="inline-block mt-6 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg text-white font-medium">
-        Volver al inicio
-      </a>
+      <h1 class="text-2xl font-semibold mb-2 text-red-400">Hubo un problema con tu pago</h1>
+      <p id="error-message" class="text-gray-300 mb-6"></p>
+      
+      <div class="space-y-3">
+        <a href="/tienda/checkout.html" 
+          class="block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-white font-medium transition-colors">
+          Intentar nuevamente
+        </a>
+        <a href="/tienda#productos-container" 
+          class="block bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg text-white font-medium transition-colors">
+          Volver a la tienda
+        </a>
+      </div>
     </div>
   </div>
 
@@ -70,14 +100,20 @@
     const errorEl = document.getElementById('error');
     const processingEl = document.getElementById('processing');
     const errorMessageEl = document.getElementById('error-message');
-    const orderIdEl = document.getElementById('order-id');
+    const orderNumberEl = document.getElementById('order-number');
+    const paymentIdEl = document.getElementById('payment-id');
 
     async function checkPayment() {
       const urlParams = new URLSearchParams(window.location.search);
       const clientSecret = urlParams.get('payment_intent_client_secret');
+      const orderNumber = urlParams.get('order_number');
+
+      console.log('🔍 Verificando pago...');
+      console.log('Client Secret:', clientSecret ? 'Presente' : 'Ausente');
+      console.log('Order Number:', orderNumber || 'No proporcionado');
 
       if (!clientSecret) {
-        showError('No se encontró información del pago. Por favor, contactá a soporte.');
+        showError('No se encontró información del pago. Si realizaste un pago, contacta a soporte.');
         return;
       }
 
@@ -87,27 +123,45 @@
         loadingEl.classList.add('hidden');
 
         if (error) {
+          console.error('❌ Error de Stripe:', error);
           showError(error.message);
           return;
         }
 
+        console.log('✅ Payment Intent Status:', paymentIntent.status);
+
         switch (paymentIntent.status) {
           case 'succeeded':
             successEl.classList.remove('hidden');
-            orderIdEl.textContent = `ID de transacción: ${paymentIntent.id}`;
+            if (orderNumber) {
+              orderNumberEl.textContent = orderNumber;
+            } else {
+              orderNumberEl.textContent = 'Procesando...';
+            }
+            paymentIdEl.textContent = paymentIntent.id;
+            console.log('🎉 Pago exitoso');
             break;
+
           case 'processing':
             processingEl.classList.remove('hidden');
+            console.log('⏳ Pago en proceso');
             break;
+
           case 'requires_payment_method':
-            showError('El pago no se pudo completar. Por favor, intentá nuevamente.');
+            showError('El pago no se pudo completar. Por favor, intenta con otro método de pago.');
             break;
+
+          case 'requires_action':
+            showError('Se requiere una acción adicional para completar el pago. Por favor, verifica tu email o banco.');
+            break;
+
           default:
-            showError('Ocurrió un estado inesperado en el pago.');
+            showError(`Estado del pago: ${paymentIntent.status}. Por favor, contacta a soporte si el cargo fue realizado.`);
+            console.warn('⚠️ Estado inesperado:', paymentIntent.status);
         }
       } catch (err) {
-        showError('Error al verificar el pago. Intenta nuevamente.');
-        console.error(err);
+        console.error('❌ Error verificando pago:', err);
+        showError('Error al verificar el pago. Por favor, verifica tu email de confirmación o contacta a soporte.');
       }
     }
 
@@ -117,6 +171,7 @@
       errorMessageEl.textContent = message;
     }
 
+    // Iniciar verificación
     checkPayment();
   </script>
 

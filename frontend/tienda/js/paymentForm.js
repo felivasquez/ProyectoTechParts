@@ -288,7 +288,7 @@ async function handleSuccessfulPayment(paymentIntent) {
         localStorage.removeItem('techparts_cart');
 
         // Redirección a página de confirmación
-        const redirectUrl = `${window.location.origin}/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
+        const redirectUrl = `${window.location.origin}/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}&order_number=${result.order.order_number}`;
         console.log('🔄 Redirigiendo a:', redirectUrl);
         
         window.location.href = redirectUrl;
