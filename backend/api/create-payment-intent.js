@@ -12,11 +12,11 @@ export default async function handler(req, res) {
   ];
 
   const origin = req.headers.origin;
-  
+
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  
+
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -36,8 +36,8 @@ export default async function handler(req, res) {
 
     // Validar amount
     if (!amount || amount < 50) {
-      return res.status(400).json({ 
-        error: "Amount must be at least $0.50 USD" 
+      return res.status(400).json({
+        error: "Amount must be at least $0.50 USD"
       });
     }
 
@@ -45,21 +45,24 @@ export default async function handler(req, res) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount),
       currency: "usd",
-      automatic_payment_methods: { 
-        enabled: true 
-      },
-      // Si quieres guardar la tarjeta para uso futuro
-      setup_future_usage: save_card ? 'off_session' : null
+      automatic_payment_methods: {
+        enabled: true
+      }
     });
 
-    return res.status(200).json({ 
-      clientSecret: paymentIntent.client_secret 
+    if (save_card === true) {
+      paymentIntentParams.setup_future_usage = 'off_session';
+    }
+
+
+    return res.status(200).json({
+      clientSecret: paymentIntent.client_secret
     });
 
   } catch (error) {
     console.error("Stripe error:", error);
-    return res.status(500).json({ 
-      error: error.message || "Payment Intent creation failed" 
+    return res.status(500).json({
+      error: error.message || "Payment Intent creation failed"
     });
   }
 }
