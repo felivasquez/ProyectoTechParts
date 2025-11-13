@@ -243,51 +243,73 @@ for (const campo of camposTecnicosPorCategoria[category] || []) {
 async function fetchProducts(search = '', category = '', brand = '') {
     let query = supabase.from('products').select('*');
 
-  const { data: products, error: productError } = await query;
-  if (productError) {
-    console.error('Error al traer productos:', productError);
-    return;
-  }
-
-  let orQuery = [];
-  if (search) {
-    const isNumber = !isNaN(search);
-    orQuery.push(`name.ilike.%${search}%`);
-    orQuery.push(`brand.ilike.%${search}%`);
-    orQuery.push(`model.ilike.%${search}%`);
-    if (isNumber) {
-      orQuery.push(`stock.eq.${search}`);
-      orQuery.push(`price.eq.${search}`);
+    // Traer todos los productos primero
+    const { data: products, error: productError } = await query;
+    if (productError) {
+        console.error('Error al traer productos:', productError);
+        return;
     }
-  }
 
-  if (category) query = query.eq('category', category);
-  if (brand) query = query.eq('brand', brand);
-  if (orQuery.length) query = query.or(orQuery.join(','));
+    // Filtrar en el cliente
+    let filtered = products;
 
-  const productIds = products.map(p => p.id);
-  let { data: specs, error: specsError } = await supabase
-    .from('component_specs')
-    .select('*')
-    .in('product_id', productIds);
+    // Filtro por búsqueda (nombre, marca, modelo)
+    if (search) {
+        const searchLower = search.toLowerCase();
+        filtered = filtered.filter(p => 
+            (p.name && p.name.toLowerCase().includes(searchLower)) ||
+            (p.brand && p.brand.toLowerCase().includes(searchLower)) ||
+            (p.model && p.model.toLowerCase().includes(searchLower)) ||
+            (p.stock && p.stock.toString().includes(search)) ||
+            (p.price && p.price.toString().includes(search))
+        );
+    }
 
-  if (specsError) {
-    console.error('Error al traer specs:', specsError);
-    specs = [];
-  }
+    // Filtro por categoría
+    if (category) {
+        filtered = filtered.filter(p => p.category === category);
+    }
 
-  const productsWithSpecs = products.map(p => {
-    const productSpecs = specs.filter(s => s.product_id === p.id);
-    const specsText = productSpecs.map(s => `${s.value}`).join('');
-    return { ...p, specsText };
-  });
+    // Filtro por marca
+    if (brand) {
+        filtered = filtered.filter(p => p.brand === brand);
+    }
 
-  const productsContainer = document.getElementById('products-container');
-  productsContainer.innerHTML = '';
-  productsWithSpecs.forEach(product => {
-    const productCard = renderProductCard(product);
-    productsContainer.appendChild(productCard);
-  });
+    // Traer specs para los productos filtrados
+    const productIds = filtered.map(p => p.id);
+    let specs = [];
+    
+    if (productIds.length > 0) {
+        const { data: specsData, error: specsError } = await supabase
+            .from('component_specs')
+            .select('*')
+            .in('product_id', productIds);
+
+        if (!specsError && specsData) {
+            specs = specsData;
+        }
+    }
+
+    // Enriquecer productos con specs
+    const productsWithSpecs = filtered.map(p => {
+        const productSpecs = specs.filter(s => s.product_id === p.id);
+        const specsText = productSpecs.map(s => `${s.value}`).join(' ');
+        return { ...p, specsText };
+    });
+
+    // Renderizar
+    const productsContainer = document.getElementById('products-container');
+    productsContainer.innerHTML = '';
+    
+    if (productsWithSpecs.length === 0) {
+        productsContainer.innerHTML = '<p class="text-gray-500">No se encontraron productos</p>';
+        return;
+    }
+
+    productsWithSpecs.forEach(product => {
+        const productCard = renderProductCard(product);
+        productsContainer.appendChild(productCard);
+    });
 }
 
 /*render product card */
