@@ -224,12 +224,13 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
             // Registrar movimiento (intentar, pero no fallar si hay error)
             try {
                 const movementData = {
-                    type: "Compra",
+                    type: "Salida", // Cambiado a "Salida" porque el producto sale del inventario
                     quantity: parseInt(item.quantity) || 1,
-                    reason: "Compra online",
+                    reason: "Venta online", // Cambiado a "Venta online" para ser más específico
                     user_id: user.id,
                     product_id: item.id,
-                    order_id: orderId
+                    order_id: orderId,
+                    supplier: null // Agregado explícitamente como null
                 };
 
                 console.log('Intentando crear movimiento:', movementData);
