@@ -1,4 +1,4 @@
-import { supabase } from './supabaseConfig.js';
+import { supabase } from './supabaseConfig.js'; 
 
 const stripe = Stripe('pk_test_51SJ0SkQgvgdQqQVEfityZf2aMvcdyEZaqWfrUl0AW8XCJKuZhRxnidAl31RMNumHjsDRS1dznNk3xnIhhnWdfVS000ZqN8BajB');
 let elements;
@@ -18,12 +18,17 @@ const BACKEND_URL = window.location.hostname === 'localhost' || window.location.
     ? 'http://127.0.0.1:4242'
     : 'https://proyectotechparts-backend.vercel.app';
 
+// =============================
+// FUNCIONES AUXILIARES
+// =============================
+function getCart() {
+    const cart = localStorage.getItem('techparts_cart');
+    return cart ? JSON.parse(cart) : [];
+}
+
 function getCartTotal() {
-    const cart = JSON.parse(localStorage.getItem('techparts_cart')) || [];
-    const total = cart.reduce((acc, item) => {
-        return acc + (item.price * item.quantity);
-    }, 0);
-    return total;
+    const cart = getCart();
+    return cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 }
 
 function renderSavedCard(brand, last4, exp_month, exp_year) {
@@ -50,6 +55,39 @@ function renderSavedCard(brand, last4, exp_month, exp_year) {
     savedCardsContainer.insertAdjacentHTML('beforeend', cardHtml);
 }
 
+function renderCart() {
+    const cart = getCart();
+    const orderSummaryList = document.getElementById('order-summary-list');
+    const cartTotal = document.getElementById('cart-total');
+
+    if (cart.length === 0) {
+        orderSummaryList.innerHTML = '<div class="text-center text-gray-500 py-8">El carrito está vacío.</div>';
+        cartTotal.textContent = '$0';
+        return;
+    }
+
+    let subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    orderSummaryList.innerHTML = `
+        <dl class="flex items-center justify-between gap-4">
+            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
+            <dd class="text-base font-medium text-gray-900 dark:text-white">$${subtotal.toLocaleString()}</dd>
+        </dl>
+        <dl class="flex items-center justify-between gap-4">
+            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Envío</dt>
+            <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+        </dl>
+        <dl class="flex items-center justify-between gap-4">
+            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Impuestos</dt>
+            <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+        </dl>
+    `;
+    cartTotal.textContent = `$${subtotal.toLocaleString()}`;
+}
+
+// =============================
+// CREAR PAYMENT INTENT
+// =============================
 async function createPaymentIntent() {
     payBtn.disabled = true;
     payBtn.textContent = 'Processing...';
@@ -59,17 +97,9 @@ async function createPaymentIntent() {
         const saveCard = saveCardCheckbox.checked;
         const totalAmount = getCartTotal();
 
-        console.log('Creating payment intent...', {
-            amount: totalAmount,
-            save_card: saveCard,
-            url: `${BACKEND_URL}/api/create-payment-intent`
-        });
-
         const response = await fetch(`${BACKEND_URL}/api/create-payment-intent`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 amount: totalAmount,
                 save_card: saveCard,
@@ -82,7 +112,6 @@ async function createPaymentIntent() {
         }
 
         const { clientSecret } = await response.json();
-        console.log('Payment intent created successfully');
 
         if (!elements) {
             elements = stripe.elements({
@@ -91,11 +120,7 @@ async function createPaymentIntent() {
             });
 
             const paymentElement = elements.create("payment", {
-                fields: {
-                    billingDetails: {
-                        address: 'auto'
-                    }
-                }
+                fields: { billingDetails: { address: 'auto' } }
             });
             paymentElement.mount("#payment-element");
         } else {
@@ -113,38 +138,86 @@ async function createPaymentIntent() {
     }
 }
 
-// 🆕 FUNCIÓN PARA OBTENER DATOS DE DIRECCIÓN DEL FORMULARIO
-// function getShippingAddressFromForm() {
-//     // Intenta obtener los datos del formulario de checkout
-//     // Ajusta los IDs según tu HTML real
-//     return {
-//         fullName: document.getElementById('shipping-name')?.value || 
-//                   document.getElementById('name')?.value || 
-//                   cardholderNameInput.value ||
-//                   'Customer Name',
-//         address: document.getElementById('shipping-address')?.value || 
-//                  document.getElementById('address')?.value || 
-//                  'N/A',
-//         city: document.getElementById('shipping-city')?.value || 
-//               document.getElementById('city')?.value || 
-//               'Buenos Aires',
-//         state: document.getElementById('shipping-state')?.value || 
-//                document.getElementById('state')?.value || 
-//                'Buenos Aires',
-//         zipCode: document.getElementById('shipping-zip')?.value || 
-//                  document.getElementById('postal-code')?.value || 
-//                  DEFAULT_POSTAL_CODE,
-//         country: document.getElementById('shipping-country')?.value || 
-//                  document.getElementById('country')?.value || 
-//                  'Argentina',
-//         phone: document.getElementById('shipping-phone')?.value || 
-//                document.getElementById('phone')?.value || 
-//                'N/A',
-//         email: document.getElementById('email')?.value || 'customer@example.com'
-//     };
-// }
+// =============================
+// CREAR ORDEN EN SUPABASE
+// =============================
+async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, paymentIntent }) {
+    try {
+        // Obtener usuario autenticado
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user) {
+            console.error('Usuario no autenticado:', userError);
+            return { success: false, error: 'No user logged in' };
+        }
 
-// 🆕 FUNCIÓN PARA MANEJAR EL ÉXITO DEL PAGO Y CREAR ORDEN
+        // Crear registro en "orders"
+        const { data: orderData, error: orderError } = await supabase
+            .from('orders')
+            .insert([
+                {
+                    user_id: user.id,
+                    order_number: `TP-${Date.now()}`,
+                    order_date: new Date().toISOString(),
+                    total_amount: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+                    status: 'paid',
+                    payment_method: 'card',
+                    payment_status: 'succeeded',
+                    payment_intent_id: paymentIntent.id,
+                    shipping_address: `${shippingAddress.address}, ${shippingAddress.city}`,
+                    billing_address: `${billingAddress.address}, ${billingAddress.city}`,
+                    estimated_delivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // +5 días
+                }
+            ])
+            .select()
+            .single();
+
+        if (orderError) throw orderError;
+        const orderId = orderData.id;
+
+        // Crear registros en "order_items"
+        const orderItems = cartItems.map(item => ({
+            order_id: orderId,
+            product_id: item.id,
+            product_name: item.name,
+            unit_price: item.price,
+            quantity: item.quantity,
+            total_price: item.price * item.quantity,
+        }));
+
+        const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+        if (itemsError) throw itemsError;
+
+        // Actualizar stock y registrar movimientos
+        for (const item of cartItems) {
+            // Actualizar stock
+            await supabase
+                .from('products')
+                .update({ stock: item.stock - item.quantity })
+                .eq('id', item.id);
+
+            // Registrar movimiento
+            await supabase.from('movements').insert([
+                {
+                    user_id: user.id,
+                    product_id: item.id,
+                    type: 'purchase',
+                    amount: item.price * item.quantity,
+                    created_at: new Date().toISOString()
+                }
+            ]);
+        }
+
+        return { success: true, order: orderData };
+
+    } catch (error) {
+        console.error('Error guardando orden en Supabase:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// =============================
+// MANEJAR ÉXITO DEL PAGO
+// =============================
 async function handleSuccessfulPayment(paymentIntent) {
     try {
         console.log('💰 Pago exitoso, creando orden en Supabase...');
@@ -152,12 +225,13 @@ async function handleSuccessfulPayment(paymentIntent) {
         const cart = getCart();
         if (!cart || cart.length === 0) throw new Error('El carrito está vacío');
 
-        const shippingAddress = getShippingAddressFromForm();
+        const shippingAddress = {
+            address: 'Av. Siempre Viva 123',
+            city: 'Buenos Aires',
+            zipCode: DEFAULT_POSTAL_CODE,
+            country: 'Argentina'
+        };
 
-        console.log('📦 Datos de envío:', shippingAddress);
-        console.log('🛒 Items del carrito:', cart);
-
-        // Guardar directamente en Supabase (frontend)
         const result = await saveOrderDirectly({
             cartItems: cart,
             shippingAddress,
@@ -166,22 +240,23 @@ async function handleSuccessfulPayment(paymentIntent) {
         });
 
         if (!result.success) throw new Error(result.error || 'Error creando la orden');
-
         console.log('✅ Orden creada:', result.order);
 
         localStorage.removeItem('techparts_cart');
 
-        // window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent_client_secret=${paymentIntent.client_secret}`;
+        // Redirección a página de confirmación
+        window.location.href = `/tienda/congrats.html?order_number=${result.order.order_number}&payment_intent=${paymentIntent.id}`;
 
     } catch (error) {
         console.error('❌ Error en handleSuccessfulPayment:', error);
-        // Mostrar error en UI
         document.getElementById('error-message').textContent = 'Error creando orden: ' + (error.message || error);
         throw error;
     }
 }
 
-// 🔄 FORMULARIO DE PAGO ACTUALIZADO
+// =============================
+// CONFIRMAR PAGO
+// =============================
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     payBtn.disabled = true;
@@ -191,7 +266,6 @@ form.addEventListener('submit', async (e) => {
     const cardHolderName = cardholderNameInput.value;
 
     try {
-        // Determinar la URL de retorno según el entorno
         const returnUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://tiendatechparts.vercel.app/tienda/congrats.html'
             : `${window.location.origin}/tienda/congrats.html`;
@@ -228,20 +302,7 @@ form.addEventListener('submit', async (e) => {
                 renderSavedCard(card.brand, card.last4, card.exp_month, card.exp_year);
             }
 
-            // 🆕 CREAR ORDEN EN SUPABASE ANTES DE LIMPIAR CARRITO
-            try {
-                await handleSuccessfulPayment(paymentIntent);
-                // La redirección ocurre dentro de handleSuccessfulPayment
-            } catch (orderError) {
-                console.error('Error al crear orden:', orderError);
-                
-                // Aún así limpiar carrito y redirigir, pero mostrar advertencia
-                localStorage.removeItem('techparts_cart');
-                
-                // Redirigir con parámetro de error
-                window.location.href = `/tienda/congrats.html?payment_intent_client_secret=${paymentIntent.client_secret}&order_error=true`;
-            }
-            
+            await handleSuccessfulPayment(paymentIntent);
         } else {
             errorMessage.textContent = `Payment status: ${paymentIntent?.status || 'unknown'}. Please try again.`;
             payBtn.disabled = false;
@@ -257,40 +318,6 @@ form.addEventListener('submit', async (e) => {
 
 saveCardCheckbox.addEventListener('change', createPaymentIntent);
 
-function getCart() {
-    const cart = localStorage.getItem('techparts_cart');
-    return cart ? JSON.parse(cart) : [];
-}
-
-function renderCart() {
-    const cart = getCart();
-    const orderSummaryList = document.getElementById('order-summary-list');
-    const cartTotal = document.getElementById('cart-total');
-
-    if (cart.length === 0) {
-        orderSummaryList.innerHTML = '<div class="text-center text-gray-500 py-8">El carrito está vacío.</div>';
-        cartTotal.textContent = '$0';
-        return;
-    }
-
-    let subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    orderSummaryList.innerHTML = `
-        <dl class="flex items-center justify-between gap-4">
-            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
-            <dd class="text-base font-medium text-gray-900 dark:text-white">$${subtotal.toLocaleString()}</dd>
-        </dl>
-        <dl class="flex items-center justify-between gap-4">
-            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Envío</dt>
-            <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
-        </dl>
-        <dl class="flex items-center justify-between gap-4">
-            <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Impuestos</dt>
-            <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
-        </dl>
-    `;
-    cartTotal.textContent = `$${subtotal.toLocaleString()}`;
-}
-
+// Inicializar
 renderCart();
 createPaymentIntent();
