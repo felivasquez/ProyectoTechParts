@@ -10,7 +10,6 @@
 
 <body class="bg-gray-900 text-white min-h-screen">
     <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-        <!-- Back Button -->
         <button onclick="window.location.href='/tienda/orders.html'" 
                 class="flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-6 sm:mb-8 transition-colors group">
             <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,13 +18,11 @@
             <span class="font-medium">Volver a Mis Pedidos</span>
         </button>
 
-        <!-- Loading State -->
         <div id="loading-state" class="bg-gray-800 rounded-xl shadow-lg p-8 sm:p-12 text-center border border-gray-700">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600"></div>
             <p class="text-gray-400 mt-4 text-sm sm:text-base">Cargando detalles del pedido...</p>
         </div>
 
-        <!-- Error State -->
         <div id="error-state" class="hidden bg-gray-800 rounded-xl shadow-lg p-8 sm:p-12 text-center border border-gray-700">
             <div class="bg-red-900/30 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-10 h-10 sm:w-12 sm:h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,11 +37,8 @@
             </button>
         </div>
 
-        <!-- Order Details Container -->
         <div id="order-details" class="hidden space-y-4 sm:space-y-6">
-            <!-- Order Summary Card -->
             <div class="bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-700">
-                <!-- Header -->
                 <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6 pb-6 border-b border-gray-700">
                     <div class="flex-1">
                         <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
@@ -58,7 +52,6 @@
                     </div>
                 </div>
 
-                <!-- Order Info Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 border-b border-gray-700 pb-6 mb-6">
                     <div class="bg-gray-750 p-4 rounded-lg border border-gray-700">
                         <p class="text-xs sm:text-sm text-gray-400 mb-2">Monto Total</p>
@@ -74,7 +67,6 @@
                     </div>
                 </div>
 
-                <!-- Shipping Address -->
                 <div class="mb-6">
                     <h3 class="text-base sm:text-lg font-bold mb-3 text-purple-400 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +78,6 @@
                     <div id="shipping-address" class="text-sm sm:text-base text-gray-300 bg-gray-750 p-4 rounded-lg border border-gray-700"></div>
                 </div>
 
-                <!-- Payment Info -->
                 <div id="payment-info" class="bg-gray-750 rounded-lg p-4 sm:p-6 border border-gray-700">
                     <h3 class="text-base sm:text-lg font-bold mb-4 text-purple-400 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,12 +98,10 @@
                 </div>
             </div>
 
-            <!-- Order Items Card -->
             <div class="bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-700">
                 <h2 class="text-lg sm:text-xl lg:text-2xl font-bold mb-4 sm:mb-6 text-purple-400">Productos del Pedido</h2>
                 <div id="order-items-list" class="space-y-4"></div>
 
-                <!-- Order Total Summary -->
                 <div class="border-t border-gray-700 mt-6 pt-6">
                     <div class="flex justify-end">
                         <div class="w-full sm:w-80 space-y-3">
@@ -137,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button onclick="window.print()" 
                         class="flex-1 px-6 py-3 sm:py-3.5 border-2 border-purple-500 text-purple-400 rounded-lg hover:bg-purple-500 hover:text-white font-semibold transition-all flex items-center justify-center gap-2">
@@ -211,13 +199,20 @@
             });
         }
 
+        // MODIFICACIÓN 1: Ahora se espera que el ítem contenga la URL de la imagen (item.products.image_url)
         function renderOrderItem(item) {
+            // Se asume que la URL de la imagen se obtiene a través de la unión (join) en la consulta
+            // y que está anidada en la columna 'products'
+            const imageUrl = item.products?.image_url || null;
+            
+            const imageHtml = imageUrl 
+                ? `<img src="${imageUrl}" alt="${item.product_name}" class="object-cover w-full h-full">` 
+                : `<svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`;
+
             return `
                 <div class="flex flex-col sm:flex-row gap-4 p-4 bg-gray-750 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors">
-                    <div class="w-full sm:w-24 h-24 bg-gradient-to-br from-purple-900/50 to-indigo-900/50 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                        <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                        </svg>
+                    <div class="w-full sm:w-24 h-24 bg-gray-900 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                        ${imageHtml}
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-3">
@@ -248,12 +243,17 @@
 
                 console.log('📦 Buscando orden:', orderId);
 
-                // Obtener detalles de la orden
+                // MODIFICACIÓN 2: Se agrega la unión a la tabla 'products' para obtener la image_url
+                // Esto asume que la tabla 'order_items' tiene una clave foránea 'product_id' 
+                // que enlaza a la tabla 'products'.
                 const { data: order, error } = await supabase
                     .from('orders')
                     .select(`
                         *,
-                        order_items (*)
+                        order_items (
+                            *,
+                            products (image_url)
+                        )
                     `)
                     .eq('id', orderId)
                     .single();

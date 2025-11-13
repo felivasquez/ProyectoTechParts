@@ -222,41 +222,40 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
             }
 
             // Registrar movimiento (intentar, pero no fallar si hay error)
-            try {
-                const movementData = {
-                    type: "Salida", // Cambiado a "Salida" porque el producto sale del inventario
-                    quantity: parseInt(item.quantity) || 1,
-                    reason: "Venta online", // Cambiado a "Venta online" para ser más específico
-                    user_id: user.id,
-                    product_id: item.id,
-                    order_id: orderId,
-                    supplier: null // Agregado explícitamente como null
-                };
+            // try {
+            //     const movementData = {
+            //         type: "Salida", // Cambiado a "Salida" porque el producto sale del inventario
+            //         quantity: parseInt(item.quantity) || 1,
+            //         reason: "Venta online", // Cambiado a "Venta online" para ser más específico
+            //         user_id: user.id,
+            //         product_id: item.id,
+            //         order_id: orderId,
+            //         supplier: null // Agregado explícitamente como null
+            //     };
 
-                console.log('Intentando crear movimiento:', movementData);
+            //     console.log('Intentando crear movimiento:', movementData);
 
-                const { data: movementResult, error: movementError } = await supabase
-                    .from('movements')
-                    .insert(movementData)
-                    .select();
+            //     const { data: movementResult, error: movementError } = await supabase
+            //         .from('movements')
+            //         .insert(movementData)
+            //         .select();
 
-                if (movementError) {
-                    console.error(`Error registrando movimiento para producto ${item.id}:`, {
-                        error: movementError,
-                        message: movementError.message,
-                        details: movementError.details,
-                        hint: movementError.hint,
-                        code: movementError.code,
-                        data: movementData
-                    });
-                    // No lanzar error, solo registrar - el pedido ya se creó exitosamente
-                } else {
-                    console.log('✅ Movimiento creado exitosamente:', movementResult);
-                }
-            } catch (movError) {
-                console.error(`Error inesperado registrando movimiento:`, movError);
-                // Continuar sin fallar el pedido completo
-            }
+            //     if (movementError) {
+            //         console.error(`Error registrando movimiento para producto ${item.id}:`, {
+            //             error: movementError,
+            //             message: movementError.message,
+            //             details: movementError.details,
+            //             hint: movementError.hint,
+            //             code: movementError.code,
+            //             data: movementData
+            //         });
+            //         // No lanzar error, solo registrar - el pedido ya se creó exitosamente
+            //     } else {
+            //         console.log('✅ Movimiento creado exitosamente:', movementResult);
+            //     }
+            // } catch (movError) {
+            //     console.error(`Error inesperado registrando movimiento:`, movError);
+            // }
         }
 
         return { success: true, order: orderData };

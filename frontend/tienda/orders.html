@@ -22,7 +22,6 @@
                     </div>
                     <span class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
                 </div>
-                <!-- BARRA DE BÚSQUEDA - Desktop -->
                 <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
                     <div class="relative w-full">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
@@ -48,18 +47,14 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
         <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-12 bg-gray-900">
             <div class="max-w-7xl mx-auto">
-                <!-- Page Header -->
                 <div class="mb-6 sm:mb-8">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Mis Pedidos</h1>
                     <p class="text-sm sm:text-base text-white/80">Revisa el estado de tus pedidos y compras anteriores</p>
                 </div>
 
-                <!-- Main Container -->
                 <div class="bg-gray-800 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 text-gray-200">
-                    <!-- Filter Bar -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-gray-700">
                         <div class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,13 +74,11 @@
                         </button>
                     </div>
 
-                    <!-- Loading State -->
                     <div id="loading-state" class="text-center py-12 sm:py-16">
                         <div class="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-purple-200 border-t-purple-600"></div>
                         <p class="text-gray-400 mt-4 text-sm sm:text-lg">Cargando tus pedidos...</p>
                     </div>
 
-                    <!-- Empty State -->
                     <div id="empty-state" class="hidden text-center py-12 sm:py-16">
                         <div class="bg-purple-900/30 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                             <svg class="w-10 h-10 sm:w-12 sm:h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +92,6 @@
                         </a>
                     </div>
 
-                    <!-- Error State -->
                     <div id="error-state" class="hidden text-center py-12 sm:py-16">
                         <div class="bg-red-900/30 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                             <svg class="w-10 h-10 sm:w-12 sm:h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,13 +105,11 @@
                         </button>
                     </div>
 
-                    <!-- Orders Container -->
                     <div id="orders-container" class="hidden space-y-4 sm:space-y-6"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="bg-gray-900 border-t border-gray-700 mt-12 sm:mt-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -167,7 +157,6 @@
             </div>
         </footer>
 
-        <!-- Script tipo módulo -->
         <script type="module">
             import { supabase } from './js/supabaseConfig.js';
 
@@ -217,10 +206,8 @@
 
                 return `
                 <div class="border border-gray-700 rounded-lg sm:rounded-xl bg-gray-750 hover:bg-gray-700 hover:border-purple-500 transition-all duration-300">
-                    <!-- Order Header -->
                     <div class="p-4 sm:p-6">
                         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 mb-4">
-                            <!-- Info Grid - Responsive -->
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 flex-1">
                                 <div>
                                     <span class="text-xs sm:text-sm text-gray-400 block mb-1">Número</span>
@@ -242,7 +229,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Buttons -->
                             <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
                                 <button onclick="viewInvoice('${order.id}')" class="px-4 py-2 border border-purple-500 text-purple-400 rounded-lg text-xs sm:text-sm font-semibold hover:bg-purple-500 hover:text-white transition-all">
                                     Ver Factura
@@ -254,7 +240,6 @@
                         </div>
 
                         ${hasDeliveryInfo ? `
-                        <!-- Delivery Info -->
                         <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm mb-4 bg-blue-900/30 p-3 rounded-lg border border-blue-700">
                             <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
@@ -268,7 +253,6 @@
                         ` : ''}
 
                         ${order.shipping_address ? `
-                        <!-- Shipping Address -->
                         <div class="text-xs sm:text-sm mb-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
                             <div class="flex items-start gap-2">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,14 +267,16 @@
                         </div>
                         ` : ''}
 
-                        <!-- Order Items -->
                         <div class="space-y-3 sm:space-y-4">
                             ${orderItems.length > 0 ? orderItems.map((item) => `
                                 <div class="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-purple-500 transition-all">
-                                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-900/50 to-indigo-900/50 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                                        </svg>
+                                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-900 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 p-1">
+                                        <img 
+                                            src="${item.image_url || 'placeholder-image.jpg'}" 
+                                            alt="${item.product_name || 'Producto'}" 
+                                            class="w-full h-full object-contain rounded-md"
+                                            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'rgba(192, 132, 252, 1)\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'lucide lucide-package\'><path d=\'m7.5 4.27 9 5.15\'/><path d=\'m21 12-9 5.15L3 12\'/><path d=\'M3 5v14l9 5 9-5V5l-9-5z\'/></svg>'"
+                                        >
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <div class="flex justify-between items-start gap-2 mb-2">
@@ -328,16 +314,33 @@
 
                     console.log('👤 Usuario actual:', user?.id);
 
+                    // MODIFICACIÓN CRUCIAL: Añadir `products(image_url)` al select para obtener la URL
                     let query = supabase
                         .from('orders')
-                        .select(`*, order_items (*)`)
+                        .select(`
+                            *, 
+                            order_items (
+                                *,
+                                products (image_url)
+                            )
+                        `)
                         .order('order_date', { ascending: false });
 
                     if (user) {
                         query = query.eq('user_id', user.id);
                     }
 
-                    const { data: orders, error } = await query;
+                    const { data: ordersData, error } = await query;
+
+                    // Aplanar los datos para incluir image_url directamente en order_item
+                    const orders = ordersData.map(order => ({
+                        ...order,
+                        order_items: order.order_items.map(item => ({
+                            ...item,
+                            image_url: item.products ? item.products.image_url : null
+                        }))
+                    }));
+
 
                     console.log('📦 Pedidos obtenidos:', orders);
 
