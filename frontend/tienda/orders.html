@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Pedidos - TechParts</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
 
 <body class="bg-gray-900 text-white">
@@ -14,330 +13,155 @@
         <nav class="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur">
             <div class="max-w-7xl mx-auto px-4 flex h-16 items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div
-                        class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-monitor h-5 w-5 text-gray-900">
+                    <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor h-5 w-5 text-gray-900">
                             <rect width="20" height="14" x="2" y="3" rx="2"></rect>
                             <line x1="8" x2="16" y1="21" y2="21"></line>
                             <line x1="12" x2="12" y1="17" y2="21"></line>
                         </svg>
                     </div>
-                    <span
-                        class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">TechParts</span>
                 </div>
                 <!-- BARRA DE BÚSQUEDA - Desktop -->
                 <div class="BusquedaComponentes hidden md:flex flex-1 max-w-sm mx-6">
                     <div class="relative w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.3-4.3"></path>
                         </svg>
-                        <input id="buscador-productos" type="text"
-                            class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent"
-                            placeholder="Buscar productos...">
+                        <input id="buscador-productos" type="text" class="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent" placeholder="Buscar productos...">
                     </div>
                 </div>
                 <div class="flex items-center lg:space-x-2">
-                    <button id="myCartDropdownButton1" type="button"
-                        class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-800 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-100 dark:text-white">
-                        <span class="sr-only">
-                            Cart
-                        </span>
-                        <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                    <button id="myCartDropdownButton1" type="button" class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-800 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-100 dark:text-white">
+                        <span class="sr-only">Cart</span>
+                        <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                         </svg>
-                        <!-- Badge: actualiza con data-cart-count -->
-                        <span data-cart-count
-                            class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
-                        <span class="hidden sm:flex">Mi carrito </span>
-                        <svg class="hidden sm:flex w-4 h-4 text-gray-100 dark:text-white ms-1" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m19 9-7 7-7-7" />
+                        <span data-cart-count class="hidden sm:inline-flex items-center justify-center ml-2 rounded-full bg-red-600 text-white text-xs w-5 h-5">0</span>
+                        <span class="hidden sm:flex">Mi carrito</span>
+                        <svg class="hidden sm:flex w-4 h-4 text-gray-100 dark:text-white ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="hidden" id="contUserSec">
-                        <button id="userDropdownButton1" type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-800 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-100 dark:text-white">
-                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Account
-                            <svg class="w-4 h-4 text-gray-100 dark:text-white ms-1" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m19 9-7 7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div id="btnUser">
-                        <button type="button"
-                            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-700 dark:hover:bg-gray-800 text-sm font-medium leading-none text-gray-100 dark:text-white">
-                            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Iniciar Sesión
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="w-full max-w-screen flex justify-end">
-                <div id="myCartDropdown1"
-                    class="hidden z-10 fixed mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-gray-800 p-4 antialiased shadow-lg dark:bg-gray-800">
-                    <div class="grid grid-cols-2">
-                        <div>
-                            <a href="#"
-                                class="truncate text-sm font-semibold leading-none text-gray-100 dark:text-white hover:underline">Apple
-                                iPhone 15</a>
-                            <p class="mt-0.5 truncate text-sm font-normal text-gray-100 dark:text-gray-400">$599</p>
-                        </div>
-
-                        <div class="flex items-center justify-end gap-6">
-                            <p class="text-sm font-normal leading-none text-gray-100 dark:text-gray-400">x</p>
-
-                            <button data-tooltip-target="tooltipRemoveItem1a" type="button"
-                                class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
-                                <span class="sr-only"> Remove </span>
-                                <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                            <div id="tooltipRemoveItem1a" role="tooltip"
-                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                                Remove item
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/tienda/checkout.html"
-                        class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        role="button">
-                        Proceed to Checkout
-                    </a>
-                </div>
-                <div id="userDropdown1"
-                    class="hidden fixed z-10 w-56 divide-y divide-gray-600 overflow-hidden overflow-y-auto rounded-lg  shadow dark:divide-gray-800 dark:bg-gray-800">
-                    <ul class="p-2 text-start text-sm font-medium bg-gray-800 text-gray-100 dark:text-white">
-                        <li><a href="config.html" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
-                                My Account </a></li>
-                        <li><a href="config.html" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
-                                My Orders </a></li>
-                        <li><a href="config.html" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
-                                Settings </a></li>
-                        <li><a href="/frontend/dashboard/dashboard.html" title=""
-                                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
-                                Dashboard </a></li>
-                    </ul>
-
-                    <div class="p-2 text-sm font-medium bg-gray-800 text-gray-100 dark:text-white">
-                        <button id="logout-button"
-                            class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-700 dark:hover:bg-gray-600">
-                            Sign Out
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- BARRA DE BÚSQUEDA MÓVIL (expandible) -->
-            <div id="mobile-search-bar" class="hidden md:hidden max-w-7xl mx-auto px-4 pb-2">
-                <div class="relative w-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-search absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                    </svg>
-                    <input id="buscador-productos-mobile" type="text"
-                        class="flex h-10 w-full rounded-md border bg-gray-800 pl-10 pr-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                        placeholder="Buscá por productos, marcas y categorías">
                 </div>
             </div>
         </nav>
+
         <!-- Main Content -->
-        <div class="container mx-auto px-6 py-12 bg-gray-900">
-            <div class="max-w-6xl mx-auto">
+        <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-12 bg-gray-900">
+            <div class="max-w-7xl mx-auto">
                 <!-- Page Header -->
-                <div class="mb-8">
-                    <h1 class="text-4xl font-bold text-white mb-2">Mis Pedidos</h1>
-                    <p class="text-white/80">Revisa el estado de tus pedidos y compras anteriores</p>
+                <div class="mb-6 sm:mb-8">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">Mis Pedidos</h1>
+                    <p class="text-sm sm:text-base text-white/80">Revisa el estado de tus pedidos y compras anteriores</p>
                 </div>
 
                 <!-- Main Container -->
-                <div class="bg-gray-800 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-gray-200">
+                <div class="bg-gray-800 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 text-gray-200">
                     <!-- Filter Bar -->
-                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-gray-700">
                         <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
-                            <span class="text-lg font-semibold text-gray-200">Historial de Pedidos</span>
+                            <span class="text-base sm:text-lg font-semibold text-gray-200">Historial de Pedidos</span>
                         </div>
-                        <button
-                            class="flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm text-purple-700 hover:bg-purple-100 transition">
+                        <button class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-xs sm:text-sm text-gray-300 hover:bg-gray-600 transition w-full sm:w-auto justify-center sm:justify-start">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                             </svg>
-                            Últimas 12 semanas
+                            <span class="hidden sm:inline">Últimas 12 semanas</span>
+                            <span class="sm:hidden">Filtrar</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
                     </div>
 
                     <!-- Loading State -->
-                    <div id="loading-state" class="text-center py-16">
-                        <div
-                            class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600">
-                        </div>
-                        <p class="text-gray-600 mt-4 text-lg">Cargando tus pedidos...</p>
+                    <div id="loading-state" class="text-center py-12 sm:py-16">
+                        <div class="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-purple-200 border-t-purple-600"></div>
+                        <p class="text-gray-400 mt-4 text-sm sm:text-lg">Cargando tus pedidos...</p>
                     </div>
 
                     <!-- Empty State -->
-                    <div id="empty-state" class="hidden text-center py-16">
-                        <div class="bg-purple-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-12 h-12 text-purple-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    <div id="empty-state" class="hidden text-center py-12 sm:py-16">
+                        <div class="bg-purple-900/30 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                            <svg class="w-10 h-10 sm:w-12 sm:h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Aún no tienes pedidos</h2>
-                        <p class="text-gray-600 mb-6">Comienza a comprar para ver tus pedidos aquí</p>
-                        <a href="/tienda/index.html"
-                            class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-200 mb-2">Aún no tienes pedidos</h2>
+                        <p class="text-sm sm:text-base text-gray-400 mb-6 px-4">Comienza a comprar para ver tus pedidos aquí</p>
+                        <a href="/tienda/index.html" class="inline-block px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-sm sm:text-base font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
                             Ir a la Tienda
                         </a>
                     </div>
 
                     <!-- Error State -->
-                    <div id="error-state" class="hidden text-center py-16">
-                        <div class="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <div id="error-state" class="hidden text-center py-12 sm:py-16">
+                        <div class="bg-red-900/30 w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                            <svg class="w-10 h-10 sm:w-12 sm:h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Error al cargar pedidos</h2>
-                        <p class="text-gray-600 mb-6" id="error-message">Algo salió mal. Por favor intenta de nuevo.</p>
-                        <button onclick="location.reload()"
-                            class="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-200 mb-2">Error al cargar pedidos</h2>
+                        <p class="text-sm sm:text-base text-gray-400 mb-6 px-4" id="error-message">Algo salió mal. Por favor intenta de nuevo.</p>
+                        <button onclick="location.reload()" class="inline-block px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-sm sm:text-base font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-105 shadow-lg">
                             Reintentar
                         </button>
                     </div>
 
                     <!-- Orders Container -->
-                    <div id="orders-container" class="hidden space-y-6">
-
-                    </div>
+                    <div id="orders-container" class="hidden space-y-4 sm:space-y-6"></div>
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
-        <footer class="bg-gray-900 border-t border-gray-700">
-            <div class="max-w-7xl mx-auto px-4 py-12">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <footer class="bg-gray-900 border-t border-gray-700 mt-12 sm:mt-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     <div class="space-y-4">
                         <div class="flex items-center gap-2">
-                            <div
-                                class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-cyan-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-monitor h-5 w-5 text-gray-900">
+                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-cyan-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-monitor h-5 w-5 text-gray-900">
                                     <rect width="20" height="14" x="2" y="3" rx="2"></rect>
                                     <line x1="8" x2="16" y1="21" y2="21"></line>
                                     <line x1="12" x2="12" y1="17" y2="21"></line>
                                 </svg>
                             </div>
-                            <span
-                                class="text-xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">TechStore</span>
+                            <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">TechParts</span>
                         </div>
-                        <p class="text-gray-400">Tu tienda especializada en componentes de PC y sistemas gaming de alta
-                            gama.</p>
-                        <div class="flex gap-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-facebook h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-instagram h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-twitter h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path
-                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
-                                </path>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-youtube h-5 w-5 text-gray-400 hover:text-sky-400 cursor-pointer transition-colors">
-                                <path
-                                    d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
-                                </path>
-                                <path d="m10 15 5-3-5-3z"></path>
-                            </svg>
-                        </div>
+                        <p class="text-sm text-gray-400">Tu tienda especializada en componentes de PC y sistemas gaming de alta gama.</p>
                     </div>
                     <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Productos</h3>
-                        <ul class="space-y-2 text-gray-400">
+                        <h3 class="font-semibold text-white text-sm sm:text-base">Productos</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Procesadores</a></li>
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Tarjetas Gráficas</a></li>
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Memoria RAM</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Almacenamiento</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">PCs Gaming</a></li>
                         </ul>
                     </div>
                     <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Soporte</h3>
-                        <ul class="space-y-2 text-gray-400">
+                        <h3 class="font-semibold text-white text-sm sm:text-base">Soporte</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Centro de ayuda</a></li>
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Garantías</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Envíos</a></li>
-                            <li><a href="#" class="hover:text-sky-400 transition-colors">Devoluciones</a></li>
                             <li><a href="#" class="hover:text-sky-400 transition-colors">Contacto</a></li>
                         </ul>
                     </div>
                     <div class="space-y-4">
-                        <h3 class="font-semibold text-white">Contacto</h3>
-                        <ul class="space-y-2 text-gray-400">
+                        <h3 class="font-semibold text-white text-sm sm:text-base">Contacto</h3>
+                        <ul class="space-y-2 text-sm text-gray-400">
                             <li>📧 info@TechParts.com</li>
                             <li>📞 +54 11 1234-5678</li>
                             <li>📍 Buenos Aires, Argentina</li>
-                            <li>🕒 Lun - Vie: 9:00 - 18:00</li>
                         </ul>
                     </div>
                 </div>
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
                     <p>© 2024 TechParts. Todos los derechos reservados.</p>
                 </div>
             </div>
@@ -353,7 +177,6 @@
             const ordersContainer = document.getElementById('orders-container');
             const errorMessage = document.getElementById('error-message');
 
-            // Función para obtener el color según el estado
             function getStatusColor(status) {
                 const colors = {
                     'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
@@ -378,144 +201,138 @@
                 return texts[status] || status;
             }
 
-            // Función para formatear fecha
             function formatDate(dateString) {
                 if (!dateString) return 'N/A';
                 const date = new Date(dateString);
                 return date.toLocaleDateString('es-ES', {
                     year: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     day: 'numeric'
                 });
             }
 
-            // Función para renderizar una orden
             function renderOrder(order) {
                 const hasDeliveryInfo = order.estimated_delivery;
                 const orderItems = order.order_items || [];
 
                 return `
-                <div class="border-2 border-purple-100 rounded-xl p-6 bg-gradient-to-br from-white to-purple-50/30 hover:shadow-xl transition-all duration-300">
+                <div class="border border-gray-700 rounded-lg sm:rounded-xl bg-gray-750 hover:bg-gray-700 hover:border-purple-500 transition-all duration-300">
                     <!-- Order Header -->
-                    <div class="flex justify-between items-start mb-6 flex-wrap gap-4">e
-                        <div class="flex flex-wrap gap-6 text-sm">
-                            <div>
-                                <span class="text-gray-500 font-medium">Número de Pedido</span>
-                                <div class="font-bold text-purple-900 mt-1">${order.order_number || 'N/A'}</div>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 font-medium">Fecha</span>
-                                <div class="font-semibold text-gray-800 mt-1">${formatDate(order.order_date)}</div>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 font-medium">Total</span>
-                                <div class="font-bold text-purple-900 text-lg mt-1">$${(order.total_amount || 0).toLocaleString()}</div>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 font-medium">Estado</span>
-                                <div class="mt-1">
-                                    <span class="px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(order.status)} border inline-block">
+                    <div class="p-4 sm:p-6">
+                        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 mb-4">
+                            <!-- Info Grid - Responsive -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 flex-1">
+                                <div>
+                                    <span class="text-xs sm:text-sm text-gray-400 block mb-1">Número</span>
+                                    <div class="font-bold text-purple-400 text-sm sm:text-base break-all">${order.order_number || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs sm:text-sm text-gray-400 block mb-1">Fecha</span>
+                                    <div class="font-semibold text-white text-sm sm:text-base">${formatDate(order.order_date)}</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs sm:text-sm text-gray-400 block mb-1">Total</span>
+                                    <div class="font-bold text-green-400 text-base sm:text-lg">$${(order.total_amount || 0).toLocaleString()}</div>
+                                </div>
+                                <div>
+                                    <span class="text-xs sm:text-sm text-gray-400 block mb-1">Estado</span>
+                                    <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(order.status)} border inline-block">
                                         ${getStatusText(order.status || 'pending')}
                                     </span>
                                 </div>
                             </div>
+                            
+                            <!-- Buttons -->
+                            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                                <button onclick="viewInvoice('${order.id}')" class="px-4 py-2 border border-purple-500 text-purple-400 rounded-lg text-xs sm:text-sm font-semibold hover:bg-purple-500 hover:text-white transition-all">
+                                    Ver Factura
+                                </button>
+                                <button onclick="viewOrder('${order.id}')" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-xs sm:text-sm font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md">
+                                    Ver Detalle
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex gap-3">
-                            <button onclick="viewInvoice('${order.id}')" class="px-5 py-2.5 border-2 border-purple-300 text-purple-700 rounded-lg text-sm font-semibold hover:bg-purple-50 transition-all">
-                                Ver Factura
-                            </button>
-                            <button onclick="viewOrder('${order.id}')" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg text-sm font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg">
-                                Ver Detalle
-                            </button>
-                        </div>
-                    </div>
 
-                    ${hasDeliveryInfo ? `
-                    <!-- Delivery Info -->
-                    <div class="flex items-center gap-3 text-sm mb-6 bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
-                        <svg class="w-6 h-6 text-purple-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
-                            <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/>
-                        </svg>
-                        <div>
-                            <span class="font-semibold text-gray-800">Entrega Estimada:</span>
-                            <span class="text-gray-700 ml-2">${formatDate(order.estimated_delivery)}</span>
-                        </div>
-                    </div>
-                    ` : ''}
-
-                    ${order.shipping_address ? `
-                    <!-- Shipping Address -->
-                    <div class="text-sm mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex items-start gap-2">
-                            <svg class="w-5 h-5 text-purple-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        ${hasDeliveryInfo ? `
+                        <!-- Delivery Info -->
+                        <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm mb-4 bg-blue-900/30 p-3 rounded-lg border border-blue-700">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                                <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/>
                             </svg>
-                            <div>
-                                <span class="font-semibold text-gray-800">Envío a:</span>
-                                <span class="text-gray-700 ml-2">${order.shipping_address}</span>
+                            <div class="flex-1">
+                                <span class="font-semibold text-blue-200">Entrega Estimada:</span>
+                                <span class="text-blue-300 ml-1 sm:ml-2">${formatDate(order.estimated_delivery)}</span>
                             </div>
                         </div>
-                    </div>
-                    ` : ''}
+                        ` : ''}
 
-                    <!-- Order Items -->
-                    <div class="space-y-4">
-                        ${orderItems.length > 0 ? orderItems.map((item, index) => `
-                            <div class="flex gap-4 p-4 bg-white rounded-lg border border-gray-200 hover:border-purple-300 transition-all">
-                                <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                                    <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="font-bold text-gray-900">${item.product_name || 'Producto'}</h3>
-                                        <span class="font-bold text-lg text-purple-900">$${(item.total_price || 0).toLocaleString()}</span>
-                                    </div>
-                                    <div class="text-sm text-gray-600 mb-3">
-                                        <span>Cantidad: <span class="font-semibold text-gray-800">${item.quantity}</span></span>
-                                        <span class="mx-2 text-gray-400">•</span>
-                                        <span>Precio Unitario: <span class="font-semibold text-gray-800">$${(item.unit_price || 0).toLocaleString()}</span></span>
-                                    </div>
-                                    <div class="flex gap-4 text-sm">
-                                        <a href="#" class="text-purple-600 hover:text-purple-800 font-medium hover:underline">Ver Producto</a>
-                                        <span class="text-gray-300">|</span>
-                                        <a href="#" onclick="buyAgain('${item.product_id}'); return false;" class="text-purple-600 hover:text-purple-800 font-medium hover:underline">Comprar de Nuevo</a>
-                                    </div>
+                        ${order.shipping_address ? `
+                        <!-- Shipping Address -->
+                        <div class="text-xs sm:text-sm mb-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
+                            <div class="flex items-start gap-2">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <div class="flex-1 min-w-0">
+                                    <span class="font-semibold text-gray-300">Envío a:</span>
+                                    <span class="text-gray-400 ml-1 sm:ml-2 break-words">${order.shipping_address}</span>
                                 </div>
                             </div>
-                        `).join('') : '<p class="text-gray-500 text-center py-8">No se encontraron items</p>'}
+                        </div>
+                        ` : ''}
+
+                        <!-- Order Items -->
+                        <div class="space-y-3 sm:space-y-4">
+                            ${orderItems.length > 0 ? orderItems.map((item) => `
+                                <div class="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-purple-500 transition-all">
+                                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-900/50 to-indigo-900/50 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-start gap-2 mb-2">
+                                            <h3 class="font-bold text-gray-200 text-sm sm:text-base break-words">${item.product_name || 'Producto'}</h3>
+                                            <span class="font-bold text-base sm:text-lg text-green-400 flex-shrink-0">$${(item.total_price || 0).toLocaleString()}</span>
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3">
+                                            <span>Cant: <span class="font-semibold text-gray-300">${item.quantity}</span></span>
+                                            <span class="mx-2 text-gray-600">•</span>
+                                            <span>Precio: <span class="font-semibold text-gray-300">$${(item.unit_price || 0).toLocaleString()}</span></span>
+                                        </div>
+                                        <div class="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
+                                            <a href="#" class="text-purple-400 hover:text-purple-300 font-medium hover:underline">Ver Producto</a>
+                                            <span class="text-gray-600">|</span>
+                                            <a href="#" onclick="buyAgain('${item.product_id}'); return false;" class="text-purple-400 hover:text-purple-300 font-medium hover:underline">Comprar de Nuevo</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('') : '<p class="text-gray-500 text-center py-6 sm:py-8 text-sm">No se encontraron items</p>'}
+                        </div>
                     </div>
                 </div>
-            `;
+                `;
             }
 
-            // Función principal para cargar órdenes
             async function loadUserOrders() {
                 try {
                     console.log('🔄 Cargando pedidos...');
-
-                    // Obtener usuario autenticado
+                    
                     const { data: { user }, error: userError } = await supabase.auth.getUser();
-
+                    
                     if (userError) {
                         console.error('Error obteniendo usuario:', userError);
                     }
 
                     console.log('👤 Usuario actual:', user?.id);
 
-                    // Query para obtener órdenes
                     let query = supabase
                         .from('orders')
-                        .select(`
-                        *,
-                        order_items (*)
-                    `)
+                        .select(`*, order_items (*)`)
                         .order('order_date', { ascending: false });
 
-                    // Si hay usuario, filtrar por su ID
                     if (user) {
                         query = query.eq('user_id', user.id);
                     }
@@ -524,7 +341,6 @@
 
                     console.log('📦 Pedidos obtenidos:', orders);
 
-                    // Ocultar loading
                     loadingState.classList.add('hidden');
 
                     if (error) {
@@ -538,7 +354,6 @@
                         return;
                     }
 
-                    // Renderizar órdenes
                     console.log('✅ Renderizando', orders.length, 'pedidos');
                     ordersContainer.classList.remove('hidden');
                     ordersContainer.innerHTML = orders.map(order => renderOrder(order)).join('');
@@ -551,7 +366,6 @@
                 }
             }
 
-            // Funciones globales para los botones
             window.viewInvoice = function (orderId) {
                 console.log('📄 Ver factura del pedido:', orderId);
                 alert('Función de factura próximamente!');
@@ -559,7 +373,7 @@
 
             window.viewOrder = function (orderId) {
                 console.log('👁️ Ver detalles del pedido:', orderId);
-                window.location.href = `/tienda/order-details.html?id=${orderId}`;
+                window.location.href = `/tienda/orderDetails.html?id=${orderId}`;
             };
 
             window.buyAgain = function (productId) {
@@ -567,12 +381,11 @@
                 alert('Función de comprar de nuevo próximamente!');
             };
 
-            // Cargar órdenes cuando la página cargue
             document.addEventListener('DOMContentLoaded', () => {
                 console.log('🚀 Página de pedidos cargada');
                 loadUserOrders();
             });
         </script>
+    </div>
 </body>
-
 </html>
