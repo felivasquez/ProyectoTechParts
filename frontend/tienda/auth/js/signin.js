@@ -1,4 +1,4 @@
-import supabase from '../../js/client.js';
+import { supabase } from '../../js/supabaseConfig.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('signupForm');
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value.trim();
         const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
+        // Validaciones
         if (!fullName || !email || !password || !confirmPassword) {
             showMessage('Por favor, completa todos los campos.', 'error');
             return;
@@ -31,31 +32,58 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (password.length < 6) {
+            showMessage('La contraseña debe tener al menos 6 caracteres.', 'error');
+            return;
+        }
+
         try {
+            console.log('📧 Iniciando registro...');
+
+            // Obtener la URL actual para el redirect
+            const redirectUrl = `${window.location.origin}/tienda/login.html`;
+            
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
                     data: {
                         full_name: fullName
-                    }
+                    },
+                    emailRedirectTo: redirectUrl
                 }
             });
 
             if (error) {
+                console.error('❌ Error en signup:', error);
                 showMessage(`Error: ${error.message}`, 'error');
                 return;
             }
 
-            showMessage('✅ Usuario registrado exitosamente. Revisa tu correo para confirmar tu cuenta.', 'success');
+            console.log('✅ Respuesta de signup:', data);
 
-            setTimeout(() => {
-                window.location.href = './login.html';
-            }, 5000);
+            // Verificar si necesita confirmación de email
+            if (data?.user && !data.user.confirmed_at) {
+                showMessage(
+                    '✅ Registro exitoso! Por favor revisa tu correo electrónico para confirmar tu cuenta.',
+                    'success'
+                );
+                console.log('📧 Email de confirmación enviado a:', email);
+            } else if (data?.user && data.user.confirmed_at) {
+                // El usuario fue confirmado automáticamente
+                showMessage(
+                    '✅ Usuario registrado y confirmado exitosamente! Redirigiendo...',
+                    'success'
+                );
+                setTimeout(() => {
+                    window.location.href = './login.html';
+                }, 2000);
+            }
 
             form.reset();
+
         } catch (err) {
-            console.error(err);
+            console.error('❌ Error inesperado:', err);
             showMessage('Error inesperado al registrar usuario.', 'error');
         }
     });
