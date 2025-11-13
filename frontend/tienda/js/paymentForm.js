@@ -221,21 +221,40 @@ async function saveOrderDirectly({ cartItems, shippingAddress, billingAddress, p
                 continue; // Continuar con el siguiente item
             }
 
-            // Registrar movimiento
-            const { error: movementError } = await supabase
-                .from('movements')
-                .insert({
+            // Registrar movimiento (intentar, pero no fallar si hay error)
+            try {
+                const movementData = {
                     type: "Compra",
-                    quantity: item.quantity || 1,
+                    quantity: parseInt(item.quantity) || 1,
                     reason: "Compra online",
                     user_id: user.id,
                     product_id: item.id,
-                    order_id: orderId,
-                    created_at: new Date().toISOString()
-                });
+                    order_id: orderId
+                };
 
-            if (movementError) {
-                console.error(`Error registrando movimiento para producto ${item.id}:`, movementError);
+                console.log('Intentando crear movimiento:', movementData);
+
+                const { data: movementResult, error: movementError } = await supabase
+                    .from('movements')
+                    .insert(movementData)
+                    .select();
+
+                if (movementError) {
+                    console.error(`Error registrando movimiento para producto ${item.id}:`, {
+                        error: movementError,
+                        message: movementError.message,
+                        details: movementError.details,
+                        hint: movementError.hint,
+                        code: movementError.code,
+                        data: movementData
+                    });
+                    // No lanzar error, solo registrar - el pedido ya se creó exitosamente
+                } else {
+                    console.log('✅ Movimiento creado exitosamente:', movementResult);
+                }
+            } catch (movError) {
+                console.error(`Error inesperado registrando movimiento:`, movError);
+                // Continuar sin fallar el pedido completo
             }
         }
 
