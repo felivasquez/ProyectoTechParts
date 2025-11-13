@@ -74,7 +74,8 @@
 
     async function checkPayment() {
       const urlParams = new URLSearchParams(window.location.search);
-      const clientSecret = urlParams.get('payment_intent_client_secret');
+      const clientSecret = urlParams.get('payment_intent_client_secret') || urlParams.get('payment_intent');
+
 
       if (!clientSecret) {
         showError('No se encontró información del pago. Por favor, contactá a soporte.');
